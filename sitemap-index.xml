@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>https://admin298.github.io/panamalegallab-sitemaps/sitemap-es.xml</loc>
+    <loc>https://sitemaps.panamalegallab.com/sitemap-es.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://admin298.github.io/panamalegallab-sitemaps/sitemap-en.xml</loc>
+    <loc>https://sitemaps.panamalegallab.com/sitemap-en.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://admin298.github.io/panamalegallab-sitemaps/sitemap-fr.xml</loc>
+    <loc>https://sitemaps.panamalegallab.com/sitemap-fr.xml</loc>
   </sitemap>
   <sitemap>
-    <loc>https://admin298.github.io/panamalegallab-sitemaps/sitemap-it.xml</loc>
+    <loc>https://sitemaps.panamalegallab.com/sitemap-it.xml</loc>
   </sitemap>
 </sitemapindex>
