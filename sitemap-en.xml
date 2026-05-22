@@ -16,6 +16,13 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/perche-panama"/>
   </url>
   <url>
+    <loc>https://en.panamalegallab.com/our-services</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi"/>
+  </url>
+  <url>
     <loc>https://en.panamalegallab.com/our-services/start-business-in-panama</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama"/>
@@ -44,11 +51,298 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/investimento-immobiliare-a-panama"/>
   </url>
   <url>
+    <loc>https://en.panamalegallab.com/our-services/start-business-in-panama/sa-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama/sa-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama/sa-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/creer-entreprise-au-panama/sa-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/creazione-impresa-a-panama/sa-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/start-business-in-panama/srl-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama/srl-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama/srl-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/creer-entreprise-au-panama/srl-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/creazione-impresa-a-panama/srl-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/start-business-in-panama/private-interest-foundation</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama/fundaci%C3%B3n-inter%C3%A9s-privado-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama/private-interest-foundation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/creer-entreprise-au-panama/fondation-dint%C3%A9r%C3%AAt-priv%C3%A9-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/creazione-impresa-a-panama/fondazione-di-interesse-privato-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/start-business-in-panama/business-international</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama/negocios-internacional"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama/business-international"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/creer-entreprise-au-panama/affaire-international"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/creazione-impresa-a-panama/affari-internazionali"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/start-business-in-panama/operating-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama/operativa-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama/operating-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/creer-entreprise-au-panama/op%C3%A9rationnelle-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/creazione-impresa-a-panama/operativa-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/start-business-in-panama/virtual-office</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/crear-empresa-en-panama/operativa-oficina-virtual"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/start-business-in-panama/virtual-office"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/creer-entreprise-au-panama/bureau-virtuel"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/creazione-impresa-a-panama/ufficio-virtuale"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/bank-account-in-panama/personal-bank-account-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/cuenta-bancaria-en-panama/cuenta-bancaria-personal-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/bank-account-in-panama/personal-bank-account-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/compte-bancaire-au-panama/compte-bancaire-personnel-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/conto-bancario-a-panama/conto-bancario-personale-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/bank-account-in-panama/corporate-bank-account-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/cuenta-bancaria-en-panama/cuenta-bancaria-corporativa-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/bank-account-in-panama/corporate-bank-account-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/compte-bancaire-au-panama/compte-bancaire-corporatif-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/conto-bancario-a-panama/conto-bancario-impresa-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/investor-visa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/visado-inversionista-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/investor-visa"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/visa-Investisseur-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/visto-investitore"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/professional-visa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/visado-profesional-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/professional-visa"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/visa-professionnels-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/professionisti"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/student-permit</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/permiso-educativo-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/student-permit"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/permis-etudiant-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/studenti"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/friendly-nations-visa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/visado-paises-amigos-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/friendly-nations-visa"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/visa-pays-amicaux-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/paesi-amici"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/family-visa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/visado-familiar-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/family-visa"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/visa-familial-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/ricongiungimento-familiare"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/technical-permit-15</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/permiso-tecnico-15-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/technical-permit-15"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/permis-technique-15-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/tecnico-15"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/retiree-visa</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/visado-jubilados-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/retiree-visa"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/visa-retraite-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/pensionato"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/multinational-headquarters</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/sede-multinacionales-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/multinational-headquarters"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/sieges-multinationaux-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/sede-multinazionali"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/residence-in-panama/foreign-worker-10</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/residencia-en-panama/permiso-extranjero-10-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/residence-in-panama/foreign-worker-10"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/residence-au-panama/permis-etrangers-10-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/residenza-a-panama/straniero-10"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-start-herald-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-start-herald-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-start-herald-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/investissement-immobilier-au-panama/bien-investissement-ph-start-herald-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/investimento-immobiliare-a-panama/immobile-investimento-ph-start-herald-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-catedral-square-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-plaza-catedral-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-catedral-square-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/investissement-immobilier-au-panama/bien-investissement-ph-place-cathedrale-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/investimento-immobiliare-a-panama/immobile-investimento-ph-piazza-cattedrale-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-commercial-space-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-local-comercial-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-commercial-space-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/investissement-immobilier-au-panama/bien-investissement-commerciaux-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/investimento-immobiliare-a-panama/immobile-investimento-ph-commerciale-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-grandbay-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-grandbay-en-panama"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-property-ph-grandbay-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/investissement-immobilier-au-panama/bien-investissement-ph-grandbay-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/investimento-immobiliare-a-panama/immobile-investimento-ph-grandbay-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-in-europe</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/nuestros-servicios/inversion-inmobiliaria-en-panama/inversiones-en-europa"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/our-services/real-estate-investment-in-panama/investment-in-europe"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/nos-services/investissement-immobilier-au-panama/investissements-europe"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/i-nostri-servizi/investimento-immobiliare-a-panama/investimenti-europa"/>
+  </url>
+  <url>
     <loc>https://en.panamalegallab.com/resource-hub</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/accionistas-directores-y-capital"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/actionnaires-administrateurs-et-capital"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/azionisti-direttori-e-capitale"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/fundaciones-y-fideicomisos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/pour-vos-fondations-et-fiducies"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/the-appeal-of-registering-a-company-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/atractivo-del-registro"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/the-appeal-of-registering-a-company-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/lattrait-de-lenregistrement-dune-soci%C3%A9t%C3%A9-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/il-fascino-della-registrazione-delle-societ%C3%A0-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/requirements-for-registering-a-company-in-panama</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/requisitos-para-el-registro-de-una-sociedad-en-panam%C3%A1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/requirements-for-registering-a-company-in-panama"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/exigences-pour-lenregistrement-dune-soci%C3%A9t%C3%A9-au-panama"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/requisiti-per-la-registrazione-di-una-societ%C3%A0-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-s-a-vs-s-r-l-in-panam%C3%A1</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-s-a-vs-s-r-l-en-panam%C3%A1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-s-a-vs-s-r-l-in-panam%C3%A1"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparatif-s-a-vs-s-r-l-au-panam%C3%A1"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-s-a-vs-s-r-l-a-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-s-r-l-and-other-legal-entities</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-s-r-l-y-otras-figuras-jur%C3%ADdicas"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-s-r-l-and-other-legal-entities"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparatif-s-r-l-et-autres-formes-juridiques"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-s-r-l-e-altre-figure-giuridiche"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/types-of-companies-for-conducting-commercial-activities</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/tipos-de-sociedades-opciones-para-ejercer-actividades-comerciales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/types-of-companies-for-conducting-commercial-activities"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/types-de-soci%C3%A9t%C3%A9s-options-pour-exercer-des-activit%C3%A9s-commerciales"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/tipi-di-societ%C3%A0-opzioni-per-svolgere-attivit%C3%A0-commerciali"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-foreign-company-s-a-and-redomiciliation</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-sociedad-extranjera-s-a-y-redomiciliaci%C3%B3n"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-foreign-company-s-a-and-redomiciliation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparatif-soci%C3%A9t%C3%A9-%C3%A9trang%C3%A8re-s-a-et-redomiciliation"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-societ%C3%A0-straniera-s-a-e-redomiciliazione"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-operating-and-non-operating-anonymous-corporation</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-sociedades-an%C3%B3nimas-operativas-y-no-operativas"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/registration-and-types-of-companies/comparative-operating-and-non-operating-anonymous-corporation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparative-operating-and-non-operating-public-limited-companies"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-societ%C3%A0-anonime-operative-e-non-operative"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/differences-shareholders-and-directors-in-anonymous-corporation-in-pana</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/accionistas-directores-y-capital/diferencias-accionistas-y-directores-en-las-sociedades-an%C3%B3nimas-de-panam%C3%A1"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/differences-shareholders-and-directors-in-anonymous-corporation-in-pana"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/actionnaires-administrateurs-et-capital/diff%C3%A9rences-actionnaires-et-administrateurs-dans-les-soci%C3%A9t%C3%A9s-anonymes"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/azionisti-direttori-e-capitale/differenze-azionisti-e-direttori-nelle-societ%C3%A0-anonime-di-panama"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/should-i-choose-the-nominee-directors-service-when-incorporating-a-s-a</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/accionistas-directores-y-capital/debo-escoger-el-servicio-de-directores-nominales-al-crear-una-s-a"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/should-i-choose-the-nominee-directors-service-when-incorporating-a-s-a"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/actionnaires-administrateurs-et-capital/dois-je-choisir-le-service-de-directeurs-nominaux-lors-de-la-cr%C3%A9ation-s-a"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/azionisti-direttori-e-capitale/devo-scegliere-il-servizio-di-direttori-nominali-nella-creazione-di-una-s-a"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/nominee-directors-procedure-for-the-use-of-the-resignation-letter</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/accionistas-directores-y-capital/directores-nominales-procedimiento-para-uso-del-documento-de-renuncia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/nominee-directors-procedure-for-the-use-of-the-resignation-letter"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/actionnaires-administrateurs-et-capital/directeurs-nominaux-proc%C3%A9dure-dutilisation-du-document-de-d%C3%A9mission"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/azionisti-direttori-e-capitale/direttori-nominali-procedura-per-luso-del-documento-di-dimissioni"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/comparative-registered-shares-vs-bearer-shares</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/accionistas-directores-y-capital/comparativa-acciones-nominativas-frente-a-las-acciones-al-portador"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/comparative-registered-shares-vs-bearer-shares"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/actionnaires-administrateurs-et-capital/comparatif-actions-nominatives-vs-actions-au-porteur"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/azionisti-direttori-e-capitale/confronto-azioni-nominative-vs-azioni-al-portatore"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/share-capital-panamanian-anonymous-corporation</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/accionistas-directores-y-capital/capital-social-sociedad-an%C3%B3nima-paname%C3%B1a"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/shareholders-directors-and-capital/share-capital-panamanian-anonymous-corporation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/actionnaires-administrateurs-et-capital/capital-social-soci%C3%A9t%C3%A9-anonyme-panam%C3%A9enne"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/azionisti-direttori-e-capitale/capitale-sociale-societ%C3%A0-anonima-panamense"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/who-administers-private-interest-foundations-and-how-are-they-managed</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/fundaciones-y-fideicomisos/qui%C3%A9n-administra-las-fundaciones-de-inter%C3%A9s-privado-y-c%C3%B3mo-se-manejan"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/who-administers-private-interest-foundations-and-how-are-they-managed"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/pour-vos-fondations-et-fiducies/qui-administre-les-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9-et-comment-sont-elles-g%C3%A9r%C3%A9es"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust/chi-amministra-le-f-i-p-e-come-vengono-gestite"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/who-can-be-beneficiaries-of-a-private-interest-foundation</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/fundaciones-y-fideicomisos/qui%C3%A9nes-pueden-ser-beneficiarios-de-una-fundaci%C3%B3n-de-inter%C3%A9s-privado"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/who-can-be-beneficiaries-of-a-private-interest-foundation"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/pour-vos-fondations-et-fiducies/qui-peut-%C3%AAtre-b%C3%A9n%C3%A9ficiaire-dune-fondation-dint%C3%A9r%C3%AAt-priv%C3%A9"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust/chi-pu%C3%B2-essere-beneficiario-di-una-fondazione-di-interesse-privato"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/legal-distinctions-private-interest-foundations-vs-trusts</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/fundaciones-y-fideicomisos/distinciones-legales-fundaciones-de-inter%C3%A9s-privado-vs-fideicomisos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/legal-distinctions-private-interest-foundations-vs-trusts"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/pour-vos-fondations-et-fiducies/distinctions-juridiques-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9-vs-fiducies"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust/distinzioni-giuridiche-fondazioni-di-interesse-privato-vs-trust"/>
+  </url>
+  <url>
+    <loc>https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/comparative-corporations-vs-private-interest-foundations</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/fundaciones-y-fideicomisos/comparativa-sociedades-an%C3%B3nimas-vs-fundaciones-inter%C3%A9s-privado"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/comparative-corporations-vs-private-interest-foundations"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/pour-vos-fondations-et-fiducies/comparatif-soci%C3%A9t%C3%A9s-anonymes-vs-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust/confronto-societ%C3%A0-anonime-vs-fondazioni-di-interesse-privato"/>
   </url>
   <url>
     <loc>https://en.panamalegallab.com/contact-us</loc>
