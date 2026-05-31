@@ -335,7 +335,7 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/guia-de-recursos/fundaciones-y-fideicomisos/qui%C3%A9n-administra-las-fundaciones-de-inter%C3%A9s-privado-y-c%C3%B3mo-se-manejan"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/who-administers-private-interest-foundations-and-how-are-they-managed"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/guide-de-ressources/pour-vos-fondations-et-fiducies/qui-administre-les-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9-et-comment-sont-elles-g%C3%A9r%C3%A9es"/>
-    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust/chi-amministra-le-f-i-p-e-come-vengono-gestite"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/guida-risorse/fondazioni-e-trust/chi-amministra-le-fondazioni-di-interesse-privato-e-come-vengono-gestite"/>
   </url>
   <url>
     <loc>https://en.panamalegallab.com/resource-hub/for-your-foundations-and-trusts/who-can-be-beneficiaries-of-a-private-interest-foundation</loc>
@@ -365,5 +365,11 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/contactez-nous"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/contatto"/>
   </url>
+  <url>
+    <loc>https://en.panamalegallab.com/legal-notice-privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.panamalegallab.com/aviso-legal-politica-privacidad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://en.panamalegallab.com/legal-notice-privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://fr.panamalegallab.com/mentions-legales-politique-confidentialite"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://it.panamalegallab.com/note-legali-informativa-privacy"/>
+  </url>
 </urlset>
-
