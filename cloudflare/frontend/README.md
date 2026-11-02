@@ -55,6 +55,16 @@ Generic errors, wrong Site, source404, login, transport errors and Search never 
 that escape. The response header X-PLL-Delivery: google-source-fallback identifies
 the event without logging visitor queries, credentials or request bodies.
 
+The exact private URL guard runs first. A retry accepts only encoding-equivalent
+query pairs after an exact raw pre-query URL match for the same fixed public Site.
+It preserves pair order and duplicates; plus/space and encoded/literal slash follow
+strict query decoding, while encoded plus remains distinct from space. Credentials,
+hashes, path/origin changes, malformed Unicode/escapes and blank ampersand segments
+cannot relax the guard. The verified actual316 string is used only as the frozen
+guard's exact expected argument. Fetch URLs, temporary rescue URLs, raw visitor
+queries and all other517configuration tokens remain untouched. The new fixture is
+minimal/anonymized; complete public Google pages remain local evidence only.
+
 A prolonged302 can affect which URL Google indexes; it is a temporary availability
 measure requiring prompt adapter maintenance, not a permanent SEO strategy. The145
 legacy301s execute before any source fetch and continue independently.
@@ -81,10 +91,13 @@ For a move, add only a verified exact301 and update links/sitemap. A deletion wi
 an equivalent stays404. If Google changes its viewer, fix it in the isolated preview
 with a failing regression first, review, rebuild, and preserve ZIP/hash/deploymentID.
 
-Rollout is IT first, with source TLS/DNS/custom-domain/oldWorker-route snapshots and
-the separate production-delivery-contract.txt gates. Do not associate real domains
-with a preview-only build. A prior preview421/noindex deployment is not production
-rollback. The parent owns actual browser verification, DNS and Cloudflare actions.
+The first delivery is active on all four approved production hosts following the
+IT-first rollout. This candidate is the narrow query-encoding compatibility update
+for those active frontends. The parent owns final deployment and live verification.
+Source TLS/DNS/custom-domain/oldWorker-route snapshots and the separate production
+delivery gates remain the rollback runbook. The prior861274production ZIP is kept
+as a byte-exact rollback archive. A preview421/noindex build is never a production
+rollback target.
 
 dist contains only the module Worker, routes manifest and harmless deployment.txt
 asset. There is no static preview index or blanket _headers noindex fallback that
