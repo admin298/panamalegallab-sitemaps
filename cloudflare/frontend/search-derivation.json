@@ -1,0 +1,27 @@
+{
+  "sourceFile": "vendor/search.js",
+  "sourceSha256": "7ede12b0ac3d596fb571bdc316b8a4e4a88078b95c1f7f20cb7fd88ec32d6144",
+  "derivedFile": "src/search-protocol.js",
+  "changes": [
+    {
+      "before": "from './logic.js'",
+      "after": "from '../vendor/logic.js'"
+    },
+    {
+      "before": "rewriteSearchResponse(text, previewOrigin) {",
+      "after": "rewriteSearchResponse(text, previewOrigin, rewriteUrl = rewriteSiteUrl) {"
+    },
+    {
+      "before": "rewriteSiteUrl(row[0], previewOrigin)",
+      "after": "rewriteUrl(row[0], previewOrigin)"
+    },
+    {
+      "before": "{ fetchImpl, quota, now }) {",
+      "after": "{ fetchImpl, quota, now, rewriteUrl = rewriteSiteUrl }) {"
+    },
+    {
+      "before": "rewriteSearchResponse(text, new URL(request.url).origin)",
+      "after": "rewriteSearchResponse(text, new URL(request.url).origin, rewriteUrl)"
+    }
+  ]
+}
