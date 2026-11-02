@@ -1,0 +1,67 @@
+{
+  "repositoryDestination": "cloudflare/frontend/",
+  "groups": {
+    "root": [
+      ".gitattributes",
+      "README.md",
+      "package.json",
+      "package-lock.json",
+      "build.mjs",
+      "frozen-core-manifest.json",
+      "search-derivation.json",
+      "release-manifest.json",
+      "publication-files.json",
+      "pages-upload-production-861274046112.zip",
+      "pages-upload-production-6a1224701822.zip"
+    ],
+    "src": [
+      "config-query.js",
+      "entry.js",
+      "html.js",
+      "plan.js",
+      "quota.js",
+      "search-protocol.js",
+      "search.js",
+      "worker.js"
+    ],
+    "vendor": [
+      "compatibility-entry.js",
+      "logic.js",
+      "routes-data.js",
+      "search.js",
+      "worker.js"
+    ],
+    "test": [
+      "core-search-relay.test.js",
+      "core-search.test.js",
+      "plan.test.js",
+      "query-runtime.test.js",
+      "query.test.js",
+      "quota.test.js",
+      "runtime.test.js",
+      "worker.test.js"
+    ],
+    "test/fixtures": [
+      "query-normalization.html",
+      "search-no-results.txt",
+      "search-page2-response.txt",
+      "search-pagination.json",
+      "search-response.txt"
+    ],
+    "dist": [
+      "_routes.json",
+      "_worker.js",
+      "deployment.txt"
+    ]
+  },
+  "exclude": [
+    "node_modules/",
+    "local-evidence/",
+    "README.txt",
+    "coverage.txt",
+    "*-tests.txt",
+    "dependency-audit.json",
+    "metadata-lf-normalization-verification.json"
+  ],
+  "note": "Each group is an existing repository folder; upload only the listed files to that folder."
+}

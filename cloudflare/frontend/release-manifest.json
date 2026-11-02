@@ -1,0 +1,98 @@
+{
+  "candidateOnly": true,
+  "createdAt": "2026-11-02T18:27:51.179839+00:00",
+  "worker": {
+    "path": "dist/_worker.js",
+    "bytes": 102165,
+    "sha256": "cea6a563fb10fe688258df0980986da94d592f1f27ea0ea111531d8094e5d445"
+  },
+  "upload": {
+    "path": "pages-upload-production-6a1224701822.zip",
+    "bytes": 17015,
+    "sha256": "6a122470182294b96328573edee76bd1f963ce0b939ddb65c180bcdda451e849",
+    "entries": [
+      "_worker.js",
+      "_routes.json",
+      "deployment.txt"
+    ]
+  },
+  "reviewedCoreBundleSha256": "5423342fe7cd81e5fae9cdf8a51b3d912b322d300a2990ebb90f3cedee168c2b",
+  "tests": {
+    "passed": 158,
+    "failed": 0,
+    "lineCoverage": 89.87,
+    "branchCoverage": 90.28,
+    "functionCoverage": 94.12,
+    "notes": "Node contracts plus actual workerd HTMLRewriter integration. Actual PLL/Chrome fixtures preserve all other517configuration bytes, every nonce and CSP with GET/HEAD200; independent fresh Google replay verified encoding normalization on this identical worker hash."
+  },
+  "dependencyAudit": {
+    "vulnerabilities": 0,
+    "devOnlyDependencies": true
+  },
+  "delivery": {
+    "currentPages": 256,
+    "preferredCanonicalUrls": 252,
+    "reviewedContentRedirects": 145,
+    "productionHosts": [
+      "www.panamalegallab.com",
+      "en.panamalegallab.com",
+      "fr.panamalegallab.com",
+      "it.panamalegallab.com"
+    ],
+    "previewHost": "pll-seo-preview-20261102.pages.dev",
+    "staticPreviewIndexIncluded": false,
+    "blanketNoindexHeadersFileIncluded": false
+  },
+  "publicationManifest": "publication-files.json",
+  "sourceFiles": {
+    ".gitattributes": "1f188a384f3a7d8e293f83c43a896957fff3e9ff9fc3f752e6d78825f92f65ec",
+    "README.md": "df078c124c2f6d82758e156ebb255824e2a1b41be25c4b7c899cd021a95ab3bd",
+    "package.json": "6ef228632325e0e985c7536d493a45c9052c12a2385cd41e2704d25448befe9d",
+    "package-lock.json": "3d857dbc49f453f7d2ce214342dd1d5eba9b963ee4e6d3c430c77d2450928a44",
+    "build.mjs": "a67539395211ab16278c7d7583d1ace918a9de23e67f74b4cd3cb70bfe8ed677",
+    "frozen-core-manifest.json": "81e13e8468c4424c3b5bd37e55103bd365222e0837c945d11f9de5761ab98352",
+    "search-derivation.json": "dd2d8aafa68b408f92472cbf01ccae94e5a18c2341276d91508ce321927f5931",
+    "src/config-query.js": "86ee231022e38993ecf91cbe9643d6cea5551d92e5a42ade25a0c43140933a7d",
+    "src/entry.js": "e451cd7df0e7c4d149e3c73035cb8e829e2707f4eceae630a76765a694caa24b",
+    "src/html.js": "fd7b8d4e99dc48bb1991f195c14132c5bdf1a9145cf0fdc68ef3b9b386b31127",
+    "src/plan.js": "20b8f2f6f195cf2484006112f1c27329ceae9f80393bc56bc88405bdafb8e963",
+    "src/quota.js": "d2d26ed079bc165e21eea017a20acb04aada27938f0ceb101097bd5a541bf2bd",
+    "src/search-protocol.js": "70d0ae67aba1279e9ecdb23def74c30ef9ce4c1f705c516c96ca3262fbad7e9c",
+    "src/search.js": "1fe7ed5b68c71b5099230f26df2a4dd4703cc66fbfe50badc93b069abe188d09",
+    "src/worker.js": "eccbc3fbc8201652c71c30867d8f5d1d3d2d8f3432ef2d65500b70e00786716a",
+    "vendor/compatibility-entry.js": "3f1d1fab5ade3764d2f393b9d5376ed174e076ed8a85fd6ee3d39f532f1bb534",
+    "vendor/logic.js": "f167f08aa9b0411f6f7b5f1d122cd8926a8c828cd4512630246859e6bc03759f",
+    "vendor/routes-data.js": "b68ea9078b2d5ff69413270be4072b859b4b066f9843182ac653294872c65e64",
+    "vendor/search.js": "7ede12b0ac3d596fb571bdc316b8a4e4a88078b95c1f7f20cb7fd88ec32d6144",
+    "vendor/worker.js": "b6d5e4513a9dcd263288e68f6f3596ceba19ecdeebafc7ef1904a81c6d33ee9f",
+    "test/core-search-relay.test.js": "3166b37cd801f2132eea52e71b63755bad51b80f5f7840b4d0bf010eaa8d14e4",
+    "test/core-search.test.js": "e380866925dd19ab90c55b44353ecd9c81670c28a70f31c2c2ea3e5c90223e06",
+    "test/plan.test.js": "4fbdd3571acfa37c01797aacc5556ed57c27884b4cdcf4e7e86651d225910505",
+    "test/query-runtime.test.js": "84a19802bbb2b1842d0cf5770531d6660531379998593524b9d4852614002d0a",
+    "test/query.test.js": "a3ced9238e51fd8f41fb63bee98a2909a8951590df71376740f39ca0e293a963",
+    "test/quota.test.js": "5edb765e3d6cdcce9d8bc84d7088a279aa1acf4782c7d3bd81075f8c8cbdd8fa",
+    "test/runtime.test.js": "15de7913fe3b18a7f4f6a6e00b394f562b270e8155b55c538c604e6f7e8d448c",
+    "test/worker.test.js": "3cce9e92a5ac7680bcacac588a97e9560b851e071d70b732992e9ef395ce1538",
+    "test/fixtures/query-normalization.html": "4f98c04436c69fd98bbefdcfc61061df88ff82289351058d336ea6b243aa5b58",
+    "test/fixtures/search-no-results.txt": "4cf570ad22c27d6a6156ab49f93f147e27599b58ab88c9dc7e86a0c54e35160d",
+    "test/fixtures/search-page2-response.txt": "b137157d20c47b015482b5045ced390812b9596526dd877c1222adb06a1af5df",
+    "test/fixtures/search-pagination.json": "a95c3cb1d77e2339f3f45be494b542b0e8dd10ff2ac78928eaee71bd0fa4395b",
+    "test/fixtures/search-response.txt": "949ab3230a471e0e9c9f1c7abfabd42bea7db26b748b7c92e62892fe0e42b9bb"
+  },
+  "rollbackArtifacts": [
+    {
+      "path": "pages-upload-production-861274046112.zip",
+      "sha256": "8612740461128643c38622d3c1f005d252d91ece92c45f2bb9966f9727c1bc93",
+      "workerSha256": "79ab0a85079030b7dd7785a2ca6fe14fb983d2a3e7bff4163467f66f4cbeb2b1"
+    }
+  ],
+  "queryCompatibility": {
+    "exactGuardFirst": true,
+    "rawNonQueryUrlExact": true,
+    "orderedDecodedPairsPreserved": true,
+    "fetchAndRescueRawQueryUnchanged": true,
+    "vendorAndExistingSearchFixturesUnchanged": true,
+    "publicRegressionFixture": "test/fixtures/query-normalization.html",
+    "fullGooglePagesPublished": false
+  }
+}

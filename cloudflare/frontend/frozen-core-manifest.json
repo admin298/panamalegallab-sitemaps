@@ -1,0 +1,12 @@
+{
+  "snapshotAt": "2026-11-02T16:42:34.430001+00:00",
+  "reviewedCompatibilityBundleSha256": "5423342fe7cd81e5fae9cdf8a51b3d912b322d300a2990ebb90f3cedee168c2b",
+  "sourceFiles": {
+    "logic.js": "f167f08aa9b0411f6f7b5f1d122cd8926a8c828cd4512630246859e6bc03759f",
+    "routes-data.js": "b68ea9078b2d5ff69413270be4072b859b4b066f9843182ac653294872c65e64",
+    "worker.js": "b6d5e4513a9dcd263288e68f6f3596ceba19ecdeebafc7ef1904a81c6d33ee9f",
+    "search.js": "7ede12b0ac3d596fb571bdc316b8a4e4a88078b95c1f7f20cb7fd88ec32d6144",
+    "compatibility-entry.js": "3f1d1fab5ade3764d2f393b9d5376ed174e076ed8a85fd6ee3d39f532f1bb534"
+  },
+  "previousReviewedBundleSha256": "d91e2fd92d52fc10ab642cba660088d0023f958635ae29a5151a766ae72ab1b1"
+}

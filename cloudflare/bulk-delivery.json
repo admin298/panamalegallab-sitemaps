@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-02T18:33:12.480996+00:00",
+  "scope": "Cloudflare account Bulk Redirects; exact reviewed Panama Legal Lab legacy URLs",
+  "accountId": "20f76014286629dae916202a43465d8d",
+  "zone": "panamalegallab.com",
+  "list": {
+    "id": "97648f50f29e4ee09cd2af43f6d44afe",
+    "name": "pll_legacy_routes",
+    "kind": "redirect",
+    "configuredEntryCount": 145,
+    "active": true
+  },
+  "rule": {
+    "id": "b79938fda5424b5faae6b4a875117453",
+    "phase": "http_request_redirect",
+    "action": "redirect",
+    "expression": "(http.request.method in {\"GET\" \"HEAD\"}) and (http.request.full_uri in $pll_legacy_routes)",
+    "key": "http.request.full_uri",
+    "active": true
+  },
+  "parameters": {
+    "statusCode": 301,
+    "sourceSchemeOmitted": true,
+    "preserveQueryString": true,
+    "includeSubdomains": false,
+    "subpathMatching": false,
+    "preservePathSuffix": false
+  },
+  "files": {
+    "fullCsv": {
+      "repositoryPath": "cloudflare/bulk-redirects.csv",
+      "localAuditPath": "production-bulk-redirects.csv",
+      "rows": 145,
+      "bytes": 29979,
+      "sha256": "6481cb00193278b1fbbe2bf9440fbebf56489936db301b2e99b7245b1349a9a9"
+    },
+    "existingSampleSha256": "85b5240d8b931fb4b87f3df2dad68d0400fb6e5d8c20edeed5491954e1860315",
+    "additional144Sha256": "0d0b131817668a705904542f6d726f7e077f4ee464f5998163b399abb58f4668"
+  },
+  "compositionValidation": {
+    "sourceUnique": true,
+    "allSevenFieldsUnchanged": true,
+    "samplePlusRemainingEqualsFull": true,
+    "utf8NoBomLfNoHeader": true,
+    "perHost": {
+      "www.panamalegallab.com": 37,
+      "en.panamalegallab.com": 36,
+      "fr.panamalegallab.com": 36,
+      "it.panamalegallab.com": 36
+    }
+  },
+  "uiVerification": {
+    "totalConfiguredCount": 145,
+    "existingSampleCount": 1,
+    "additionalImportedCount": 144,
+    "additionalRowsVerifiedByPage": [
+      100,
+      44
+    ],
+    "sourceTargetAndFlagsVerified": true,
+    "statusCode301VerifiedByReleaseOperator": true,
+    "evidenceFiles": [
+      "cloudflare-bulk-145-active.png",
+      "bulk-import-ui-verification.json"
+    ],
+    "importVerificationSha256": "802975a2f9817c6ef78893e4fc7ee0c080b1781b959b7f6afc463341ce9f53a3"
+  },
+  "sampleLiveVerification": {
+    "checksPassed": 7,
+    "checksTotal": 7,
+    "source": "it.panamalegallab.com/i-nostri-servizi/residenza-a-panama",
+    "httpAndHttpsGetHead": "301 directly to final HTTPS URL",
+    "rawQueryPreserved": true,
+    "httpsPostStatus": 405,
+    "unknownSiblingStatus": 404,
+    "cacheControlHeader": null,
+    "expiresHeader": null,
+    "noStoreNotClaimed": true
+  },
+  "configurationStatus": "Full145Active",
+  "bulkResponseCaching": {
+    "cacheControlHeader": null,
+    "expiresHeader": null,
+    "noStoreGuaranteed": false,
+    "observation": "Checked Bulk responses did not emit Cache-Control or Expires. The76 Italian final transport responses did not provide Cache-Control:no-store. Do not attribute the Worker no-store policy to this earlier Bulk layer.",
+    "consequence": "Browsers and search engines may retain301 responses; rollback cannot guarantee immediate removal of a cached redirect."
+  },
+  "status": "All4HostsLive145ActiveQueryVerified",
+  "statusMeaning": "All four public custom domains use Cloudflare Pages. The145-entry Bulk list and its exact GET/HEAD rule are active. The encoded-query compatibility correction is deployed in the confirmed production release and passed20/20 targeted live checks; the full256-page run was not repeated for this isolated fix.",
+  "validationStatus": "LiveDeliveryAndEncodedQueryCompatibilityVerified",
+  "routingSnapshot": {
+    "recordedAt": "2026-11-02T18:33:12.480996+00:00",
+    "note": "All four custom domains are active in the same Cloudflare Pages project. Live redirect transport checks and the separately deployed encoded-query compatibility regression are verified.",
+    "www.panamalegallab.com": "Cloudflare Pages active;37 reviewed Bulk sources verified; encoded-query regression verified.",
+    "en.panamalegallab.com": "Cloudflare Pages active;36 reviewed Bulk sources verified; encoded-query regression verified.",
+    "fr.panamalegallab.com": "Cloudflare Pages active;36 reviewed Bulk sources verified; encoded-query regression verified.",
+    "it.panamalegallab.com": "Cloudflare Pages active;36 reviewed Bulk sources verified; encoded-query regression verified."
+  },
+  "liveRedirectVerification": {
+    "scope": "Read-only live GET redirect responses; redirects not followed in these transport checks.",
+    "httpGet": {
+      "passed": 145,
+      "total": 145
+    },
+    "httpsGet": {
+      "passed": 145,
+      "total": 145
+    },
+    "perHost": {
+      "www.panamalegallab.com": {
+        "httpGetPassed": 37,
+        "httpsGetPassed": 37,
+        "totalReviewedSources": 37
+      },
+      "en.panamalegallab.com": {
+        "httpGetPassed": 36,
+        "httpsGetPassed": 36,
+        "totalReviewedSources": 36
+      },
+      "fr.panamalegallab.com": {
+        "httpGetPassed": 36,
+        "httpsGetPassed": 36,
+        "totalReviewedSources": 36
+      },
+      "it.panamalegallab.com": {
+        "httpGetPassed": 36,
+        "httpsGetPassed": 36,
+        "totalReviewedSources": 36
+      }
+    },
+    "italianHeadSample": {
+      "passed": 4,
+      "total": 4
+    },
+    "targetAndRawQuery": "Exact reviewed HTTPS destination and original query preserved in the301 response.",
+    "encodedTargetQueryCompatibility": "Verified in production deployment403435a8-30fd-4af4-b7c0-a37c810c6049;20/20 targeted live checks passed, including encoded queries and duplicate/plus query values on the four language roots.",
+    "evidenceFiles": [
+      "edge-preview-qa/production-it-pilot-http-final.json",
+      "edge-preview-qa/production-fr-pilot-results.json",
+      "edge-preview-qa/production-en-pilot-results.json",
+      "edge-preview-qa/production-es-pilot-results.json",
+      "edge-preview-qa/production-es-pilot-query-fallback.json"
+    ]
+  },
+  "runtimeDeployment": {
+    "id": "403435a8-30fd-4af4-b7c0-a37c810c6049",
+    "productionConfirmedByReleaseOperator": true,
+    "upload": {
+      "filename": "pages-upload-production-6a1224701822.zip",
+      "bytes": 17015,
+      "sha256": "6a122470182294b96328573edee76bd1f963ce0b939ddb65c180bcdda451e849"
+    },
+    "worker": {
+      "filename": "_worker.js",
+      "bytes": 102165,
+      "sha256": "cea6a563fb10fe688258df0980986da94d592f1f27ea0ea111531d8094e5d445"
+    }
+  },
+  "queryCompatibilityVerification": {
+    "checkedAt": "2026-11-02T18:31:18.500816+00:00",
+    "passed": 20,
+    "total": 20,
+    "allPassed": true,
+    "scope": "Targeted live regression only: encoded queries, plus/duplicate parameters, four language roots, contactGET/HEAD, apex redirects, an unchanged article/root,404,Unicode search and preview guards. The256-page run was not repeated.",
+    "evidenceFiles": [
+      "edge-preview-qa/production-query-final.json",
+      "edge-preview-qa/production-query-final.txt"
+    ],
+    "browserVerification": {
+      "confirmedByReleaseOperator": true,
+      "publicHostRetained": "www.panamalegallab.com",
+      "canonical": "https://www.panamalegallab.com/contacto",
+      "brokenImageCount": 0,
+      "evidenceFile": "production-query-chrome.png"
+    },
+    "limits": "This verifies delivery and compatibility; it does not prove form reception, effective Google indexing or Core Web Vitals."
+  },
+  "maintenance": {
+    "workerMapRepositoryPath": "cloudflare/frontend/vendor/routes-data.js",
+    "instruction": "Keep the Bulk list aligned with the reviewed Worker redirect map for later moves. Bulk executes before the fallback Worker map; verify both configurations.",
+    "runtimeZipUnchangedByThisMetadataUpdate": true,
+    "runtimeNote": "This metadata-only update records the separately confirmed production release and live query regression. It does not modify the CSV, Worker redirect map, frontend source or runtime artifact."
+  }
+}
