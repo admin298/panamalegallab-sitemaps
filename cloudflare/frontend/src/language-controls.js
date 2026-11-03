@@ -1,4 +1,5 @@
 import { SITES } from '../vendor/logic.js';
+import { createHeaderInspector, attachHeaderInspection } from './header-language-controls.js';
 
 export const FOOTER_GROUP = 'footer[jsname="yePe5c"] small.zfr3Q';
 const ROOT_LANGUAGES = Object.freeze(Object.fromEntries(Object.values(SITES).flatMap(site =>
@@ -28,6 +29,7 @@ function recognizedGroup(group, locale) {
 }
 
 export function createDocumentInspector(locale) {
+  const header = createHeaderInspector(locale);
   let documentLanguage = null;
   let htmlCount = 0;
   let ordinal = -1;
@@ -43,6 +45,7 @@ export function createDocumentInspector(locale) {
     anchor = null;
   };
   return {
+    header,
     html: { element(element) { htmlCount += 1; documentLanguage = element.getAttribute('lang'); } },
     group: { element(element) {
       ordinal += 1;
@@ -79,6 +82,7 @@ export function createDocumentInspector(locale) {
     context() {
       return Object.freeze({ authorLanguage: htmlCount === 1 ? documentLanguage : null,
         siteLanguage: htmlCount === 1 ? locale : null,
+        headerLanguageAnchors: htmlCount === 1 ? header.context() : null,
         languageGroup: !invalid && !active && !anchor && htmlCount === 1
           && matches.length === 1 ? matches[0] : null });
     },
@@ -86,6 +90,7 @@ export function createDocumentInspector(locale) {
 }
 
 export function attachDocumentInspection(rewriter, inspector) {
+  attachHeaderInspection(rewriter, inspector.header);
   return rewriter.on('html', inspector.html).on(FOOTER_GROUP, inspector.group)
     .on(`${FOOTER_GROUP} a`, inspector.anchor).on(`${FOOTER_GROUP} *`, inspector.descendant);
 }

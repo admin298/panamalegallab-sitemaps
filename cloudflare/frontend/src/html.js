@@ -5,6 +5,7 @@ import { rewriteSiteUrl } from '../vendor/logic.js';
 import { clearEquivalentQueryConfig } from './config-query.js';
 import { descriptionTag } from './readiness.js';
 import { createDocumentInspector, attachDocumentInspection, createLanguageRewrite, FOOTER_GROUP } from './language-controls.js';
+import { createHeaderLanguageRewrite, HEADER_ANCHOR } from './header-language-controls.js';
 
 export function isExpectedSiteMarker(domain, name, site) {
   return domain === 'panamalegallab.com' && name === site.upstreamPrefix.split('/').at(-1);
@@ -73,6 +74,7 @@ export async function rewritePageDocument(html, plan, Rewriter) {
   } };
   const metadata = descriptionTag(plan.readinessPolicy, plan.documentContext);
   const language = createLanguageRewrite(plan.readinessPolicy, plan.documentContext);
+  const headerLanguage = createHeaderLanguageRewrite(plan.readinessPolicy, plan.documentContext);
   const canonical = plan.canonical.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
   const rewriter = new Rewriter()
     .on('head', { element(element) { element.append(`<link rel="canonical" href="${canonical}">${metadata}`, { html: true }); } })
@@ -85,6 +87,7 @@ export async function rewritePageDocument(html, plan, Rewriter) {
     if (element.getAttribute('name')?.toLowerCase() === 'description') element.remove();
   } });
   if (language) rewriter.on(FOOTER_GROUP, language.group).on(`${FOOTER_GROUP} a`, language.anchor);
+  if (headerLanguage) rewriter.on(HEADER_ANCHOR, headerLanguage);
   for (const attribute of ['href', 'src', 'srcset', 'style', 'action', 'data-url']) {
     rewriter.on(`[${attribute}]`, makeDeliveryAttributeHandler(attribute, plan, rewriteValue));
   }

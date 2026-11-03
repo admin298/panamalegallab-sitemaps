@@ -1,0 +1,87 @@
+{
+  "repositoryDestination": "cloudflare/frontend/",
+  "groups": {
+    "root": [
+      ".gitattributes",
+      "README.md",
+      "package.json",
+      "package-lock.json",
+      "build.mjs",
+      "frozen-core-manifest.json",
+      "search-derivation.json",
+      "release-manifest.json",
+      "publication-files.json",
+      "pages-upload-production-861274046112.zip",
+      "pages-upload-production-6a1224701822.zip",
+      "pages-upload-production-2802a52c5a31.zip",
+      "PLAN.txt",
+      "pages-upload-readiness-6fad6dd734ef.zip",
+      "pages-upload-header-659dc8e53ea1.zip",
+      "header-release-manifest.json",
+      "header-publication-files.json"
+    ],
+    "src": [
+      "config-query.js",
+      "entry.js",
+      "html.js",
+      "language-controls.js",
+      "plan.js",
+      "quota.js",
+      "readiness.js",
+      "search-protocol.js",
+      "search.js",
+      "worker.js",
+      "header-language-controls.js"
+    ],
+    "vendor": [
+      "compatibility-entry.js",
+      "logic.js",
+      "routes-data.js",
+      "search.js",
+      "worker.js"
+    ],
+    "test": [
+      "attribute-cache.test.js",
+      "core-search-relay.test.js",
+      "core-search.test.js",
+      "plan.test.js",
+      "query-runtime.test.js",
+      "query.test.js",
+      "quota.test.js",
+      "readiness-runtime.test.js",
+      "readiness.test.js",
+      "runtime.test.js",
+      "worker.test.js",
+      "header-language.test.js",
+      "header-language-runtime.test.js"
+    ],
+    "test/fixtures": [
+      "footer-en.html",
+      "footer-es.html",
+      "footer-fr.html",
+      "footer-it.html",
+      "footer-provenance.json",
+      "query-normalization.html",
+      "search-no-results.txt",
+      "search-page2-response.txt",
+      "search-pagination.json",
+      "search-response.txt",
+      "header-language-es.html",
+      "header-language-en.html",
+      "header-language-fr.html",
+      "header-language-it.html",
+      "header-provenance.json"
+    ],
+    "dist": [
+      "_routes.json",
+      "_worker.js",
+      "deployment.txt"
+    ],
+    "data": [
+      "readiness.json",
+      "provenance.json"
+    ]
+  },
+  "fileCount": 66,
+  "scope": "Current header-menu correction. Earlier release/publication manifests and production ZIPs are preserved as historical inputs."
+}

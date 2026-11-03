@@ -1378,27 +1378,183 @@ function descriptionTag(policy, context) {
   return policy?.description && context?.siteLanguage === policy.language ? `<meta name="description" content="${escapeAttribute(policy.description)}">` : "";
 }
 
-// src/language-controls.js
-var FOOTER_GROUP = 'footer[jsname="yePe5c"] small.zfr3Q';
+// src/header-language-controls.js
+var scopes = ["yuynLe", "WDxLfe"].map((id) => `header#atIdViewHeader nav#${id}`);
+var HEADER_NAV = scopes.join(",");
+var HEADER_ANCHOR = scopes.map((scope) => `${scope} a`).join(",");
+var HEADER_DESCENDANT = scopes.map((scope) => `${scope} a *`).join(",");
 var ROOT_LANGUAGES = Object.freeze(Object.fromEntries(Object.values(SITES).flatMap((site) => [[site.productionOrigin, site.language], [site.productionOrigin + "/", site.language]])));
 var LABELS = Object.freeze({
+  es: { title: "\u{1F310} Idiomas", en: "\u{1F1FA}\u{1F1F8} Ingl\xE9s", fr: "\u{1F1EB}\u{1F1F7} Franc\xE9s", it: "\u{1F1EE}\u{1F1F9} Italiano" },
+  en: { title: "\u{1F310} Languages", es: "\u{1F1EA}\u{1F1F8} Spanish", fr: "\u{1F1EB}\u{1F1F7} French", it: "\u{1F1EE}\u{1F1F9} Italian" },
+  fr: { title: "\u{1F310} Langues", es: "\u{1F1EA}\u{1F1F8} Espagnol", en: "\u{1F1FA}\u{1F1F8} Anglais", it: "\u{1F1EE}\u{1F1F9} Italien" },
+  it: { title: "\u{1F310} Lingue", es: "\u{1F1EA}\u{1F1F8} Spagnolo", en: "\u{1F1FA}\u{1F1F8} Inglese", fr: "\u{1F1EB}\u{1F1F7} Francese" }
+});
+var textValue = (value) => value.replace(/\s+/gu, " ").trim();
+function rootLanguage(value) {
+  if (typeof value !== "string" || value.length > 2048 || /[\u0000-\u0020\u007f\\]/u.test(value)) return null;
+  if (Object.hasOwn(ROOT_LANGUAGES, value)) return ROOT_LANGUAGES[value];
+  if (!value.startsWith("https://www.google.com/url?") || value.includes("#")) return null;
+  let wrapper;
+  try {
+    wrapper = new URL(value);
+  } catch {
+    return null;
+  }
+  if (wrapper.origin !== "https://www.google.com" || wrapper.pathname !== "/url" || wrapper.username || wrapper.password || wrapper.port || wrapper.hash) return null;
+  const targets = wrapper.searchParams.getAll("q");
+  if (targets.length !== 1 || !Object.hasOwn(ROOT_LANGUAGES, targets[0])) return null;
+  const normalized = rewriteProductionUrl(value);
+  return Object.hasOwn(ROOT_LANGUAGES, normalized) ? ROOT_LANGUAGES[normalized] : null;
+}
+var levelOf = (element) => ["1", "2", "3"].includes(element.getAttribute("data-level")) ? Number(element.getAttribute("data-level")) : NaN;
+function hasMedia(element) {
+  const style = element.getAttribute("style") ?? "";
+  return style.includes("\\") || ["src", "srcset", "poster", "background", "data", "data-src"].some((name) => element.getAttribute(name) !== null) || /(?:url\s*\(|(?:background(?:-image)?|mask(?:-image)?|content)\s*:)/iu.test(style);
+}
+function readAnchor(element, ordinal) {
+  return {
+    ordinal,
+    text: "",
+    level: levelOf(element),
+    href: element.getAttribute("href"),
+    dataUrl: element.getAttribute("data-url"),
+    navType: element.getAttribute("data-navtype"),
+    type: element.getAttribute("data-type"),
+    popup: element.getAttribute("aria-haspopup"),
+    more: element.getAttribute("data-in-more-submenu"),
+    valid: element.getAttribute("jsname") === "QwLHlb" && element.getAttribute("role") === "link" && (element.getAttribute("class") ?? "").split(/\s+/u).includes("aJHbb") && !hasMedia(element)
+  };
+}
+function isParent(anchor, nav, locale) {
+  return anchor.valid && LABELS[locale] && textValue(anchor.text) === LABELS[locale].title && anchor.navType === "4" && anchor.type === null && anchor.popup === "true" && anchor.href === null && anchor.dataUrl === null && (anchor.level === 1 || nav === "WDxLfe" && anchor.level === 2 && anchor.more === "true");
+}
+function validChild(anchor, group, locale) {
+  const language = rootLanguage(anchor.href);
+  return anchor.valid && anchor.level === group.level + 1 && anchor.navType === "2" && anchor.type === "2" && language && language === rootLanguage(anchor.dataUrl) && language !== locale && textValue(anchor.text) === LABELS[locale]?.[language] && anchor.more === "true" === (group.level === 2);
+}
+function finishGroup(state) {
+  const group = state.group;
+  if (!group) return state;
+  const languages = group.children.map((child) => rootLanguage(child.href));
+  if (!group.valid || group.children.length !== 3 || new Set(languages).size !== 3)
+    return { ...state, group: null };
+  const key = `${group.nav}:${group.level}`;
+  if (state.keys.has(key) || state.keys.size >= 3) return { ...state, invalid: true, group: null };
+  return { ...state, group: null, keys: /* @__PURE__ */ new Set([...state.keys, key]), matches: [
+    ...state.matches,
+    ...group.children.map((child) => Object.freeze({ ordinal: child.ordinal, language: rootLanguage(child.href) }))
+  ] };
+}
+function closeAnchor(state, ordinal, locale) {
+  const anchor = state.anchor;
+  if (!anchor || anchor.ordinal !== ordinal) return { ...state, invalid: true };
+  const next = { ...state, anchor: null };
+  if (isParent(anchor, state.nav, locale)) {
+    if (state.group) return { ...next, invalid: true };
+    return { ...next, group: { nav: state.nav, level: anchor.level, valid: true, children: [] } };
+  }
+  if (!state.group) return next;
+  return { ...next, group: {
+    ...state.group,
+    valid: state.group.valid && validChild(anchor, state.group, locale) && state.group.children.length < 3,
+    children: state.group.children.length < 4 ? [...state.group.children, anchor] : state.group.children
+  } };
+}
+function createHeaderInspector(locale) {
+  let state = { nav: null, anchor: null, group: null, ordinal: -1, seen: /* @__PURE__ */ new Set(), keys: /* @__PURE__ */ new Set(), matches: [], invalid: false };
+  return {
+    nav: { element(element) {
+      const id = element.getAttribute("id");
+      if (state.nav || !["yuynLe", "WDxLfe"].includes(id) || element.getAttribute("role") !== "navigation" || state.seen.has(id)) {
+        state = { ...state, invalid: true };
+        return;
+      }
+      state = { ...state, nav: id, seen: /* @__PURE__ */ new Set([...state.seen, id]) };
+      element.onEndTag(() => {
+        state = finishGroup(state);
+        state = { ...state, invalid: state.invalid || state.nav !== id || Boolean(state.anchor), nav: null };
+      });
+    } },
+    anchor: {
+      element(element) {
+        if (!state.nav) return;
+        if (state.anchor || state.ordinal >= 511) {
+          state = { ...state, invalid: true };
+          return;
+        }
+        const level = levelOf(element);
+        if (state.group && (!Number.isInteger(level) || level <= state.group.level)) {
+          if (!Number.isInteger(level)) state = { ...state, group: { ...state.group, valid: false } };
+          state = finishGroup(state);
+        }
+        const ordinal = state.ordinal + 1;
+        state = { ...state, ordinal, anchor: readAnchor(element, ordinal) };
+        element.onEndTag(() => {
+          state = closeAnchor(state, ordinal, locale);
+        });
+      },
+      text(chunk) {
+        if (!state.anchor) return;
+        const text = state.anchor.text + chunk.text;
+        state = { ...state, anchor: {
+          ...state.anchor,
+          valid: state.anchor.valid && text.length <= 128,
+          text: text.length <= 128 ? text : ""
+        } };
+      }
+    },
+    descendant: { element(element) {
+      if (state.anchor && (element.tagName !== "span" || hasMedia(element)))
+        state = { ...state, anchor: { ...state.anchor, valid: false } };
+    } },
+    context() {
+      return state.invalid || state.nav || state.anchor || state.group || state.matches.length === 0 ? null : Object.freeze([...state.matches]);
+    }
+  };
+}
+function attachHeaderInspection(rewriter, inspector) {
+  return rewriter.on(HEADER_NAV, inspector.nav).on(HEADER_ANCHOR, inspector.anchor).on(HEADER_DESCENDANT, inspector.descendant);
+}
+function createHeaderLanguageRewrite(policy, context) {
+  const matches = context?.headerLanguageAnchors;
+  if (!policy || context?.siteLanguage !== policy.language || !Array.isArray(matches) || !matches.length || matches.length > 9 || matches.some((match) => !Number.isInteger(match.ordinal) || match.ordinal < 0 || match.ordinal >= 512 || !policy.alternatives[match.language]) || new Set(matches.map((match) => match.ordinal)).size !== matches.length) return null;
+  const languages = new Map(matches.map((match) => [match.ordinal, match.language]));
+  let ordinal = -1;
+  return { element(element) {
+    ordinal += 1;
+    const language = languages.get(ordinal);
+    if (!language) return;
+    const anchor = readAnchor(element, ordinal);
+    if (anchor.valid && anchor.navType === "2" && anchor.type === "2" && rootLanguage(anchor.href) === language && rootLanguage(anchor.dataUrl) === language) {
+      element.setAttribute("href", policy.alternatives[language]);
+      element.setAttribute("data-url", policy.alternatives[language]);
+    }
+  } };
+}
+
+// src/language-controls.js
+var FOOTER_GROUP = 'footer[jsname="yePe5c"] small.zfr3Q';
+var ROOT_LANGUAGES2 = Object.freeze(Object.fromEntries(Object.values(SITES).flatMap((site) => [[site.productionOrigin, site.language], [site.productionOrigin + "/", site.language]])));
+var LABELS2 = Object.freeze({
   es: Object.freeze({ "es": "ES Espa\xF1ol", "en": "EN Ingl\xE9s", "fr": "FR Franc\xE9s", "it": "IT Italiano" }),
   en: Object.freeze({ "es": "ES Spanish", "en": "EN English", "fr": "FR French", "it": "IT Italian" }),
   fr: Object.freeze({ "es": "ES Espagnol", "en": "EN Anglais", "fr": "FR Fran\xE7ais", "it": "IT Italien" }),
   it: Object.freeze({ "es": "ES Spagnolo", "en": "EN Inglese", "fr": "FR Francese", "it": "IT Italiano" })
 });
-var textValue = (value) => value.replace(/\s+/gu, " ").trim();
+var textValue2 = (value) => value.replace(/\s+/gu, " ").trim();
 function hasMediaAttributes(element) {
   const style = element.getAttribute("style") ?? "";
   return style.includes("\\") || ["src", "srcset", "poster", "background", "data", "data-src"].some((name) => element.getAttribute(name) !== null) || /(?:url\s*\(|(?:background(?:-image)?|mask(?:-image)?|content)\s*:)/iu.test(style);
 }
-var rootLanguage = (href) => Object.hasOwn(ROOT_LANGUAGES, href) ? ROOT_LANGUAGES[href] : null;
+var rootLanguage2 = (href) => Object.hasOwn(ROOT_LANGUAGES2, href) ? ROOT_LANGUAGES2[href] : null;
 function recognizedGroup(group, locale) {
-  if (!group.valid || !LABELS[locale]) return false;
-  const visible = group.anchors.filter((anchor) => textValue(anchor.text));
-  return visible.length === 4 && Object.keys(SITES).every((language) => visible.filter((anchor) => anchor.language === language && textValue(anchor.text) === LABELS[locale][language]).length === 1) && group.anchors.every((anchor) => anchor.valid && anchor.language && anchor.text.length > 0);
+  if (!group.valid || !LABELS2[locale]) return false;
+  const visible = group.anchors.filter((anchor) => textValue2(anchor.text));
+  return visible.length === 4 && Object.keys(SITES).every((language) => visible.filter((anchor) => anchor.language === language && textValue2(anchor.text) === LABELS2[locale][language]).length === 1) && group.anchors.every((anchor) => anchor.valid && anchor.language && anchor.text.length > 0);
 }
 function createDocumentInspector(locale) {
+  const header = createHeaderInspector(locale);
   let documentLanguage = null;
   let htmlCount = 0;
   let ordinal = -1;
@@ -1406,7 +1562,7 @@ function createDocumentInspector(locale) {
   let anchor = null;
   let matches = [];
   let invalid = false;
-  const closeAnchor = (groupOrdinal) => {
+  const closeAnchor2 = (groupOrdinal) => {
     if (!anchor || !active || anchor.group !== groupOrdinal || active.ordinal !== groupOrdinal) {
       invalid = true;
       return;
@@ -1415,6 +1571,7 @@ function createDocumentInspector(locale) {
     anchor = null;
   };
   return {
+    header,
     html: { element(element) {
       htmlCount += 1;
       documentLanguage = element.getAttribute("lang");
@@ -1449,11 +1606,11 @@ function createDocumentInspector(locale) {
         const id = active.ordinal;
         anchor = {
           group: id,
-          language: rootLanguage(element.getAttribute("href")),
+          language: rootLanguage2(element.getAttribute("href")),
           text: "",
           valid: !hasMediaAttributes(element) && (element.getAttribute("class") ?? "").split(/\s+/u).includes("XqQF9c")
         };
-        element.onEndTag(() => closeAnchor(id));
+        element.onEndTag(() => closeAnchor2(id));
       },
       text(chunk) {
         if (!anchor || !anchor.valid) return;
@@ -1470,12 +1627,14 @@ function createDocumentInspector(locale) {
       return Object.freeze({
         authorLanguage: htmlCount === 1 ? documentLanguage : null,
         siteLanguage: htmlCount === 1 ? locale : null,
+        headerLanguageAnchors: htmlCount === 1 ? header.context() : null,
         languageGroup: !invalid && !active && !anchor && htmlCount === 1 && matches.length === 1 ? matches[0] : null
       });
     }
   };
 }
 function attachDocumentInspection(rewriter, inspector) {
+  attachHeaderInspection(rewriter, inspector.header);
   return rewriter.on("html", inspector.html).on(FOOTER_GROUP, inspector.group).on(`${FOOTER_GROUP} a`, inspector.anchor).on(`${FOOTER_GROUP} *`, inspector.descendant);
 }
 function createLanguageRewrite(policy, context) {
@@ -1492,7 +1651,7 @@ function createLanguageRewrite(policy, context) {
     } },
     anchor: { element(element) {
       if (!active) return;
-      const language = rootLanguage(element.getAttribute("href"));
+      const language = rootLanguage2(element.getAttribute("href"));
       if (language && language !== policy.language && policy.alternatives[language]) {
         element.setAttribute("href", policy.alternatives[language]);
       }
@@ -1564,6 +1723,7 @@ async function rewritePageDocument(html, plan, Rewriter) {
   } };
   const metadata = descriptionTag(plan.readinessPolicy, plan.documentContext);
   const language = createLanguageRewrite(plan.readinessPolicy, plan.documentContext);
+  const headerLanguage = createHeaderLanguageRewrite(plan.readinessPolicy, plan.documentContext);
   const canonical = plan.canonical.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
   const rewriter = new Rewriter().on("head", { element(element) {
     element.append(`<link rel="canonical" href="${canonical}">${metadata}`, { html: true });
@@ -1576,6 +1736,7 @@ async function rewritePageDocument(html, plan, Rewriter) {
     if (element.getAttribute("name")?.toLowerCase() === "description") element.remove();
   } });
   if (language) rewriter.on(FOOTER_GROUP, language.group).on(`${FOOTER_GROUP} a`, language.anchor);
+  if (headerLanguage) rewriter.on(HEADER_ANCHOR, headerLanguage);
   for (const attribute of ["href", "src", "srcset", "style", "action", "data-url"]) {
     rewriter.on(`[${attribute}]`, makeDeliveryAttributeHandler(attribute, plan, rewriteValue));
   }
