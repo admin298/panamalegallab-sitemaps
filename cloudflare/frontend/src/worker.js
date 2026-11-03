@@ -64,7 +64,7 @@ async function adaptPublicHtml(upstream, plan, options) {
   const Rewriter = options.Rewriter ?? HTMLRewriter;
   const readinessPolicy = selectReadinessPolicy(plan);
   let documentContext = null;
-  const identified = await options.identifySite(html, plan.site, Rewriter, { collectReadiness: Boolean(readinessPolicy),
+  const identified = await options.identifySite(html, plan.site, Rewriter, { collectReadiness: Boolean(readinessPolicy), renderPlan: plan,
     onDocumentContext(context) { documentContext = context; } });
   if (identified !== true) return errorResponse(plan, 503);
   try {
