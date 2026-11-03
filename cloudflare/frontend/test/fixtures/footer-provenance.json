@@ -1,0 +1,42 @@
+{
+  "status": "PUBLIC_MINIMAL_STRUCTURAL_REGRESSION_FIXTURES",
+  "transform": "Exact native language-heading/control small subtrees; native element ids removed; literal known footer wrapper; synthetic ordinary root CTA added. Social images, signed asset URLs, redirect tracking, Google JS, API keys, full page content and forms omitted. Complete raw pages stay local-only evidence.",
+  "records": [
+    {
+      "language": "es",
+      "localEvidenceFile": "local-evidence/es-contacto.html",
+      "sourceSha256": "4bf840200217eb55d103751f87d1ba78de7e4971172d586e8657bef45e0f1394",
+      "rawFooterSha256": "bb2390d431d9ca6e3f2bd684e47daf196adf577359552c9fc528ae5e91a5da35",
+      "fixtureFile": "test/fixtures/footer-es.html",
+      "fixtureSha256": "c951d27e8b369ca110bf89f097d0ced0a5f9dbb3493be725cd98f63879e4d02c",
+      "bytes": 2993
+    },
+    {
+      "language": "en",
+      "localEvidenceFile": "local-evidence/en-contact-us.html",
+      "sourceSha256": "5ee5e02648aeab7b85bbf4552349f34aa1b0f722d42b6ff4117d56272cf324ef",
+      "rawFooterSha256": "fb5dc227a88b0dc6c19f91ed5323329cfd99c97918df79ca5bb3e6b7d2d4c75e",
+      "fixtureFile": "test/fixtures/footer-en.html",
+      "fixtureSha256": "a812d27c522b13faf2448c98b8a5ff248c12f26e9941bf7ecd1110046c937489",
+      "bytes": 3702
+    },
+    {
+      "language": "fr",
+      "localEvidenceFile": "local-evidence/fr-contact.html",
+      "sourceSha256": "543c78ee30e0b64c714e008a50e1204189db01fab5a333a0cc18b2a30e074ed7",
+      "rawFooterSha256": "9d567ea4cbf391d764d91993d766a336ab3a8d6f0c7dbf176a98e39d7cd45497",
+      "fixtureFile": "test/fixtures/footer-fr.html",
+      "fixtureSha256": "16b167a9d02db11f305f975ee05c590074004258313fea380ac7875c9649ba4d",
+      "bytes": 3522
+    },
+    {
+      "language": "it",
+      "localEvidenceFile": "local-evidence/it-contact.html",
+      "sourceSha256": "dd98c86bf53da41206d1c7b1e21d19130ed1aaad54be2d58662a7c332dde020e",
+      "rawFooterSha256": "20c90525f751bc325d8e9b6fa18413319742cc452e71802eb9e4bb571b0fea03",
+      "fixtureFile": "test/fixtures/footer-it.html",
+      "fixtureSha256": "4e16153e3c745db9a2726a50e6faa8fc334e4a9726be81a38180446e303bdde3",
+      "bytes": 3071
+    }
+  ]
+}
