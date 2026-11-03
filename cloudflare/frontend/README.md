@@ -1,75 +1,72 @@
-PANAMA LEGAL LAB — HEADER LANGUAGE MENU CORRECTION — 2026-11-03
+PANAMA LEGAL LAB — LOCAL PERFORMANCE AND ACCESSIBILITY CANDIDATE — 2026-11-03
 
-Problem and scope
------------------
-The deployed readiness package rewrote the footer language selector but left the
-Google Sites header language menu pointing to language homepages. Its native menu
-controller reads data-url as well as href. This candidate changes BOTH attributes
-for the exact reviewed counterpart of the current service/page.
+This candidate preserves the current images and native Google Sites navigation.
+It tests three narrowly scoped adjustments: the measured ES home logo ratio,
+valid current-link ARIA, and an optional preload for the same current CSS hero.
+No production speed benefit or deployment is claimed by this source package.
 
-This is a local, unpublished candidate. Publication and live checks are recorded
-separately; this README does not claim deployment or validation of every public
-page. The existing release-manifest.json and publication-files.json describe the
-earlier readiness package and are preserved as historical artifacts. The current
-candidate is identified by header-release-manifest.json and its new allowlist.
+The reviewed source baseline is the frozen header-language-fix/public-release,
+Worker deployment 14388418 SHA256:
+2ff699a29edf7054a3f5ebc3637d60c169b16e136d2c54b699d3a117806c9428.
+Existing manifests/ZIPs copied from that baseline are historical. The current
+local bundles are identified only in speed-release-manifest.json. The older
+full 8449020d127f candidate is rejected because its early-script guard suppressed
+the hint on the real Google source; do not deploy it.
 
-Executable change
------------------
-The existing Site-identity HTMLRewriter pass recognizes the native localized
-language parent and exactly three unique foreign-language root links. It supports
-the mobile menu (yuynLe), desktop menu (WDxLfe), and desktop More submenu: three
-native copies in the saved source headers. The existing rewrite pass updates the
-selected anchors, with no additional full parse, client script or network request.
+Reproduce the build and checks
+------------------------------
+Use npm ci, npm run build, then npm run coverage. The default build creates BOTH
+dist/ (full) and dist-geometry/ (control), so the runtime comparison never relies
+on missing or stale control assets. Both use the same locked dependencies and
+reviewed vendor snapshots. New source has no additional runtime dependency.
 
-Native Google /url?q=ROOT wrappers are accepted only on the exact HTTPS Google
-wrapper authority/path with a single decoded q that is an approved literal root.
-The existing production URL normalizer is reused. Both href and data-url must
-resolve to the same approved root; non-root targets, queries/fragments, duplicate
-q values, credentials, other hosts, media, wrong labels and ambiguous structures
-fail closed. Inputs are bounded to 512 anchors, 128 text characters per anchor,
-three distinct menu groups, two native navigation containers, and 2048 URL chars.
+For a single profile, use node build.mjs --profile=full or
+node build.mjs --profile=geometry. Explicit --profile=all also builds both.
+These are local build constants, with fixed output paths; no public endpoint,
+request flag or runtime environment switch enables a profile.
 
-Normal navigation, home links, logos, country CTAs, the existing footer behavior,
-148 descriptions, 252 reviewed language equivalences, 145 legacy redirects,
-Search, quotas, author robots, CSP/nonces, Google viewer configuration guards,
-images and forms retain their contracts. Unmapped pages, Search and previews do
-not receive the new language-menu enhancement. The historical draft flag in the
-readiness data is provenance; this change does not edit that reviewed data.
+The clean-build regression constructs both profiles in a unique temporary child
+directory and requires byte identity with the current prebuilt assets. Runtime
+tests exercise actual HTMLRewriter, native header fixtures in four languages,
+the 252 reviewed pages, full/control response equality apart from the hero hint,
+preview noindex/production canonical isolation, and malformed input guards.
+speed-release-manifest.json records reviewed hashes and final verification.
+Private raw responses, RED logs, temporary tests and coverage logs are excluded.
 
-Build and checks
-----------------
-Use npm ci, npm run build and npm run coverage. Dependencies and reviewed vendor
-files are unchanged and pinned. The native header test fixtures retain actual
-navigation structure and Google root-wrapper grammar. Signed image URLs are
-replaced with a synthetic non-network logo URL and Google usg signatures removed;
-full Google pages, inline configurations, forms and private browser evidence are
-excluded from the public package. See test/fixtures/header-provenance.json.
+Behavior and limits
+-------------------
+Rendering inspection shares the existing source-identification parse. Changes
+are emitted in the existing second parse, without a third parser, extra source
+request, image request, client script, native controller rewrite or observer.
+The Google source's ppConfig script and its late charset stay exactly in place;
+the hero hint is added after that unique charset and before the image preloader.
+Unknown external/oversized scripts or an image preloader preceding charset make
+the hint a no-op. Changed hero/logo profile or ambiguous structure also fails
+closed. Image URL tokens and suffixes are not pinned or replaced by new assets.
 
-Tests include the four real-derived native language headers, both attributes in
-all three menu copies, all 252 reviewed paths, ordinary navigation/logo guards,
-malformed wrappers/media, and all prior delivery/footer/Search regressions. The
-new manifest records the definitive suite, coverage, source and bundle hashes.
+The logo ratio 1168/854 is an explicit browser measurement, scoped to the exact
+ES home widget and alt. It must be revalidated if that underlying image changes.
+The auto keyword permits the real intrinsic ratio after loading. No width or
+height attributes are introduced, and existing author geometry is respected.
 
-A separate local comparison replays saved complete EN contact/company pages
-against the deployed readiness baseline. Header href/data-url changes are the
-only permitted body delta, with identical status and headers. Local elapsed time
-is not Cloudflare billed CPU, a production speed score or proof that error1102
-has disappeared. This change adds menu inspection work; production needs a
-bounded canary and rollback remains available.
+Native header links retain href, data-url, role, classes, tabindex and handlers.
+Only the unsupported aria-selected state is removed from recognized native
+links. aria-current=page is added only for an exact current canonical, with no
+existing author aria-current. Other roles and unknown structures stay untouched.
 
-Release and rollback
---------------------
-Upload only the ZIP named in header-release-manifest.json. Its three root members
-are _worker.js, _routes.json and deployment.txt. Existing production ZIPs are kept.
-The immediate prior deployed readiness Worker has SHA256
-b5e12bf5f471d7e595c82dae36732d9cfb38f105aa6b632b2ac5b4dcad84318d,
-and ZIP pages-upload-readiness-6fad6dd734ef.zip. Earlier source/deployment artifacts
-are historical, not the current release identity. No automation is introduced.
+Readiness descriptions, language equivalences, legacy redirects, Search, quotas,
+cache/no-store, config guards, nonces/CSP, iframe/forms and all image resources
+retain their existing policy. Rendering can apply to validated preview ES home
+at /es/; preview root / is only the language portal. Preview remains noindex and
+does not gain production-only SEO metadata/language menu changes.
 
-An isolated pages.dev preview verifies compatibility/noindex only because the
-language enhancement is intentionally production-only. The production canary
-must inspect the real header and footer and click the actual top-menu language
-items in each locale, checking the final service URL and heading after load.
-No form submission, email, booking, credential or security setting is part of
-this package. If production delivery or the menu regresses, restore the exact
-previous readiness ZIP and verify the rollback.
+Acceptance and release
+----------------------
+See REVIEW-NOTES.txt for measured source provenance, exact profiles, validation
+scope and outstanding checks. speed-release-manifest.json lists immutable
+ZIP hashes and all three members (_worker.js, _routes.json, deployment.txt).
+Independent source replay and parent-controlled browser/PSI A/B are required
+before promotion. Verify final desktop/mobile geometry, native hydration/clicks,
+one reused hero resource, unchanged images/forms/maps, headers and real metrics.
+Local elapsed time/coverage does not establish Cloudflare CPU or a speed gain.
+No remote write or browser action was performed by this implementation worker.
