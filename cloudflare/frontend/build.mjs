@@ -17,6 +17,14 @@ for (const { before, after } of derivation.changes) {
   expectedProtocol = expectedProtocol.replace(before, after);
 }
 if (await readFile(path.join(root, derivation.derivedFile), 'utf8') !== expectedProtocol) throw new Error('Unrecorded Search protocol derivation.');
+const readinessBytes = await readFile(path.join(root, 'data/readiness.json'));
+const readinessProvenance = JSON.parse(await readFile(path.join(root, 'data/provenance.json'), 'utf8'));
+if (createHash('sha256').update(readinessBytes).digest('hex') !== readinessProvenance.output.sha256) {
+  throw new Error('Reviewed readiness data changed.');
+}
+const readinessData = JSON.parse(readinessBytes);
+if (readinessData.draft !== true || Object.keys(readinessData.descriptions).length !== 148
+  || Object.keys(readinessData.languageLinks).length !== 252) throw new Error('Unsupported readiness data scope.');
 await mkdir(path.join(root, 'dist'), { recursive: true });
 await build({ entryPoints: [path.join(root, 'src/entry.js')], bundle: true, format: 'esm',
   platform: 'browser', target: 'es2022', outfile: path.join(root, 'dist/_worker.js'), legalComments: 'none' });

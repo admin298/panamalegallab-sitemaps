@@ -1,0 +1,36 @@
+LOCAL PLAN — READINESS CANDIDATE — 2026-11-03
+Source: immutable Nov2 edge-cpu-fix, Worker b1772064; no Nov2 edits.
+No publication, forms, title/H1 overrides, images, tracking, JSON-LD/preload.
+
+1. Validate/extract 136 exact draft descriptions and252exactcanonical language
+rows/756foreign equivalents from reviewed JSON; preserve Unicode and provenance.
+2. RED pure policy/data tests and actual workerd DOM integration tests.
+3. Add bounded data lookups only for production page kind with an exact preferred
+canonical and matching host locale. New/unmapped/Search/preview/errors unchanged.
+4. Descriptions: existing rewriter head handler inserts one safelyescaped standard
+meta; existing descriptions in head are removed/deduplicated only for mapped136.
+No OG/Twitter/title/H1 modifications. Preserve author robots and all nonces/CSP.
+5. Language controls need proven footer structure. EN actual footerjsnameyePe5c
+contains small.zfr3Q fourroot controls +whitespace duplicate anchors; ES no groupid.
+Final recognition will failclosed, never touch content/logo/home/footer CTA roots.
+Reuse existing Site-identity parse to collect bounded recognition context if needed;
+no extra parse. Existing rewrite pass applies only recognized language controls.
+No query transfer, guessed path or changes to text/style/accessibility/target.
+6. Keep viewer518/212/316guards, orderedquery retry, sourceidentity, quotas,
+145redirects, Search protocol/vendor, all transport caps and fallback exact.
+7. Compare baseline/new: intended DOM delta separately; remove only expected
+meta/lang-href changes then require remaining bytes/semantics and headers equal.
+Run unchanged161suite +newsecurity/structure/data/runtime matrices >=80coverage.
+8. Measure same saved EN fixtures in workerd before/after; localCPU/profile costs
+are not billedCFCPU or proof1102fixed. Real CFpreview metrics remain futuregate.
+9. Freeze immutable3entryZIP, portableLF source/data/publication/release hashes,
+adoption/rollback instructions, independent review. Draft content/localcandidate
+remain unapproved for publicdeployment until separate content+operational review.
+
+Accepted Nov3 scope/guard updates before freeze:
+- Root added12separately reviewed home/service-hub descriptions:148total;136exact
+  commercial texts remain intact. Four homealiases use canonical-root entries.
+- Host+verifiedSite+exactrow determine locale; author html-lang is evidence only.
+- Media/active descendants, inline background evidence and any escaped inline CSS
+  fail-keep a candidate language group. No CSS parser or extra HTML pass is added.
+- Public fixtures minimized; full raw Google HTML stays local-only evidence.
