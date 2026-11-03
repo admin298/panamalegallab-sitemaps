@@ -1,0 +1,23 @@
+{
+  "release": "pll-durable-free-20261103-v1",
+  "rendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "builtAt": "2026-11-03T20:46:39.755Z",
+  "files": {
+    "dist/frontend/_worker.js": {
+      "bytes": 3349,
+      "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
+    },
+    "dist/backend/worker.js": {
+      "bytes": 316655,
+      "sha256": "9bc11f3b59345396838c7fca7d56e8e414d3be892ba9c542d504fef34368852b"
+    },
+    "dist/frontend/_routes.json": {
+      "bytes": 44,
+      "sha256": "6a5235a7db8c26c17606b7f16516509989e8b2c8307280cc53c30e03e63d4a6a"
+    },
+    "dist/frontend/deployment.txt": {
+      "bytes": 34,
+      "sha256": "30c445f45cb2876c2289fdd42ac64eed59dd4a01362f2b7a4d19f849d632ed6c"
+    }
+  }
+}

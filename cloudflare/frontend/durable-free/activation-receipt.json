@@ -1,0 +1,57 @@
+{
+  "acceptedAtUtc": "2026-11-03T21:35:15.130957+00:00",
+  "release": "pll-durable-free-20261103-v1",
+  "productionDeployment": "4f080bac-378b-4a5e-b055-eab7df8502bf",
+  "pagesProject": "pll-seo-preview-20261102",
+  "backendWorker": "pll-renderer-free-20261103",
+  "backendVersion": "6a508332-86d1-4e6f-9856-1380e95b8fb5",
+  "sqliteClass": "PllRenderer",
+  "sqliteNamespace": "585ce224e0634c4bb0f61402e313787a",
+  "pagesBinding": "PLL_RENDERER",
+  "fixedObjectName": "pll-renderer-v1",
+  "frontendSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "backendSha256": "9bc11f3b59345396838c7fca7d56e8e414d3be892ba9c542d504fef34368852b",
+  "rendererSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "samePreviewAndProductionPagesZipSha256": "81c5cc369c31991fe4f11c64901908ca2932a8abdf219ca028f18b8afb4cabf1",
+  "observedAccountPlan": "Free",
+  "observedMonthlyPlanPriceUsd": 0,
+  "productionChecks": {
+    "pages": 43,
+    "homePages": 4,
+    "contactPages": 4,
+    "previouslyPendingPages": 35,
+    "http200": 43,
+    "indexable": 43,
+    "customSelfCanonical": 43,
+    "exactBackendVersion": 43,
+    "exactRendererSha": 43,
+    "correctHeaderLanguageLinks": 387,
+    "correctFooterLanguageLinks": 129,
+    "incorrectPhonePages": 0,
+    "deliveryFallbackPages": 0,
+    "originalMapAndFormContactPages": 4,
+    "viewerScriptPages": 43,
+    "observed1102Errors": 0
+  },
+  "productionCpu": {
+    "component": "Pages frontend",
+    "samples": 43,
+    "minMs": 0,
+    "maxMs": 2,
+    "nonOkOutcomes": 0,
+    "truncated": false
+  },
+  "browserChecks": {
+    "desktopSpanishCompanyToFrenchEquivalent": "pass",
+    "mobileFrenchCompanyToItalianEquivalent": "pass",
+    "viewportRestored": true
+  },
+  "limits": [
+    "Bounded checks establish these observations, not future uptime or load capacity.",
+    "Indexable means no technical index exclusion observed; it does not assert Google indexing.",
+    "The CPU samples describe Pages; renderer CPU belongs to the separate Durable Object budget.",
+    "No form submission or receipt was tested; that user-deferred check remains pending.",
+    "Existing images were preserved; no new image-loading or image-quality claim is made.",
+    "Pages without a phone in the published baseline were not given invented phone content."
+  ]
+}
