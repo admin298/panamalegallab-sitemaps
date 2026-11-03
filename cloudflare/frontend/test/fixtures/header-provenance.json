@@ -1,0 +1,39 @@
+{
+  "source": "Saved native upstream contact headers, not already rewritten Cloudflare output",
+  "scope": "Native full header/nav fragment only; signed image src replaced, Google usg signatures removed. Wrapped Google /url?q= approved roots and all other native structure/labels remain. No inline configuration, full page, form or script is included.",
+  "networkRequests": 0,
+  "records": [
+    {
+      "language": "es",
+      "nativeSourceFile": "../edge-readiness/local-evidence/es-contacto.html",
+      "nativeSourceSha256": "4bf840200217eb55d103751f87d1ba78de7e4971172d586e8657bef45e0f1394",
+      "publicFixtureSha256": "cb57b92a78456dfdff1f9f93b80e804d3466a020a07c367c08abde810734c26a",
+      "imageSrcReplacements": 2,
+      "removedGoogleSignatureParameters": 18
+    },
+    {
+      "language": "en",
+      "nativeSourceFile": "../edge-readiness/local-evidence/en-contact-us.html",
+      "nativeSourceSha256": "5ee5e02648aeab7b85bbf4552349f34aa1b0f722d42b6ff4117d56272cf324ef",
+      "publicFixtureSha256": "b7f2ec94b8a364b637f32b143d44c543911e29c479e97c91c9df536018b8b3dc",
+      "imageSrcReplacements": 2,
+      "removedGoogleSignatureParameters": 18
+    },
+    {
+      "language": "fr",
+      "nativeSourceFile": "../edge-readiness/local-evidence/fr-contact.html",
+      "nativeSourceSha256": "543c78ee30e0b64c714e008a50e1204189db01fab5a333a0cc18b2a30e074ed7",
+      "publicFixtureSha256": "af4524430aeea3f797c1a3f29a3c961baf3f6de239a4864b58b216d9e72a5b8d",
+      "imageSrcReplacements": 2,
+      "removedGoogleSignatureParameters": 18
+    },
+    {
+      "language": "it",
+      "nativeSourceFile": "../edge-readiness/local-evidence/it-contact.html",
+      "nativeSourceSha256": "dd98c86bf53da41206d1c7b1e21d19130ed1aaad54be2d58662a7c332dde020e",
+      "publicFixtureSha256": "4fc978f10fbb856c53fc13ae384a537af00a1e50f9920db20448cf83f17b8fa7",
+      "imageSrcReplacements": 2,
+      "removedGoogleSignatureParameters": 18
+    }
+  ]
+}
