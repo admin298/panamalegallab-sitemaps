@@ -4,6 +4,7 @@ import { planDeliveryRequest, rewriteProductionUrl } from './plan.js';
 import { identifyPublicSite, rewritePageDocument } from './html.js';
 import { createClientQuota } from './quota.js';
 import { relayDeliverySearch } from './search.js';
+import { selectReadinessPolicy } from './readiness.js';
 
 export const PAGE_BODY_LIMIT = 1_048_576;
 
@@ -61,9 +62,13 @@ export function approvedSourceRedirect(location, plan, requestUrl) {
 async function adaptPublicHtml(upstream, plan, options) {
   const html = await readBoundedText(upstream.body, PAGE_BODY_LIMIT, upstream.headers.get('Content-Length'));
   const Rewriter = options.Rewriter ?? HTMLRewriter;
-  if (!(await options.identifySite(html, plan.site, Rewriter))) return errorResponse(plan, 503);
+  const readinessPolicy = selectReadinessPolicy(plan);
+  let documentContext = null;
+  const identified = await options.identifySite(html, plan.site, Rewriter, { collectReadiness: Boolean(readinessPolicy),
+    onDocumentContext(context) { documentContext = context; } });
+  if (identified !== true) return errorResponse(plan, 503);
   try {
-    const rewritten = await options.rewriteDocument(html, plan, Rewriter);
+    const rewritten = await options.rewriteDocument(html, { ...plan, readinessPolicy, documentContext }, Rewriter);
     return new Response(rewritten, { status: 200, headers: publicResponseHeaders(upstream, plan) });
   } catch (error) {
     if (error instanceof PreviewCompatibilityError && plan.mode === 'production' && !plan.searchPage) {
