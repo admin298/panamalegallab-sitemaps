@@ -6,20 +6,23 @@ import { clearEquivalentQueryConfig } from './config-query.js';
 import { descriptionTag } from './readiness.js';
 import { createDocumentInspector, attachDocumentInspection, createLanguageRewrite, FOOTER_GROUP } from './language-controls.js';
 import { createHeaderLanguageRewrite, HEADER_ANCHOR } from './header-language-controls.js';
+import { createRenderingInspector, attachRenderingInspection, attachRenderingRewrite } from './rendering-profile.js';
 
 export function isExpectedSiteMarker(domain, name, site) {
   return domain === 'panamalegallab.com' && name === site.upstreamPrefix.split('/').at(-1);
 }
 
-export async function identifyPublicSite(html, site, Rewriter, { collectReadiness = false, onDocumentContext } = {}) {
+export async function identifyPublicSite(html, site, Rewriter, { collectReadiness = false, renderPlan, onDocumentContext } = {}) {
   let identified = false;
   const inspector = collectReadiness ? createDocumentInspector(site.language) : null;
+  const rendering = renderPlan?.kind === 'page' && !renderPlan.searchPage ? createRenderingInspector(renderPlan) : null;
   const rewriter = new Rewriter().on('[data-domain][data-sitename]', { element(element) {
     if (isExpectedSiteMarker(element.getAttribute('data-domain'), element.getAttribute('data-sitename'), site)) identified = true;
   } });
   if (inspector) attachDocumentInspection(rewriter, inspector);
+  if (rendering) attachRenderingInspection(rewriter, rendering);
   await rewriter.transform(new Response(html)).text();
-  if (inspector) onDocumentContext?.(inspector.context());
+  if (inspector || rendering) onDocumentContext?.(Object.freeze({ ...inspector?.context(), rendering: rendering?.context() ?? null }));
   return identified;
 }
 
@@ -88,6 +91,7 @@ export async function rewritePageDocument(html, plan, Rewriter) {
   } });
   if (language) rewriter.on(FOOTER_GROUP, language.group).on(`${FOOTER_GROUP} a`, language.anchor);
   if (headerLanguage) rewriter.on(HEADER_ANCHOR, headerLanguage);
+  attachRenderingRewrite(rewriter, plan);
   for (const attribute of ['href', 'src', 'srcset', 'style', 'action', 'data-url']) {
     rewriter.on(`[${attribute}]`, makeDeliveryAttributeHandler(attribute, plan, rewriteValue));
   }

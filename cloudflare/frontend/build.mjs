@@ -5,6 +5,9 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
+const requestedProfile = process.argv[2] ?? '--profile=all';
+if (!['--profile=full', '--profile=geometry', '--profile=all'].includes(requestedProfile) || process.argv.length > 3) throw new Error('Unsupported build profile.');
+const profiles = requestedProfile === '--profile=all' ? ['full', 'geometry'] : [requestedProfile.slice('--profile='.length)];
 const manifest = JSON.parse(await readFile(path.join(root, 'frozen-core-manifest.json'), 'utf8'));
 for (const [file, hash] of Object.entries(manifest.sourceFiles)) {
   const content = await readFile(path.join(root, 'vendor', file));
@@ -25,9 +28,13 @@ if (createHash('sha256').update(readinessBytes).digest('hex') !== readinessProve
 const readinessData = JSON.parse(readinessBytes);
 if (readinessData.draft !== true || Object.keys(readinessData.descriptions).length !== 148
   || Object.keys(readinessData.languageLinks).length !== 252) throw new Error('Unsupported readiness data scope.');
-await mkdir(path.join(root, 'dist'), { recursive: true });
-await build({ entryPoints: [path.join(root, 'src/entry.js')], bundle: true, format: 'esm',
-  platform: 'browser', target: 'es2022', outfile: path.join(root, 'dist/_worker.js'), legalComments: 'none' });
-await writeFile(path.join(root, 'dist/_routes.json'), JSON.stringify({ version: 1, include: ['/*'], exclude: [] }) + '\n');
-await writeFile(path.join(root, 'dist/deployment.txt'), 'Panama Legal Lab delivery assets.\n');
-console.log(JSON.stringify({ artifact: 'dist/_worker.js', reviewedCore: manifest.reviewedCompatibilityBundleSha256 }));
+for (const profile of profiles) {
+  const output = profile === 'geometry' ? 'dist-geometry' : 'dist';
+  await mkdir(path.join(root, output), { recursive: true });
+  await build({ entryPoints: [path.join(root, 'src/entry.js')], bundle: true, format: 'esm',
+    platform: 'browser', target: 'es2022', outfile: path.join(root, output, '_worker.js'), legalComments: 'none',
+    define: { __PLL_HERO_PRIORITY__: String(profile !== 'geometry') } });
+  await writeFile(path.join(root, output, '_routes.json'), JSON.stringify({ version: 1, include: ['/*'], exclude: [] }) + '\n');
+  await writeFile(path.join(root, output, 'deployment.txt'), 'Panama Legal Lab delivery assets.\n');
+  console.log(JSON.stringify({ artifact: `${output}/_worker.js`, profile, reviewedCore: manifest.reviewedCompatibilityBundleSha256 }));
+}

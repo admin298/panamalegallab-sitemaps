@@ -1,75 +1,77 @@
-PANAMA LEGAL LAB — HEADER LANGUAGE MENU CORRECTION — 2026-11-03
+PANAMA LEGAL LAB — ARCHIVED PERFORMANCE TRIAL, GEOMETRY SELECTED — 2026-11-03
 
-Problem and scope
------------------
-The deployed readiness package rewrote the footer language selector but left the
-Google Sites header language menu pointing to language homepages. Its native menu
-controller reads data-url as well as href. This candidate changes BOTH attributes
-for the exact reviewed counterpart of the current service/page.
-
-This is a local, unpublished candidate. Publication and live checks are recorded
-separately; this README does not claim deployment or validation of every public
-page. The existing release-manifest.json and publication-files.json describe the
-earlier readiness package and are preserved as historical artifacts. The current
-candidate is identified by header-release-manifest.json and its new allowlist.
-
-Executable change
------------------
-The existing Site-identity HTMLRewriter pass recognizes the native localized
-language parent and exactly three unique foreign-language root links. It supports
-the mobile menu (yuynLe), desktop menu (WDxLfe), and desktop More submenu: three
-native copies in the saved source headers. The existing rewrite pass updates the
-selected anchors, with no additional full parse, client script or network request.
-
-Native Google /url?q=ROOT wrappers are accepted only on the exact HTTPS Google
-wrapper authority/path with a single decoded q that is an approved literal root.
-The existing production URL normalizer is reused. Both href and data-url must
-resolve to the same approved root; non-root targets, queries/fragments, duplicate
-q values, credentials, other hosts, media, wrong labels and ambiguous structures
-fail closed. Inputs are bounded to 512 anchors, 128 text characters per anchor,
-three distinct menu groups, two native navigation containers, and 2048 URL chars.
-
-Normal navigation, home links, logos, country CTAs, the existing footer behavior,
-148 descriptions, 252 reviewed language equivalences, 145 legacy redirects,
-Search, quotas, author robots, CSP/nonces, Google viewer configuration guards,
-images and forms retain their contracts. Unmapped pages, Search and previews do
-not receive the new language-menu enhancement. The historical draft flag in the
-readiness data is provenance; this change does not edit that reviewed data.
-
-Build and checks
+Selected runtime
 ----------------
-Use npm ci, npm run build and npm run coverage. Dependencies and reviewed vendor
-files are unchanged and pinned. The native header test fixtures retain actual
-navigation structure and Google root-wrapper grammar. Signed image URLs are
-replaced with a synthetic non-network logo URL and Google usg signatures removed;
-full Google pages, inline configurations, forms and private browser evidence are
-excluded from the public package. See test/fixtures/header-provenance.json.
+The selected geometry profile retains the measured ES home logo ratio and valid
+native current-link ARIA. Its hero preload is disabled. All current image
+resources, native navigation, scripts, forms and existing SEO policies remain.
 
-Tests include the four real-derived native language headers, both attributes in
-all three menu copies, all 252 reviewed paths, ordinary navigation/logo guards,
-malformed wrappers/media, and all prior delivery/footer/Search regressions. The
-new manifest records the definitive suite, coverage, source and bundle hashes.
+Deploy only the geometry ZIP identified in speed-release-manifest.json:
+pages-upload-speed-geometry-2d4e920b6d23.zip
+Its Worker is dist-geometry/_worker.js, SHA256:
+2d4e920b6d2332210acadf53117c8be53f432fa48c443bed928881fdb163eb6d.
 
-A separate local comparison replays saved complete EN contact/company pages
-against the deployed readiness baseline. Header href/data-url changes are the
-only permitted body delta, with identical status and headers. Local elapsed time
-is not Cloudflare billed CPU, a production speed score or proof that error1102
-has disappeared. This change adds menu inspection work; production needs a
-bounded canary and rollback remains available.
+The complete three-adjustment trial remains archived in this source package.
+dist/ and the full fd56147 ZIP are the inactive preload experiment. Do not use
+those artifacts as the selected deployment. The preload did not demonstrate
+consistent end-to-end gains in the sampled measurements, so it was removed from
+the selected runtime. No production acceleration is promised by this package.
+The actual production deployment and final measurements are recorded separately
+in the release pull request; this archived source is not a deployment record.
 
-Release and rollback
---------------------
-Upload only the ZIP named in header-release-manifest.json. Its three root members
-are _worker.js, _routes.json and deployment.txt. Existing production ZIPs are kept.
-The immediate prior deployed readiness Worker has SHA256
-b5e12bf5f471d7e595c82dae36732d9cfb38f105aa6b632b2ac5b4dcad84318d,
-and ZIP pages-upload-readiness-6fad6dd734ef.zip. Earlier source/deployment artifacts
-are historical, not the current release identity. No automation is introduced.
+Source and reproducibility
+---------------------------
+The frozen baseline is header-language-fix/public-release, production Worker:
+2ff699a29edf7054a3f5ebc3637d60c169b16e136d2c54b699d3a117806c9428.
+Earlier manifests and ZIPs retained from that baseline are historical. Use only
+speed-release-manifest.json for this package's selected and inactive artifacts.
+The immediate prior header ZIP remains the documented rollback artifact.
 
-An isolated pages.dev preview verifies compatibility/noindex only because the
-language enhancement is intentionally production-only. The production canary
-must inspect the real header and footer and click the actual top-menu language
-items in each locale, checking the final service URL and heading after load.
-No form submission, email, booking, credential or security setting is part of
-this package. If production delivery or the menu regresses, restore the exact
-previous readiness ZIP and verify the rollback.
+Use npm ci, npm run build, then npm run coverage. The unchanged default build
+produces BOTH dist/ (archived full experiment) and dist-geometry/ (selected
+geometry). A build output directory is not a deployment instruction: use only
+the selected geometry ZIP and hash above. For a single profile, use
+node build.mjs --profile=geometry or node build.mjs --profile=full.
+These are fixed local build profiles, with no public request or runtime toggle.
+
+The archived verification passed 206 tests with 92.57% line, 93.17% branch and
+95.48% function coverage. A clean-source build reproduced both sealed Workers.
+Eight original-source replays covered ES home and EN company, production and
+preview, full and geometry. Only declared rendering/ARIA deltas were present;
+headers and the single intercepted source request stayed identical. These
+checks remain unchanged; selecting the previously reviewed geometry artifact
+required no source, build, test or Worker change and no new test-suite run.
+
+Runtime behavior and limits
+----------------------------
+The existing identification/rewrite passes remain two, with no extra parser,
+source request, client script or observer. Recognized native header links keep
+href, data-url, classes, role, tabindex and handlers. Invalid aria-selected is
+removed; aria-current=page is added only for an exact current canonical without
+an existing author aria-current. Other roles/unknown structures are untouched.
+
+The ES home logo ratio 1168/854 comes from an explicit browser measurement of
+its unique widget/alt, and must be revalidated if the underlying image changes.
+The auto keyword permits the intrinsic ratio after loading. No width/height
+attributes or replacement images are introduced; author geometry is respected.
+
+The optional hero hint implementation is retained only for the inactive full
+experiment. Its source guards, original charset ordering and same-resource URL
+remain archived for reproducibility. Geometry emits no added hero preload.
+
+Readiness descriptions, language equivalences, legacy redirects, Search, quotas,
+cache/no-store, config guards, nonces/CSP, iframe/forms and all image resources
+retain their existing policy. Preview ES home remains at /es/; preview root /
+is only the language portal. Preview stays noindex and does not gain production
+SEO metadata or production-only language-menu rewrites.
+
+Portable source and release records
+-----------------------------------
+The allowlist overlays cloudflare/frontend/ only. The nine protected root/sibling
+files are excluded and documented with their observed Git blob hashes. Private
+raw HTML, signed image tokens, browser evidence, TDD/coverage/audit logs, caches,
+node_modules and temporary files are absent. REVIEW-NOTES.txt describes the
+archived three-feature experiment; selected runtime status is defined above and
+in speed-release-manifest.json. All runtime ZIPs retain their reviewed bytes.
+The source status does not assert a production deployment, speed gain, billed
+CPU, indexing or form delivery. Consult the release pull request for that record.

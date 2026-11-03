@@ -1659,19 +1659,199 @@ function createLanguageRewrite(policy, context) {
   };
 }
 
+// src/rendering-assets.js
+var HOME_SECTION = 'section[id="h.INITIAL_GRID.85u6di9ec7a5"]';
+var LOGO_WIDGET = '[id="h.4a7e47a7ec29bfb_69"]';
+var HERO_LABEL = "Servicios legales y corporativos en Panam\xE1 en un centro financiero internacional";
+var LOGO_LABEL = "Logo de Panam\xE1 Legal Lab con s\xEDmbolo gr\xE1fico y nombre de la marca en naranja y blanco.";
+var LOGO_RATIO = "aspect-ratio: auto 1168 / 854;";
+var HERO_PRIORITY = false ? true : true;
+var CDN_PREFIX = "https://lh7-us.googleusercontent.com/sitesv-images-rt/";
+var unsafe = /[\s\\\u0000-\u001f\u007f-\u009f"'<>`]|%(?:0[0-9a-f]|1[0-9a-f]|7f|5c)/iu;
+function approvedImageUrl(value) {
+  if (typeof value !== "string" || value.length > 4096 || unsafe.test(value)) return null;
+  const rewritten = rewriteImageReferences(value.replaceAll("&amp;", "&"));
+  if (/&#|&(?:amp|quot|lt|gt|apos)|&[a-z][a-z0-9]*;/iu.test(rewritten)) return null;
+  if (!rewritten.startsWith(CDN_PREFIX) || rewritten.length === CDN_PREFIX.length) return null;
+  let url;
+  try {
+    url = new URL(rewritten);
+  } catch {
+    return null;
+  }
+  return url.origin === "https://lh7-us.googleusercontent.com" && !url.username && !url.password && !url.port && !url.hash && url.pathname.startsWith("/sitesv-images-rt/") ? rewritten : null;
+}
+function heroImageUrl(element) {
+  if (element.getAttribute("aria-label") !== HERO_LABEL || element.getAttribute("jsname") !== "LQX2Vd" || !(element.getAttribute("class") ?? "").split(/\s+/u).includes("IFuOkc")) return null;
+  const style = element.getAttribute("style") ?? "";
+  if (style.length > 8192 || /[\\\u0000-\u001f]|\/\*/u.test(style)) return null;
+  if ((style.match(/(?:^|;)\s*background(?:-image)?\s*:/giu) ?? []).length !== 1) return null;
+  const match = style.match(/(?:^|;)\s*background-image\s*:\s*url\(\s*(?:"([^"]+)"|'([^']+)'|([^\s"'()]+))\s*\)\s*(?:;|$)/iu);
+  return match ? approvedImageUrl(match[1] ?? match[2] ?? match[3]) : null;
+}
+function logoCanReserveRatio(element) {
+  if (element.getAttribute("role") !== "img" || element.getAttribute("alt") !== LOGO_LABEL || !(element.getAttribute("class") ?? "").split(/\s+/u).includes("CENy8b") || !approvedImageUrl(element.getAttribute("src")) || element.getAttribute("srcset") !== null || element.getAttribute("width") !== null || element.getAttribute("height") !== null) return false;
+  const style = element.getAttribute("style") ?? "";
+  return style.length <= 2048 && !/[\\\u0000-\u001f]|\/\*/u.test(style) && !/(?:^|;)\s*(?:aspect-ratio|(?:min-|max-)?(?:width|height)|object-(?:fit|position))\s*:/iu.test(style);
+}
+function imagePreload(url) {
+  const escaped = url.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+  return `<link rel="preload" as="image" fetchpriority="high" href="${escaped}">`;
+}
+function isEsHome(plan) {
+  return plan.kind === "page" && !plan.searchPage && plan.site?.language === "es" && plan.canonical === `${plan.site.productionOrigin}/` && ["/", "/inicio"].includes(plan.path);
+}
+
+// src/rendering-navigation.js
+var NATIVE_HEADER_LINK = "header#atIdViewHeader a";
+var HOME = Object.freeze({ es: "inicio", en: "home", fr: "accueil", it: "inizio" });
+function ownPage(value, site) {
+  if (typeof value !== "string" || value.length > 4096 || /[\s\\\u0000-\u001f\u007f]|%(?:0[0-9a-f]|1[0-9a-f]|7f|5c)/iu.test(value)) return null;
+  let url;
+  try {
+    url = new URL(rewriteProductionUrl(value));
+  } catch {
+    return null;
+  }
+  if (url.origin !== site.productionOrigin || url.username || url.password || url.port || url.search || url.hash) return null;
+  return `${site.productionOrigin}${url.pathname === `/${HOME[site.language]}` ? "/" : url.pathname}`;
+}
+function navigationAriaDecision(element, plan) {
+  const classes = (element.getAttribute("class") ?? "").split(/\s+/u);
+  const controller = element.getAttribute("jscontroller");
+  const nativeController = controller === "yUHiM" && element.getAttribute("jsaction") === "rcuQ6b:WYd;";
+  const nativeMobile = controller === null && element.getAttribute("jsaction") === null && classes.includes("hDrhEe");
+  const selected = element.getAttribute("aria-selected");
+  if (!nativeController && !nativeMobile || !classes.includes("aJHbb") || element.getAttribute("role") !== "link" || element.getAttribute("jsname") !== "QwLHlb" || element.getAttribute("data-navtype") !== "1" || element.getAttribute("data-type") !== "1" || !["1", "2", "3"].includes(element.getAttribute("data-level")) || !["true", "false"].includes(selected)) return null;
+  const href = ownPage(element.getAttribute("href"), plan.site);
+  const dataUrl = ownPage(element.getAttribute("data-url"), plan.site);
+  if (!href || href !== dataUrl) return null;
+  return Object.freeze({ current: selected === "true" && href === plan.canonical && element.getAttribute("aria-current") === null });
+}
+function rewriteNavigationAria(element, plan) {
+  const decision = navigationAriaDecision(element, plan);
+  if (!decision) return;
+  element.removeAttribute("aria-selected");
+  if (decision.current) element.setAttribute("aria-current", "page");
+}
+
+// src/rendering-profile.js
+var HERO = `${HOME_SECTION} div[role="img"]`;
+var LOGO_IMAGE = `${HOME_SECTION} ${LOGO_WIDGET} img`;
+var nativePreloader = /\bnew\s+(?:window\.)?Image\s*\(|\b(?:headerBgImgLoaded|headerBgImgExists|bgImgLoaded)\b/u;
+function createRenderingInspector(plan) {
+  let state = {
+    html: 0,
+    head: 0,
+    header: 0,
+    markers: 0,
+    validSite: true,
+    section: 0,
+    widget: 0,
+    heroes: 0,
+    heroUrl: null,
+    images: 0,
+    logo: false,
+    charset: 0,
+    earlyCharset: false,
+    priorScript: "",
+    unsafePriorScript: false,
+    preloads: [],
+    preloadOverflow: false
+  };
+  const counter = (name) => ({ element() {
+    state = { ...state, [name]: state[name] + 1 };
+  } });
+  return {
+    html: counter("html"),
+    head: counter("head"),
+    header: counter("header"),
+    section: counter("section"),
+    widget: counter("widget"),
+    marker: { element(element) {
+      state = { ...state, markers: state.markers + 1, validSite: state.validSite && element.getAttribute("data-domain") === "panamalegallab.com" && element.getAttribute("data-sitename") === plan.site.upstreamPrefix.split("/").at(-1) };
+    } },
+    charset: { element(element) {
+      state = {
+        ...state,
+        charset: state.charset + 1,
+        earlyCharset: !state.unsafePriorScript && !nativePreloader.test(state.priorScript) && /^utf-?8$/iu.test(element.getAttribute("charset") ?? ""),
+        priorScript: ""
+      };
+    } },
+    // Current Google Sites has its non-image ppConfig bootstrap before charset.
+    // Preserve that ordering. A native image preloader, an external script or an
+    // oversized unknown prefix before charset makes a new later hint a no-op.
+    script: {
+      element(element) {
+        if (state.charset === 0 && element.getAttribute("src") !== null) state = { ...state, unsafePriorScript: true };
+      },
+      text(chunk) {
+        if (state.charset !== 0 || state.unsafePriorScript) return;
+        const prefix = state.priorScript + chunk.text;
+        state = prefix.length > 32768 ? { ...state, unsafePriorScript: true, priorScript: "" } : { ...state, priorScript: prefix };
+      }
+    },
+    hero: { element(element) {
+      state = { ...state, heroes: state.heroes + 1, heroUrl: heroImageUrl(element) };
+    } },
+    image: { element(element) {
+      state = { ...state, images: state.images + 1, logo: logoCanReserveRatio(element) };
+    } },
+    preload: { element(element) {
+      if (!(element.getAttribute("rel") ?? "").toLowerCase().split(/\s+/u).includes("preload") || element.getAttribute("as")?.toLowerCase() !== "image") return;
+      if (state.preloads.length >= 32) {
+        state = { ...state, preloadOverflow: true };
+        return;
+      }
+      state = { ...state, preloads: [...state.preloads, approvedImageUrl(element.getAttribute("href"))] };
+    } },
+    context() {
+      const document = state.html === 1 && state.head === 1 && state.markers === 1 && state.validSite;
+      const home = document && isEsHome(plan) && state.section === 1;
+      return Object.freeze({
+        navigation: document && state.header === 1,
+        logo: home && state.widget === 1 && state.images === 1 && state.logo,
+        heroUrl: HERO_PRIORITY && home && state.heroes === 1 && state.heroUrl && state.charset === 1 && state.earlyCharset && !state.preloadOverflow && !state.preloads.includes(state.heroUrl) ? state.heroUrl : null
+      });
+    }
+  };
+}
+function attachRenderingInspection(rewriter, inspector) {
+  return rewriter.on("html", inspector.html).on("head", inspector.head).on("header#atIdViewHeader", inspector.header).on("[data-domain][data-sitename]", inspector.marker).on(HOME_SECTION, inspector.section).on(LOGO_WIDGET, inspector.widget).on("head meta[charset]", inspector.charset).on("head script", inspector.script).on(HERO, inspector.hero).on(LOGO_IMAGE, inspector.image).on("head link", inspector.preload);
+}
+function attachRenderingRewrite(rewriter, plan) {
+  const context = plan.documentContext?.rendering;
+  if (!context) return rewriter;
+  if (context.navigation) rewriter.on(NATIVE_HEADER_LINK, { element(element) {
+    rewriteNavigationAria(element, plan);
+  } });
+  if (context.logo) rewriter.on(LOGO_IMAGE, { element(element) {
+    if (!logoCanReserveRatio(element)) return;
+    const style = element.getAttribute("style") ?? "";
+    element.setAttribute("style", `${style}${style && !style.trimEnd().endsWith(";") ? ";" : ""}${style ? " " : ""}${LOGO_RATIO}`);
+  } });
+  if (context.heroUrl) rewriter.on("head meta[charset]", { element(element) {
+    element.after(imagePreload(context.heroUrl), { html: true });
+  } });
+  return rewriter;
+}
+
 // src/html.js
 function isExpectedSiteMarker(domain, name, site) {
   return domain === "panamalegallab.com" && name === site.upstreamPrefix.split("/").at(-1);
 }
-async function identifyPublicSite(html, site, Rewriter, { collectReadiness = false, onDocumentContext } = {}) {
+async function identifyPublicSite(html, site, Rewriter, { collectReadiness = false, renderPlan, onDocumentContext } = {}) {
   let identified = false;
   const inspector = collectReadiness ? createDocumentInspector(site.language) : null;
+  const rendering = renderPlan?.kind === "page" && !renderPlan.searchPage ? createRenderingInspector(renderPlan) : null;
   const rewriter = new Rewriter().on("[data-domain][data-sitename]", { element(element) {
     if (isExpectedSiteMarker(element.getAttribute("data-domain"), element.getAttribute("data-sitename"), site)) identified = true;
   } });
   if (inspector) attachDocumentInspection(rewriter, inspector);
+  if (rendering) attachRenderingInspection(rewriter, rendering);
   await rewriter.transform(new Response(html)).text();
-  if (inspector) onDocumentContext?.(inspector.context());
+  if (inspector || rendering) onDocumentContext?.(Object.freeze({ ...inspector?.context(), rendering: rendering?.context() ?? null }));
   return identified;
 }
 function createDeliveryValueRewriter(plan) {
@@ -1737,6 +1917,7 @@ async function rewritePageDocument(html, plan, Rewriter) {
   } });
   if (language) rewriter.on(FOOTER_GROUP, language.group).on(`${FOOTER_GROUP} a`, language.anchor);
   if (headerLanguage) rewriter.on(HEADER_ANCHOR, headerLanguage);
+  attachRenderingRewrite(rewriter, plan);
   for (const attribute of ["href", "src", "srcset", "style", "action", "data-url"]) {
     rewriter.on(`[${attribute}]`, makeDeliveryAttributeHandler(attribute, plan, rewriteValue));
   }
@@ -1862,6 +2043,7 @@ async function adaptPublicHtml(upstream, plan, options) {
   let documentContext = null;
   const identified = await options.identifySite(html, plan.site, Rewriter, {
     collectReadiness: Boolean(readinessPolicy),
+    renderPlan: plan,
     onDocumentContext(context) {
       documentContext = context;
     }
