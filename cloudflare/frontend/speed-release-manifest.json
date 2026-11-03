@@ -1,10 +1,9 @@
 {
   "version": 1,
   "preparedOn": "2026-11-03",
-  "status": "LOCAL_REVIEWED_TRIAL_NOT_A_DEPLOYMENT_RECORD",
+  "status": "ARCHIVED_TRIAL_GEOMETRY_SELECTED_NOT_A_DEPLOYMENT_RECORD",
   "performanceBenefitClaimed": false,
-  "deployed": false,
-  "change": "Scoped ES-home image priority/geometry plus native current-link ARIA; all existing image resources retained.",
+  "change": "Selected geometry reserves the measured ES home logo ratio and repairs native current-link ARIA. The hero preload is disabled in this runtime and retained only in the archived full experiment.",
   "baseline": {
     "deployment": "14388418-ff21-4e0d-984d-5fdbcbfa4c18",
     "workerSha256": "2ff699a29edf7054a3f5ebc3637d60c169b16e136d2c54b699d3a117806c9428",
@@ -12,25 +11,27 @@
     "rollbackZipSha256": "659dc8e53ea1a91d09446268e0e6e432bab915f69aa467266971dcb6a00c45d1"
   },
   "artifact": {
-    "worker": "dist/_worker.js",
-    "workerSha256": "fd56147e3b02bd8ace98f0b143a1d978709db04a1a9e0d59163e9c1ceeab2a84",
-    "workerBytes": 292813,
-    "zip": "pages-upload-speed-full-fd56147e3b02.zip",
-    "zipSha256": "f13dbb0c7d283d0ebde706fc1259f91d4475a6412961e3a91968633e27bcc479",
+    "worker": "dist-geometry/_worker.js",
+    "workerSha256": "2d4e920b6d2332210acadf53117c8be53f432fa48c443bed928881fdb163eb6d",
+    "workerBytes": 292814,
+    "zip": "pages-upload-speed-geometry-2d4e920b6d23.zip",
+    "zipSha256": "0a6843b0b4b58f1419f01908a620006fd5623d6d0834ef3852b68c16be8980c4",
     "members": [
       "_worker.js",
       "_routes.json",
       "deployment.txt"
-    ]
+    ],
+    "profile": "geometry",
+    "heroPreloadEnabled": false
   },
   "control": {
-    "active": false,
+    "active": true,
     "sourceProfile": "geometry",
     "prebuiltDirectory": "dist-geometry",
     "workerSha256": "2d4e920b6d2332210acadf53117c8be53f432fa48c443bed928881fdb163eb6d",
     "measuredPreviewControlWorkerSha256": "be5e1001fa6c733eec9ff0a2a3ef7f4288b87ec3238e71734ca9b5e351a7b512",
     "measuredPreviewControlZipSha256": "6134625b3db27bc596c8c416b8db1ba6ca1b5182c0353c8a09279b44b5c9b53f",
-    "note": "The geometry build/control is for comparison only. The sole selected deployment artifact is the full ZIP above."
+    "note": "The previously reviewed geometry/control profile is now selected. It retains logo geometry and native ARIA fixes and emits no added hero preload."
   },
   "validation": {
     "tests": 206,
@@ -114,7 +115,7 @@
   "fileHashes": {
     ".gitattributes": "1f188a384f3a7d8e293f83c43a896957fff3e9ff9fc3f752e6d78825f92f65ec",
     "PLAN.txt": "c7f0da54fe067899f64b8973542d1abeff5af4cd913b3b8a19d94d41913d54c5",
-    "README.md": "420006bbc6e0c821c2e298528695517d6a825d289f1c4117a270920956147b9f",
+    "README.md": "4daa44e82f70779a20ffe69e566c93c39b8da7b1cf03b0515ba168f043dd2925",
     "REVIEW-NOTES.txt": "559168273b54b2fd25bb97fd2ec3f99eff1715347dd74f132ef86ee76ca4f962",
     "build.mjs": "6e05da5b2c6fa8eb061ec7e52bbdd6c2e9deb6538d5f9765f7d6eb581cd2db29",
     "data/provenance.json": "183e3def1468207a45ef5eccafd538f5512653bc7551f4c1d56b406231afabfe",
@@ -136,10 +137,11 @@
     "pages-upload-production-861274046112.zip": "8612740461128643c38622d3c1f005d252d91ece92c45f2bb9966f9727c1bc93",
     "pages-upload-readiness-6fad6dd734ef.zip": "6fad6dd734ef5a109f54b826a763c310750d7a77c9da547fe09b779c4a823e0c",
     "pages-upload-speed-full-fd56147e3b02.zip": "f13dbb0c7d283d0ebde706fc1259f91d4475a6412961e3a91968633e27bcc479",
+    "pages-upload-speed-geometry-2d4e920b6d23.zip": "0a6843b0b4b58f1419f01908a620006fd5623d6d0834ef3852b68c16be8980c4",
     "publication-files.json": "3f59f4aa97a8a1b10ffb0bbb860c539bbf4c72a779d05cc11fc32a2f014f0a86",
     "release-manifest.json": "0892f919fd60f76e6f27e4ecadfbad8527607fbb6da92ccd3ec29a35084641d3",
     "search-derivation.json": "dd2d8aafa68b408f92472cbf01ccae94e5a18c2341276d91508ce321927f5931",
-    "speed-publication-files.json": "96e0106a805c8521eaa0b86e65f66f7fd4d499fbde5bb6522ccf65561e48679a",
+    "speed-publication-files.json": "e6d66a93ea78b5e67f4aa8ef16beb67a253c18238bc65291d6756b61640a2707",
     "src/config-query.js": "86ee231022e38993ecf91cbe9643d6cea5551d92e5a42ade25a0c43140933a7d",
     "src/entry.js": "e451cd7df0e7c4d149e3c73035cb8e829e2707f4eceae630a76765a694caa24b",
     "src/header-language-controls.js": "f2100bfdfe22a4bce4ecdfe79900099c74367c244e3fc8a80b70e4ce18ceb58a",
@@ -191,5 +193,35 @@
     "vendor/search.js": "7ede12b0ac3d596fb571bdc316b8a4e4a88078b95c1f7f20cb7fd88ec32d6144",
     "vendor/worker.js": "b6d5e4513a9dcd263288e68f6f3596ceba19ecdeebafc7ef1904a81c6d33ee9f"
   },
-  "selfHashNote": "This manifest omits its own hash; the external local seal records all portable files including both manifests."
+  "selfHashNote": "This manifest omits its own hash; the external local seal records all portable files including both manifests.",
+  "deploymentRecord": "The actual production deployment and final measurements are maintained in the release pull request, outside this archived source manifest.",
+  "archivedFullExperiment": {
+    "worker": "dist/_worker.js",
+    "workerSha256": "fd56147e3b02bd8ace98f0b143a1d978709db04a1a9e0d59163e9c1ceeab2a84",
+    "workerBytes": 292813,
+    "zip": "pages-upload-speed-full-fd56147e3b02.zip",
+    "zipSha256": "f13dbb0c7d283d0ebde706fc1259f91d4475a6412961e3a91968633e27bcc479",
+    "members": [
+      "_worker.js",
+      "_routes.json",
+      "deployment.txt"
+    ],
+    "active": false,
+    "profile": "full",
+    "heroPreloadEnabled": true,
+    "reasonInactive": "Sampled measurements did not demonstrate consistent end-to-end improvement. Retained only to preserve the complete three-adjustment trial; not selected for deployment."
+  },
+  "selectionDecision": {
+    "selectedProfile": "geometry",
+    "retained": [
+      "measured ES home logo ratio",
+      "native current-link ARIA"
+    ],
+    "disabledInSelectedRuntime": [
+      "hero preload"
+    ],
+    "runtimeOrBuildOrTestsEdited": false,
+    "newTestSuiteRunRequired": false,
+    "reason": "Do not retain the preload in production without consistent end-to-end benefit; no acceleration promise is made."
+  }
 }

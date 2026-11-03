@@ -1,72 +1,77 @@
-PANAMA LEGAL LAB — LOCAL PERFORMANCE AND ACCESSIBILITY CANDIDATE — 2026-11-03
+PANAMA LEGAL LAB — ARCHIVED PERFORMANCE TRIAL, GEOMETRY SELECTED — 2026-11-03
 
-This candidate preserves the current images and native Google Sites navigation.
-It tests three narrowly scoped adjustments: the measured ES home logo ratio,
-valid current-link ARIA, and an optional preload for the same current CSS hero.
-No production speed benefit or deployment is claimed by this source package.
+Selected runtime
+----------------
+The selected geometry profile retains the measured ES home logo ratio and valid
+native current-link ARIA. Its hero preload is disabled. All current image
+resources, native navigation, scripts, forms and existing SEO policies remain.
 
-The reviewed source baseline is the frozen header-language-fix/public-release,
-Worker deployment 14388418 SHA256:
+Deploy only the geometry ZIP identified in speed-release-manifest.json:
+pages-upload-speed-geometry-2d4e920b6d23.zip
+Its Worker is dist-geometry/_worker.js, SHA256:
+2d4e920b6d2332210acadf53117c8be53f432fa48c443bed928881fdb163eb6d.
+
+The complete three-adjustment trial remains archived in this source package.
+dist/ and the full fd56147 ZIP are the inactive preload experiment. Do not use
+those artifacts as the selected deployment. The preload did not demonstrate
+consistent end-to-end gains in the sampled measurements, so it was removed from
+the selected runtime. No production acceleration is promised by this package.
+The actual production deployment and final measurements are recorded separately
+in the release pull request; this archived source is not a deployment record.
+
+Source and reproducibility
+---------------------------
+The frozen baseline is header-language-fix/public-release, production Worker:
 2ff699a29edf7054a3f5ebc3637d60c169b16e136d2c54b699d3a117806c9428.
-Existing manifests/ZIPs copied from that baseline are historical. The current
-local bundles are identified only in speed-release-manifest.json. The older
-full 8449020d127f candidate is rejected because its early-script guard suppressed
-the hint on the real Google source; do not deploy it.
+Earlier manifests and ZIPs retained from that baseline are historical. Use only
+speed-release-manifest.json for this package's selected and inactive artifacts.
+The immediate prior header ZIP remains the documented rollback artifact.
 
-Reproduce the build and checks
-------------------------------
-Use npm ci, npm run build, then npm run coverage. The default build creates BOTH
-dist/ (full) and dist-geometry/ (control), so the runtime comparison never relies
-on missing or stale control assets. Both use the same locked dependencies and
-reviewed vendor snapshots. New source has no additional runtime dependency.
+Use npm ci, npm run build, then npm run coverage. The unchanged default build
+produces BOTH dist/ (archived full experiment) and dist-geometry/ (selected
+geometry). A build output directory is not a deployment instruction: use only
+the selected geometry ZIP and hash above. For a single profile, use
+node build.mjs --profile=geometry or node build.mjs --profile=full.
+These are fixed local build profiles, with no public request or runtime toggle.
 
-For a single profile, use node build.mjs --profile=full or
-node build.mjs --profile=geometry. Explicit --profile=all also builds both.
-These are local build constants, with fixed output paths; no public endpoint,
-request flag or runtime environment switch enables a profile.
+The archived verification passed 206 tests with 92.57% line, 93.17% branch and
+95.48% function coverage. A clean-source build reproduced both sealed Workers.
+Eight original-source replays covered ES home and EN company, production and
+preview, full and geometry. Only declared rendering/ARIA deltas were present;
+headers and the single intercepted source request stayed identical. These
+checks remain unchanged; selecting the previously reviewed geometry artifact
+required no source, build, test or Worker change and no new test-suite run.
 
-The clean-build regression constructs both profiles in a unique temporary child
-directory and requires byte identity with the current prebuilt assets. Runtime
-tests exercise actual HTMLRewriter, native header fixtures in four languages,
-the 252 reviewed pages, full/control response equality apart from the hero hint,
-preview noindex/production canonical isolation, and malformed input guards.
-speed-release-manifest.json records reviewed hashes and final verification.
-Private raw responses, RED logs, temporary tests and coverage logs are excluded.
+Runtime behavior and limits
+----------------------------
+The existing identification/rewrite passes remain two, with no extra parser,
+source request, client script or observer. Recognized native header links keep
+href, data-url, classes, role, tabindex and handlers. Invalid aria-selected is
+removed; aria-current=page is added only for an exact current canonical without
+an existing author aria-current. Other roles/unknown structures are untouched.
 
-Behavior and limits
--------------------
-Rendering inspection shares the existing source-identification parse. Changes
-are emitted in the existing second parse, without a third parser, extra source
-request, image request, client script, native controller rewrite or observer.
-The Google source's ppConfig script and its late charset stay exactly in place;
-the hero hint is added after that unique charset and before the image preloader.
-Unknown external/oversized scripts or an image preloader preceding charset make
-the hint a no-op. Changed hero/logo profile or ambiguous structure also fails
-closed. Image URL tokens and suffixes are not pinned or replaced by new assets.
+The ES home logo ratio 1168/854 comes from an explicit browser measurement of
+its unique widget/alt, and must be revalidated if the underlying image changes.
+The auto keyword permits the intrinsic ratio after loading. No width/height
+attributes or replacement images are introduced; author geometry is respected.
 
-The logo ratio 1168/854 is an explicit browser measurement, scoped to the exact
-ES home widget and alt. It must be revalidated if that underlying image changes.
-The auto keyword permits the real intrinsic ratio after loading. No width or
-height attributes are introduced, and existing author geometry is respected.
-
-Native header links retain href, data-url, role, classes, tabindex and handlers.
-Only the unsupported aria-selected state is removed from recognized native
-links. aria-current=page is added only for an exact current canonical, with no
-existing author aria-current. Other roles and unknown structures stay untouched.
+The optional hero hint implementation is retained only for the inactive full
+experiment. Its source guards, original charset ordering and same-resource URL
+remain archived for reproducibility. Geometry emits no added hero preload.
 
 Readiness descriptions, language equivalences, legacy redirects, Search, quotas,
 cache/no-store, config guards, nonces/CSP, iframe/forms and all image resources
-retain their existing policy. Rendering can apply to validated preview ES home
-at /es/; preview root / is only the language portal. Preview remains noindex and
-does not gain production-only SEO metadata/language menu changes.
+retain their existing policy. Preview ES home remains at /es/; preview root /
+is only the language portal. Preview stays noindex and does not gain production
+SEO metadata or production-only language-menu rewrites.
 
-Acceptance and release
-----------------------
-See REVIEW-NOTES.txt for measured source provenance, exact profiles, validation
-scope and outstanding checks. speed-release-manifest.json lists immutable
-ZIP hashes and all three members (_worker.js, _routes.json, deployment.txt).
-Independent source replay and parent-controlled browser/PSI A/B are required
-before promotion. Verify final desktop/mobile geometry, native hydration/clicks,
-one reused hero resource, unchanged images/forms/maps, headers and real metrics.
-Local elapsed time/coverage does not establish Cloudflare CPU or a speed gain.
-No remote write or browser action was performed by this implementation worker.
+Portable source and release records
+-----------------------------------
+The allowlist overlays cloudflare/frontend/ only. The nine protected root/sibling
+files are excluded and documented with their observed Git blob hashes. Private
+raw HTML, signed image tokens, browser evidence, TDD/coverage/audit logs, caches,
+node_modules and temporary files are absent. REVIEW-NOTES.txt describes the
+archived three-feature experiment; selected runtime status is defined above and
+in speed-release-manifest.json. All runtime ZIPs retain their reviewed bytes.
+The source status does not assert a production deployment, speed gain, billed
+CPU, indexing or form delivery. Consult the release pull request for that record.

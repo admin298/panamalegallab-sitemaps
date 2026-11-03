@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repositoryDestination": "cloudflare/frontend/",
-  "status": "LOCAL_REVIEWED_TRIAL_NOT_A_DEPLOYMENT_RECORD",
+  "status": "ARCHIVED_TRIAL_GEOMETRY_SELECTED_NOT_A_DEPLOYMENT_RECORD",
   "groups": {
     "root": [
       ".gitattributes",
@@ -24,7 +24,8 @@
       "REVIEW-NOTES.txt",
       "pages-upload-speed-full-fd56147e3b02.zip",
       "speed-release-manifest.json",
-      "speed-publication-files.json"
+      "speed-publication-files.json",
+      "pages-upload-speed-geometry-2d4e920b6d23.zip"
     ],
     "src": [
       "config-query.js",
@@ -99,7 +100,7 @@
       "deployment.txt"
     ]
   },
-  "fileCount": 79,
+  "fileCount": 80,
   "files": [
     ".gitattributes",
     "PLAN.txt",
@@ -125,6 +126,7 @@
     "pages-upload-production-861274046112.zip",
     "pages-upload-readiness-6fad6dd734ef.zip",
     "pages-upload-speed-full-fd56147e3b02.zip",
+    "pages-upload-speed-geometry-2d4e920b6d23.zip",
     "publication-files.json",
     "release-manifest.json",
     "search-derivation.json",
@@ -239,5 +241,7 @@
     "rejected full v1 ZIP",
     "internal review scripts"
   ],
-  "inactiveControl": "dist-geometry is a test/build control, not the selected runtime artifact."
+  "selectedRuntimeProfile": "geometry",
+  "selectedRuntimeZip": "pages-upload-speed-geometry-2d4e920b6d23.zip",
+  "inactiveExperiment": "The full profile in dist/ and its full ZIP are archived experimental artifacts; no consistent end-to-end acceleration was demonstrated."
 }
