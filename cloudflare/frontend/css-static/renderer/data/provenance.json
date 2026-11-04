@@ -1,0 +1,1002 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_DRAFT_DATA_NOT_IMPLEMENTED_NOT_PUBLISHED",
+  "preparedOn": "2026-11-03",
+  "scope": "Exact draft data extraction only: 136 commercial descriptions plus 12 reviewed support descriptions; no content edits, runtime code, forms, tracking, network requests or external changes.",
+  "sources": {
+    "descriptions": {
+      "path": "audit-2026-11-02/preparation/preparacion-comercial-consolidada.json",
+      "sha256": "12cec31d5b741f00d5ae51ff8c118f8b93cec861c2489aa179ab65a078f96ddd",
+      "bytes": 194746
+    },
+    "languageLinks": {
+      "path": "audit-2026-11-02/preparation/seo/contextual-language-links.json",
+      "sha256": "eb46a4a901cf6959fc5a49a39bc4d628e71db319d74a2023669aa1bd7436c6df",
+      "bytes": 235352
+    },
+    "conceptMap": {
+      "path": "audit-2026-11-02/sitemap-candidate/concept-map.json",
+      "sha256": "52d54bed0b2561c151f7ec5875434346413f21c0cf56df7f3c36aaa6df2ae7d5",
+      "bytes": 55070
+    },
+    "supportDescriptions": {
+      "path": "audit-2026-11-03/support-metadata/candidates.json",
+      "sha256": "c8b2b25a417a1142f504ec639716ffb752cfb919f6affc7d352a5fb0365a4db8",
+      "bytes": 21604
+    },
+    "supportEvidence": {
+      "path": "audit-2026-11-03/support-metadata/native-evidence.json",
+      "sha256": "55097ad0d72f93d166e67d5db617b042eca3c054337e80f7da0789e970e5ec98",
+      "bytes": 16558
+    }
+  },
+  "output": {
+    "path": "data/readiness.json",
+    "sha256": "5ac24ce80c7c3be0626202c89910e7ca81f2bfd9160b6b864eaae924d61d60e4",
+    "bytes": 161120,
+    "encoding": "UTF-8",
+    "lineEndings": "LF",
+    "compact": true
+  },
+  "counts": {
+    "descriptions": 148,
+    "uniqueDescriptionTexts": 148,
+    "descriptionLanguages": {
+      "es": 37,
+      "en": 37,
+      "fr": 37,
+      "it": 37
+    },
+    "preferredSources": 252,
+    "sourceLanguages": {
+      "es": 63,
+      "en": 63,
+      "fr": 63,
+      "it": 63
+    },
+    "concepts": 63,
+    "foreignLanguageDestinations": 756,
+    "descriptionTextCodepointsMin": 121,
+    "descriptionTextCodepointsMax": 156,
+    "commercialDescriptions": 136,
+    "supportDescriptions": 12,
+    "descriptionSourceIdentities": 148,
+    "supportConcepts": 3
+  },
+  "validation": {
+    "kind": "Deterministic independent data preparation/source comparison",
+    "conceptMapPinnedHashMatches": true,
+    "contextualSourceHashMatchesConceptMap": true,
+    "fourExactHttpsHostsOnly": true,
+    "noQueryFragmentCredentialsPorts": true,
+    "allCanonicalKeysUnique": true,
+    "allDescriptionTextsExactUnicodeSourceValues": true,
+    "allSourceRowsRepresentedExactlyOnce": true,
+    "allDescriptionKeysInLanguageMap": true,
+    "allDescriptionsMatchLanguageAndConcept": true,
+    "allAlternativeDestinationsExactConceptMapValues": true,
+    "allThreeForeignLanguagesPerSource": true,
+    "allLanguageLinksReciprocal": true,
+    "noInferredPathsOrProse": true,
+    "roundTripValuesExact": true,
+    "utf8LfOnly": true,
+    "allCommercialDescriptionsUnchanged": true,
+    "allSupportDraftsExactSourceValues": true,
+    "supportOnlyHomePanamaHubSpainHub": true,
+    "supportHasNoCommercialOverlap": true,
+    "supportEvidenceHashesAndRecordsMatch": true,
+    "allDescriptionsHaveSourceIdentities": true,
+    "languageMapValuesUnchanged": true
+  },
+  "limits": [
+    "All 148 descriptions (136 commercial and 12 support) remain draft content for later review and are not approved publications.",
+    "Exact mapping covers 252 preferred canonical URLs in 63 reviewed concepts; no new pages or home aliases are inferred. Runtime home aliases must use their preferred canonical root entry.",
+    "The language-map inventory was checked on 2026-11-02; support source evidence records 12 native responses on 2026-11-03. This extraction performs no fresh HTTP, indexation, footer-structure or production-delivery checks.",
+    "Runtime escaping, footer scope, fail-closed behavior, coverage and actual Cloudflare CPU verification belong to the parent implementation and review."
+  ],
+  "previousCommercialOnlyOutputSha256": "b57d160fbaa914f346ed936e5f1f183dcdb3ffecb6415d73ee5b6fc0d02a81bb",
+  "descriptionSourceIdentities": {
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-07:es",
+      "conceptId": "topic-07",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-07:en",
+      "conceptId": "topic-07",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-07:fr",
+      "conceptId": "topic-07",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-07:it",
+      "conceptId": "topic-07",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama/sa-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-08:es",
+      "conceptId": "topic-08",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama/sa-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-08:en",
+      "conceptId": "topic-08",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama/sa-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-08:fr",
+      "conceptId": "topic-08",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama/sa-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-08:it",
+      "conceptId": "topic-08",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama/srl-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-09:es",
+      "conceptId": "topic-09",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama/srl-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-09:en",
+      "conceptId": "topic-09",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama/srl-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-09:fr",
+      "conceptId": "topic-09",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama/srl-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-09:it",
+      "conceptId": "topic-09",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama/fundaci%C3%B3n-inter%C3%A9s-privado-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-10:es",
+      "conceptId": "topic-10",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama/private-interest-foundation": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-10:en",
+      "conceptId": "topic-10",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama/fondation-dint%C3%A9r%C3%AAt-priv%C3%A9-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-10:fr",
+      "conceptId": "topic-10",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama/fondazione-di-interesse-privato-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-10:it",
+      "conceptId": "topic-10",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama/negocios-internacional": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-11:es",
+      "conceptId": "topic-11",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama/business-international": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-11:en",
+      "conceptId": "topic-11",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama/affaire-international": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-11:fr",
+      "conceptId": "topic-11",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama/affari-internazionali": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-11:it",
+      "conceptId": "topic-11",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama/operativa-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-12:es",
+      "conceptId": "topic-12",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama/operating-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-12:en",
+      "conceptId": "topic-12",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama/op%C3%A9rationnelle-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-12:fr",
+      "conceptId": "topic-12",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama/operativa-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-12:it",
+      "conceptId": "topic-12",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/crear-empresa-en-panama/operativa-oficina-virtual": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-13:es",
+      "conceptId": "topic-13",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/start-business-in-panama/virtual-office": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-13:en",
+      "conceptId": "topic-13",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/creer-entreprise-au-panama/bureau-virtuel": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-13:fr",
+      "conceptId": "topic-13",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/creazione-impresa-a-panama/ufficio-virtuale": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-13:it",
+      "conceptId": "topic-13",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/cuenta-bancaria-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-14:es",
+      "conceptId": "topic-14",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/bank-account-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-14:en",
+      "conceptId": "topic-14",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/compte-bancaire-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-14:fr",
+      "conceptId": "topic-14",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/conto-bancario-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-14:it",
+      "conceptId": "topic-14",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/cuenta-bancaria-en-panama/cuenta-bancaria-personal-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-15:es",
+      "conceptId": "topic-15",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/bank-account-in-panama/personal-bank-account-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-15:en",
+      "conceptId": "topic-15",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/compte-bancaire-au-panama/compte-bancaire-personnel-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-15:fr",
+      "conceptId": "topic-15",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/conto-bancario-a-panama/conto-bancario-personale-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-15:it",
+      "conceptId": "topic-15",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/cuenta-bancaria-en-panama/cuenta-bancaria-corporativa-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-16:es",
+      "conceptId": "topic-16",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/bank-account-in-panama/corporate-bank-account-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-16:en",
+      "conceptId": "topic-16",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/compte-bancaire-au-panama/compte-bancaire-corporatif-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-16:fr",
+      "conceptId": "topic-16",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/conto-bancario-a-panama/conto-bancario-impresa-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-16:it",
+      "conceptId": "topic-16",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-17:es",
+      "conceptId": "topic-17",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-17:en",
+      "conceptId": "topic-17",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-17:fr",
+      "conceptId": "topic-17",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-17:it",
+      "conceptId": "topic-17",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/visado-paises-amigos-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-18:es",
+      "conceptId": "topic-18",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/friendly-nations-visa": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-18:en",
+      "conceptId": "topic-18",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/visa-pays-amicaux-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-18:fr",
+      "conceptId": "topic-18",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/paesi-amici": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-18:it",
+      "conceptId": "topic-18",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/visado-inversionista-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-19:es",
+      "conceptId": "topic-19",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/investor-visa": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-19:en",
+      "conceptId": "topic-19",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/visa-Investisseur-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-19:fr",
+      "conceptId": "topic-19",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/visto-investitore": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-19:it",
+      "conceptId": "topic-19",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/visado-jubilados-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-20:es",
+      "conceptId": "topic-20",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/retiree-visa": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-20:en",
+      "conceptId": "topic-20",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/visa-retraite-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-20:fr",
+      "conceptId": "topic-20",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/pensionato": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-20:it",
+      "conceptId": "topic-20",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/visado-familiar-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-21:es",
+      "conceptId": "topic-21",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/family-visa": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-21:en",
+      "conceptId": "topic-21",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/visa-familial-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-21:fr",
+      "conceptId": "topic-21",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/ricongiungimento-familiare": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-21:it",
+      "conceptId": "topic-21",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/visado-profesional-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-22:es",
+      "conceptId": "topic-22",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/professional-visa": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-22:en",
+      "conceptId": "topic-22",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/visa-professionnels-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-22:fr",
+      "conceptId": "topic-22",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/professionisti": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-22:it",
+      "conceptId": "topic-22",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/permiso-educativo-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-23:es",
+      "conceptId": "topic-23",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/student-permit": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-23:en",
+      "conceptId": "topic-23",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/permis-etudiant-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-23:fr",
+      "conceptId": "topic-23",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/studenti": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-23:it",
+      "conceptId": "topic-23",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/permiso-extranjero-10-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-24:es",
+      "conceptId": "topic-24",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/foreign-worker-10": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-24:en",
+      "conceptId": "topic-24",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/permis-etrangers-10-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-24:fr",
+      "conceptId": "topic-24",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/straniero-10": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-24:it",
+      "conceptId": "topic-24",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/permiso-tecnico-15-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-25:es",
+      "conceptId": "topic-25",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/technical-permit-15": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-25:en",
+      "conceptId": "topic-25",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/permis-technique-15-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-25:fr",
+      "conceptId": "topic-25",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/tecnico-15": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-25:it",
+      "conceptId": "topic-25",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/residencia-en-panama/sede-multinacionales-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-26:es",
+      "conceptId": "topic-26",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/residence-in-panama/multinational-headquarters": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-26:en",
+      "conceptId": "topic-26",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/residence-au-panama/sieges-multinationaux-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-26:fr",
+      "conceptId": "topic-26",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/residenza-a-panama/sede-multinazionali": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-26:it",
+      "conceptId": "topic-26",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-27:es",
+      "conceptId": "topic-27",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/real-estate-investment-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-27:en",
+      "conceptId": "topic-27",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/investissement-immobilier-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-27:fr",
+      "conceptId": "topic-27",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-27:it",
+      "conceptId": "topic-27",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-grandbay-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-28:es",
+      "conceptId": "topic-28",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-grandbay-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-28:en",
+      "conceptId": "topic-28",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-ph-grandbay-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-28:fr",
+      "conceptId": "topic-28",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-grandbay-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-28:it",
+      "conceptId": "topic-28",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-start-herald-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-29:es",
+      "conceptId": "topic-29",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-start-herald-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-29:en",
+      "conceptId": "topic-29",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-ph-start-herald-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-29:fr",
+      "conceptId": "topic-29",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-start-herald-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-29:it",
+      "conceptId": "topic-29",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-plaza-catedral-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-30:es",
+      "conceptId": "topic-30",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-catedral-square-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-30:en",
+      "conceptId": "topic-30",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-ph-place-cathedrale-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-30:fr",
+      "conceptId": "topic-30",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-piazza-cattedrale-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-30:it",
+      "conceptId": "topic-30",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-local-comercial-en-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-31:es",
+      "conceptId": "topic-31",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-commercial-space-in-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-31:en",
+      "conceptId": "topic-31",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-commerciaux-au-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-31:fr",
+      "conceptId": "topic-31",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-commerciale-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-31:it",
+      "conceptId": "topic-31",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/residencia-en-espana": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-33:es",
+      "conceptId": "topic-33",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/residency-in-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-33:en",
+      "conceptId": "topic-33",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/residence-en-espagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-33:fr",
+      "conceptId": "topic-33",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/residenza-in-spagna": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-33:it",
+      "conceptId": "topic-33",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/nacionalidad-espanola-por-residencia": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-34:es",
+      "conceptId": "topic-34",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/spanish-citizenship-by-residence": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-34:en",
+      "conceptId": "topic-34",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/nationalite-espagnole-par-residence": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-34:fr",
+      "conceptId": "topic-34",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/cittadinanza-spagnola-per-residenza": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-34:it",
+      "conceptId": "topic-34",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/nacionalidad-por-opcion-vias-familiares-espana": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-35:es",
+      "conceptId": "topic-35",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/nationality-by-option-family-routes-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-35:en",
+      "conceptId": "topic-35",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/nationalite-par-option-voies-familiales-espagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-35:fr",
+      "conceptId": "topic-35",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/opzione-famiglia": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-35:it",
+      "conceptId": "topic-35",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/investigacion-origen-espanol": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-36:es",
+      "conceptId": "topic-36",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/spanish-ancestry-research": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-36:en",
+      "conceptId": "topic-36",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/recherche-origines-espagnoles": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-36:fr",
+      "conceptId": "topic-36",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/ricerca-origini-spagnole": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-36:it",
+      "conceptId": "topic-36",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/obtencion-de-partidas-y-certificados-en-espana": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-37:es",
+      "conceptId": "topic-37",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/obtaining-records-and-certificates-in-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-37:en",
+      "conceptId": "topic-37",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/obtention-actes-et-certificats-en-espagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-37:fr",
+      "conceptId": "topic-37",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/ottenimento-di-atti-e-certificati-in-spagna": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-37:it",
+      "conceptId": "topic-37",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/expedientes-lmd-iniciados-espana": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-38:es",
+      "conceptId": "topic-38",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/ongoing-lmd-applications-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-38:en",
+      "conceptId": "topic-38",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/dossiers-lmd-deja-engages-espagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-38:fr",
+      "conceptId": "topic-38",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/lmd-pratiche-avviate": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-38:it",
+      "conceptId": "topic-38",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/establecimiento-e-inversion-espana": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-39:es",
+      "conceptId": "topic-39",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/business-setup-investment-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-39:en",
+      "conceptId": "topic-39",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/creation-activite-investissement-espagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-39:fr",
+      "conceptId": "topic-39",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/insediamento-investimento": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-39:it",
+      "conceptId": "topic-39",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/establecimiento-e-inversion-espana/inmueble-inversi%C3%B3n-canyelles": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-40:es",
+      "conceptId": "topic-40",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/business-setup-investment-spain/investment-property-canyelles-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-40:en",
+      "conceptId": "topic-40",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/creation-activite-investissement-espagne/bien-investissement-canyelles-spagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-40:fr",
+      "conceptId": "topic-40",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/insediamento-investimento/immobile-investimento-canyelles-a-panama": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-40:it",
+      "conceptId": "topic-40",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana/establecimiento-e-inversion-espana/inmueble-inversi%C3%B3n-llagostera": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-41:es",
+      "conceptId": "topic-41",
+      "language": "es"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain/business-setup-investment-spain/investment-property-llagostera-spain": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-41:en",
+      "conceptId": "topic-41",
+      "language": "en"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne/creation-activite-investissement-espagne/bien-investissement-llagostera-espagne": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-41:fr",
+      "conceptId": "topic-41",
+      "language": "fr"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna/insediamento-investimento/immobile-investimento-llagostera-a-spagna": {
+      "sourceId": "commercialDescriptions",
+      "sourceEntryKey": "topic-41:it",
+      "conceptId": "topic-41",
+      "language": "it"
+    },
+    "https://www.panamalegallab.com/": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-01",
+      "language": "es",
+      "nativeResponseSha256": "d1221e44973c65a9cc8f7779b580e8168db39639a554d7f4cb64721bc87c6c9d"
+    },
+    "https://en.panamalegallab.com/": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-01",
+      "language": "en",
+      "nativeResponseSha256": "c3c79ef0064a7793fba6fa151b2ce6e2b5bd0c6184d8d4e8b679a1404489b007"
+    },
+    "https://fr.panamalegallab.com/": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-01",
+      "language": "fr",
+      "nativeResponseSha256": "cb3c480135348be5176e5d5cdbf7c167817b5cd7120c9ccda848e3e31c216318"
+    },
+    "https://it.panamalegallab.com/": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-01",
+      "language": "it",
+      "nativeResponseSha256": "1b49c4a4a8c4ca4ac4a1dfdc0b14654d4122c251ad072095f5f84799fcade7db"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-panama": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-06",
+      "language": "es",
+      "nativeResponseSha256": "8bb35c282d964623e0b8472ffd301dcd044c3a2e37433b663bdbc6fc42bff433"
+    },
+    "https://en.panamalegallab.com/our-services-in-panama": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-06",
+      "language": "en",
+      "nativeResponseSha256": "e354440db9e383bc3d93ea913d372c3e6ba16fcb5ffab2885b76af45df12b15a"
+    },
+    "https://fr.panamalegallab.com/nos-services-au-panama": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-06",
+      "language": "fr",
+      "nativeResponseSha256": "9a1715ae92a7495376f990f2b1a2c70f28056bf644e2e1d49a9a9d3a31e0eaa1"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-panama": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-06",
+      "language": "it",
+      "nativeResponseSha256": "f1284eca55fe96825fed14a788aec2e9d9ddc1fc39372059d966f2249d9e51bd"
+    },
+    "https://www.panamalegallab.com/nuestros-servicios-en-espana": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-32",
+      "language": "es",
+      "nativeResponseSha256": "e4ab68a3cd1d5daa764fd1842b0e64a28cb1478ed79c66db610186ab926fabde"
+    },
+    "https://en.panamalegallab.com/our-services-in-spain": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-32",
+      "language": "en",
+      "nativeResponseSha256": "5c0d60185d979c46f37b685e4cb6ba45385314a3eb0d6cdae6708ff1497ceb83"
+    },
+    "https://fr.panamalegallab.com/nos-Services-au-espagne": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-32",
+      "language": "fr",
+      "nativeResponseSha256": "0ee4267aab860258d2beabacec18c02f2a95d326763a053220623e7ca3a4f26b"
+    },
+    "https://it.panamalegallab.com/i-nostri-servizi-a-spagna": {
+      "sourceId": "supportDescriptions",
+      "conceptId": "topic-32",
+      "language": "it",
+      "nativeResponseSha256": "f335374b37f1aeb785dec9b146ffaa595f4cdc26b07cf388f5d7a7ee525c3c45"
+    }
+  },
+  "supportProseReview": {
+    "status": "GREEN_LOCAL_DRAFT_REVIEW",
+    "reviewer": "/root/production_frontend/readiness_data",
+    "candidateSha256": "c8b2b25a417a1142f504ec639716ffb752cfb919f6affc7d352a5fb0365a4db8",
+    "evidenceSha256": "55097ad0d72f93d166e67d5db617b042eca3c054337e80f7da0789e970e5ec98",
+    "rowsReviewed": 12,
+    "findings": [],
+    "reviewedScope": [
+      "Four home descriptions preserve separate Panama and Spain offers.",
+      "Four Panama hubs summarize only companies, banking, residence, property and existing review/feasibility/document coordination.",
+      "Four Spain hubs summarize only residence, nationality, ancestry research and registry records/certificates; no investment offer, LMD eligibility or outcome guarantee inferred."
+    ],
+    "limits": "Read-only review against saved minimal evidence; no fresh HTTP requests, legal fact certification, production delivery or indexation assertion."
+  }
+}
