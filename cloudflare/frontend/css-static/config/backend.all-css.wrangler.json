@@ -1,0 +1,24 @@
+{
+  "name": "pll-renderer-free-20261103",
+  "account_id": "20f76014286629dae916202a43465d8d",
+  "main": "../dist/backend/worker.js",
+  "compatibility_date": "2026-07-30",
+  "no_bundle": true,
+  "workers_dev": false,
+  "preview_urls": false,
+  "send_metrics": false,
+  "upload_source_maps": false,
+  "exports": {
+    "PllRenderer": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  },
+  "version_metadata": {
+    "binding": "CF_VERSION_METADATA"
+  },
+  "vars": {
+    "PLL_IMAGE_FORMAT": "off",
+    "PLL_CSS_STATIC": "all"
+  }
+}
