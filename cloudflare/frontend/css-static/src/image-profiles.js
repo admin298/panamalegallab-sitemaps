@@ -1,0 +1,112 @@
+// Four reviewed public homepage and four corporate-bank image structures only.
+// No signed image tokens, local source paths or probe notes enter this module.
+export const IMAGE_PROFILES = Object.freeze([
+  {
+    "language": "es",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamalegallab",
+    "sectionId": "h.a7b918ebd00823c_757",
+    "widgetId": "h.77306695899439f3_18",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Proceso de trabajo de Panama Legal Lab para servicios legales en Panam\u00e1: evaluaci\u00f3n inicial, revisi\u00f3n de viabilidad, preparaci\u00f3n documental, coordinaci\u00f3n profesional y seguimiento.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/"
+  },
+  {
+    "language": "en",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamlegallab-en",
+    "sectionId": "h.43b40caf9fe02fb7_0",
+    "widgetId": "h.43b40caf9fe02fb7_12",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "How Panama Legal Lab works for legal services in Panama, including initial assessment, viability review, document preparation, professional coordination, and follow-up.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/"
+  },
+  {
+    "language": "fr",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamlegallab-fr",
+    "sectionId": "h.4667e1d775b5d54b_0",
+    "widgetId": "h.4667e1d775b5d54b_12",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Processus de travail de Panama Legal Lab pour les services juridiques au Panama : \u00e9valuation du dossier, analyse de faisabilit\u00e9, pr\u00e9paration documentaire, coordination professionnelle et suivi.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/"
+  },
+  {
+    "language": "it",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamlegallab-it",
+    "sectionId": "h.10e59a42a351e986_0",
+    "widgetId": "h.10e59a42a351e986_12",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Processo di lavoro di Panama Legal Lab per servizi legali a Panama: valutazione iniziale, analisi di fattibilit\u00e0, preparazione documentale, coordinamento professionale e follow-up.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/"
+  },
+  {
+    "language": "es",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamalegallab",
+    "sectionId": "h.b6ffd859b1bde5a_755",
+    "widgetId": "h.a7b918ebd00823c_143",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Requisitos para abrir una cuenta bancaria corporativa en Panam\u00e1.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/nuestros-servicios-en-panama/cuenta-bancaria-en-panama",
+    "kind": "bank-corporate"
+  },
+  {
+    "language": "en",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamlegallab-en",
+    "sectionId": "h.b6ffd859b1bde5a_755",
+    "widgetId": "h.a7b918ebd00823c_143",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Requirements to open a corporate bank account in Panama.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/our-services-in-panama/bank-account-in-panama",
+    "kind": "bank-corporate"
+  },
+  {
+    "language": "fr",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamlegallab-fr",
+    "sectionId": "h.b6ffd859b1bde5a_755",
+    "widgetId": "h.a7b918ebd00823c_143",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Conditions pour ouvrir un compte bancaire soci\u00e9t\u00e9 au Panama.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/nos-services-au-panama/compte-bancaire-au-panama",
+    "kind": "bank-corporate"
+  },
+  {
+    "language": "it",
+    "dataDomain": "panamalegallab.com",
+    "dataSiteName": "panamlegallab-it",
+    "sectionId": "h.b6ffd859b1bde5a_755",
+    "widgetId": "h.a7b918ebd00823c_143",
+    "imageClass": "CENy8b",
+    "imageRole": "img",
+    "imageAlt": "Requisiti per aprire un conto bancario societario a Panama.",
+    "sourceSuffix": "=w1280",
+    "hasSrcset": false,
+    "canonicalPath": "/i-nostri-servizi-a-panama/conto-bancario-a-panama",
+    "kind": "bank-corporate"
+  }
+].map(profile => Object.freeze(profile)));
