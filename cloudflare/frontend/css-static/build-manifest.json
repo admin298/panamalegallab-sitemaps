@@ -1,6 +1,23 @@
 {
-  "release": "pll-css-static-exact-20261104-v1",
+  "release": "pll-html-do-cache-20261104-v1",
   "rendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "htmlCache": {
+    "placement": "durable-object",
+    "mode": "all",
+    "certificateVersion": 2,
+    "revision": "pll-html-memory-v1",
+    "maximumAgeSeconds": 300,
+    "maximumEntries": 32,
+    "maximumMemoryBytes": 8388608,
+    "persistentSlots": 32,
+    "maximumConcurrentFills": 1,
+    "perVisitPagesExecutions": 1,
+    "perVisitDurableObjectCalls": 1,
+    "perHitOriginCalls": 0,
+    "recurringJobs": 0,
+    "addedBindings": 0,
+    "newPaidResources": 0
+  },
   "css": {
     "originalUri": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA",
     "path": "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
@@ -9,15 +26,15 @@
     "transformations": "none",
     "provenance": "Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted."
   },
-  "builtAt": "2026-11-04T14:47:56.468Z",
+  "builtAt": "2026-11-04T20:17:39.195Z",
   "files": {
     "dist/frontend/_worker.js": {
       "bytes": 3349,
       "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
     },
     "dist/backend/worker.js": {
-      "bytes": 344473,
-      "sha256": "faf97097fac5c117459a4843c8a2235ccc143e767289b34216351081c5ed13dc"
+      "bytes": 404071,
+      "sha256": "b418914671ad90e2e53ee4bd190bbfde2ed0636600bff7142f113933ccd793ff"
     },
     "dist/frontend/_routes.json": {
       "bytes": 133,
