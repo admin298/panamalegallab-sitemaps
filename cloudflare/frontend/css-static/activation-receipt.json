@@ -285,8 +285,9 @@
           "path": "config/css-config.test.mjs",
           "bytes": 2111,
           "sha256": "ae2811c80ad91a24bcc803c91e4a02b144878125fe23aebed3dc2dc3512f5bb0",
-          "portableBytes": 2111,
-          "portableSha256": "ae2811c80ad91a24bcc803c91e4a02b144878125fe23aebed3dc2dc3512f5bb0"
+          "portableBytes": 3480,
+          "portableSha256": "d58e0ac4af52d2f4027cf8819c94d05fdcc3dbbd5eba23be5e39188dc0e03d0d",
+          "testOnlyPortabilityAdjustment": true
         },
         {
           "path": "config/pages.wrangler.json",
@@ -795,9 +796,26 @@
       "customV8NonWhitespaceRangeUnionPercent": 96.94,
       "coverageMethod": "Custom V8 innermost-range union across unchanged fixed-root temporary helper copies and actual CLI child processes. Not official Node line/statement/AST branch coverage. First-token line coverage does not prove all statements on that line execute. Observed block ranges inherit smallest containing same-function counts if V8 omits redundant ranges. Only this text-helper run is used.",
       "symlinkGuardTest": "fs.lstat metadata mocked because OS junction creation is not permitted; no claim of actual OS-junction creation testing.",
-      "originalSourceFilesMatchedAfterPreparation": 78,
+      "originalSourceFilesMatchedAfterPreparation": 77,
       "schemaOnlyNormalizations": 8,
-      "pagesFilesMatchedAfterPreparation": 5
-    }
+      "pagesFilesMatchedAfterPreparation": 5,
+      "originalSourceFilesComparedAfterPreparation": 78,
+      "testOnlyNormalizedFiles": 1,
+      "affectedConfigTestsPassed": 14,
+      "testOnlyPortabilityCasesAdded": 2,
+      "tddEvidence": "Eight original config assertions failed on omitted editor metadata. Two regression cases were added first and failed on the absent normalizer; after the shallow normalizer, all 14 configuration tests passed locally. Full runtime suite remains separately verified at the remote-read checkpoint.",
+      "productionRuntimeConfigBuildAndAssetsUnchanged": true
+    },
+    "testOnlyPortabilityAdjustments": [
+      {
+        "path": "config/css-config.test.mjs",
+        "originalPortableSha256": "ae2811c80ad91a24bcc803c91e4a02b144878125fe23aebed3dc2dc3512f5bb0",
+        "portableSha256": "d58e0ac4af52d2f4027cf8819c94d05fdcc3dbbd5eba23be5e39188dc0e03d0d",
+        "portableBytes": 3480,
+        "reason": "Test-only shallow removal of top-level editor $schema in actual/expected configuration comparisons. All deployment fields remain deep-equal; two added regression tests reject runtime and nested metadata changes. No runtime/config/build/asset change.",
+        "originalAssertionsRetained": 8,
+        "addedRegressionTests": 2
+      }
+    ]
   }
 }
