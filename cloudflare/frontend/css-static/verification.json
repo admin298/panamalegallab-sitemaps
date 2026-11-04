@@ -1,0 +1,138 @@
+{
+  "candidate": "pll-css-static-exact-20261104-v1",
+  "preparedOnly": true,
+  "publishedByBuilder": false,
+  "speedGainClaimed": false,
+  "browserAppearanceOrActualNetworkFallbackClaimed": false,
+  "publicNetworkRequestsByBuilderAndTests": 0,
+  "backendSha256": "faf97097fac5c117459a4843c8a2235ccc143e767289b34216351081c5ed13dc",
+  "frontendSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "nativeCssSha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
+  "nativeCssBytes": 1954605,
+  "frozenRendererFilesExact": 26,
+  "imagePolicySourceFilesExact": 3,
+  "tests": {
+    "finalFocusedSuite": {
+      "tests": 61,
+      "passed": 61,
+      "failed": 0,
+      "lineCoveragePercent": 100,
+      "branchCoveragePercent": 89.93,
+      "functionCoveragePercent": 95,
+      "cssLineCoveragePercent": 100,
+      "cssBranchCoveragePercent": 85.71,
+      "cssFunctionCoveragePercent": 91.89
+    },
+    "frozenNativeIntegrationIsolated": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "includes": "All 145 existing GET/HEAD redirects, utilities, Search identity and persistent quota through the same Pages-to-SQLite DO"
+    },
+    "redFirst": true,
+    "adversarialMalformedAndUnicodeRegressionRedFirst": true,
+    "environmentNote": "Combined-suite attempts encountered Windows workerd loopback ECONNRESET in the unchanged frozen integration test. Final focused suite and isolated native integration both passed on final code with unchanged assertions.",
+    "safeRolloutConfigAdditional": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "redFirst": true,
+      "config": "backend.css-preview-image-all.wrangler.json",
+      "vars": {
+        "PLL_IMAGE_FORMAT": "all",
+        "PLL_CSS_STATIC": "preview"
+      },
+      "onlyPolicyVarsDiffer": true
+    }
+  },
+  "currentEightResponseReplay": {
+    "createdAt": "2026-11-04T14:53:13.581Z",
+    "publicNetworkRequests": 0,
+    "fixtureCount": 8,
+    "fixtureScope": "Eight previously captured rendered responses, four homes and four bank pages with actual CSP; no live source request.",
+    "responseComparisons": 248,
+    "cssEnabledResponses": 88,
+    "imageEnabledResponses": 64,
+    "allNormalizedBodiesByteExact": true,
+    "allDisabledBodiesRawByteExact": true,
+    "allApplicationHeadersAndCspExactApartFromPolicyProof": true,
+    "exactCanaryControlDisablesBoth": true,
+    "publicQueriesCannotSelectPolicy": true,
+    "compiledSourceSha256": {
+      "src/css-static.js": "047915163df7484deb3c133447b002bb8730219fbc2495b84ed15399f26da2d0",
+      "src/backend-core.js": "79b8a4fdb8cabb16d231a14c2ff397a34c109f5c17df718c11c32b9d7d06bc6f",
+      "src/image-format.js": "38b344baab19b6917b47c1f2e20d5b519e01026869d1f492fdb806a47ce9427c",
+      "src/image-helpers.js": "0a946de0225e4d781913c3b3d9e299d177113efc44efa9bc367cabb7e2127d2d",
+      "src/image-profiles.js": "9e8a94fde71c47d7286bd08fa43468ae79654b344a0a3954ef437f3bfb47e656"
+    },
+    "adapterReplayBundleSha256": "b24bba0d5acf0137ff7d66ad31dbc085a0aadeffa4e580657541b30bd98c427e",
+    "finalBackendSha256": "faf97097fac5c117459a4843c8a2235ccc143e767289b34216351081c5ed13dc",
+    "inputs": [
+      {
+        "language": "es",
+        "profileKind": "home",
+        "bytes": 233760,
+        "sha256": "c98e5081b9d59986bdafd3b50e2dfc089d10f66072b404dbcb696a5ebdcc9295"
+      },
+      {
+        "language": "en",
+        "profileKind": "home",
+        "bytes": 231077,
+        "sha256": "a94d5f61972c5ad9a891726e189cacbf113e7d7b7937c9e950074bb8dc7bb44a"
+      },
+      {
+        "language": "fr",
+        "profileKind": "home",
+        "bytes": 231851,
+        "sha256": "c21eb5860d28411e8daf44a92331c4f8015a63d06b0bfaf7dbaf1cd3ec3ae351"
+      },
+      {
+        "language": "it",
+        "profileKind": "home",
+        "bytes": 230611,
+        "sha256": "351247e58a14b6ef4f739f35bb384d4e777a810d006fc81b6e4bbec653ec9c98"
+      },
+      {
+        "language": "es",
+        "profileKind": "bank-corporate",
+        "bytes": 203124,
+        "sha256": "1c487396f13bd029dd30575ae6c027f29652fa01b2492aaf4b05667c3b5a6b40"
+      },
+      {
+        "language": "en",
+        "profileKind": "bank-corporate",
+        "bytes": 200355,
+        "sha256": "5dee13edeebd45a0f872b8897248aadb4561c7f0d7fd2e5e427a4e1644095528"
+      },
+      {
+        "language": "fr",
+        "profileKind": "bank-corporate",
+        "bytes": 201730,
+        "sha256": "c3cc36565861c3690754070f72739dbd01440fbd90715c65dc7497a8b9488897"
+      },
+      {
+        "language": "it",
+        "profileKind": "bank-corporate",
+        "bytes": 203121,
+        "sha256": "c77433a969a3222d51b122ed836b9591c68d096edae56da13cc9588cc3c395c5"
+      }
+    ],
+    "note": "Adapter-only native HTMLRewriter replay. Local HTTP compression metadata is excluded by capturing application headers before transport. Receipts contain no source HTML, signed image URI or raw private path."
+  },
+  "securityReview": {
+    "blockingFindingsRemaining": 0,
+    "fixed": "Quadratic malformed raw-text classifier replaced by linear bounded scanner; offset-preserving ASCII fold and regression tests added."
+  },
+  "defaults": {
+    "PLL_IMAGE_FORMAT": "off",
+    "PLL_CSS_STATIC": "off"
+  },
+  "pendingParentAcceptance": [
+    "Asset-first deployment: verify GET/HEAD SHA/bytes/MIME/cache/compression on exact preview and all public hosts before mapping",
+    "Desktop/mobile visual, navigation, native CSSOM/runtime, one-shot missing-asset fallback and CMS freshness checks",
+    "Counterbalanced cold preview on/control timings; actual gain required before adoption"
+  ],
+  "publicSourcePrivacy": "No raw captured HTML, private CSP nonces, signed image URLs, local paths, private tooling/dependencies or private receipts are included. Public exact native CSS and synthetic tests are included.",
+  "totalFinalDistinctTestsPassed": 63,
+  "safeRolloutConfig": "backend.css-preview-image-all.wrangler.json"
+}

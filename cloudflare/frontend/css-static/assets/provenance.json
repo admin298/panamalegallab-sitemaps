@@ -1,0 +1,17 @@
+{
+  "originalUri": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA",
+  "path": "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+  "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
+  "bytes": 1954605,
+  "transformations": "none",
+  "provenance": "Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted.",
+  "capturedAtUtc": "2026-11-04T14:13:06Z",
+  "originalResponseContentType": "text/css; charset=UTF-8",
+  "originalResponseContentEncoding": "gzip",
+  "originalGzipBytes": 225846,
+  "externalUrlTokens": 116,
+  "relativeExternalUrls": 0,
+  "imports": 0,
+  "fontFaces": 0,
+  "publicSnapshot": true
+}
