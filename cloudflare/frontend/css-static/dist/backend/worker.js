@@ -1516,8 +1516,8 @@ function validChild(anchor, group, locale, classifyRoot) {
 function finishGroup(state, classifyRoot) {
   const group = state.group;
   if (!group) return state;
-  const languages = group.children.map((child) => classifyRoot(child.href));
-  if (!group.valid || group.children.length !== 3 || new Set(languages).size !== 3)
+  const languages2 = group.children.map((child) => classifyRoot(child.href));
+  if (!group.valid || group.children.length !== 3 || new Set(languages2).size !== 3)
     return { ...state, group: null };
   const key = `${group.nav}:${group.level}`;
   if (state.keys.has(key) || state.keys.size >= 3) return { ...state, invalid: true, group: null };
@@ -1596,18 +1596,18 @@ function createHeaderInspector(locale) {
     }
   };
 }
-function attachHeaderInspection(rewriter, inspector) {
-  return rewriter.on(HEADER_NAV, inspector.nav).on(HEADER_ANCHOR, inspector.anchor).on(HEADER_DESCENDANT, inspector.descendant);
+function attachHeaderInspection(rewriter, inspector2) {
+  return rewriter.on(HEADER_NAV, inspector2.nav).on(HEADER_ANCHOR, inspector2.anchor).on(HEADER_DESCENDANT, inspector2.descendant);
 }
 function createHeaderLanguageRewrite(policy, context) {
   const matches = context?.headerLanguageAnchors;
   if (!policy || context?.siteLanguage !== policy.language || !Array.isArray(matches) || !matches.length || matches.length > 9 || matches.some((match) => !Number.isInteger(match.ordinal) || match.ordinal < 0 || match.ordinal >= 512 || !policy.alternatives[match.language]) || new Set(matches.map((match) => match.ordinal)).size !== matches.length) return null;
-  const languages = new Map(matches.map((match) => [match.ordinal, match.language]));
+  const languages2 = new Map(matches.map((match) => [match.ordinal, match.language]));
   const classifyRoot = createRootClassifier();
   let ordinal = -1;
   return { element(element) {
     ordinal += 1;
-    const language = languages.get(ordinal);
+    const language = languages2.get(ordinal);
     if (!language) return;
     const anchor = readAnchor(element, ordinal);
     if (anchor.valid && anchor.navType === "2" && anchor.type === "2" && classifyRoot(anchor.href) === language && classifyRoot(anchor.dataUrl) === language) {
@@ -1717,9 +1717,9 @@ function createDocumentInspector(locale) {
     }
   };
 }
-function attachDocumentInspection(rewriter, inspector) {
-  attachHeaderInspection(rewriter, inspector.header);
-  return rewriter.on("html", inspector.html).on(FOOTER_GROUP, inspector.group).on(`${FOOTER_GROUP} a`, inspector.anchor).on(`${FOOTER_GROUP} *`, inspector.descendant);
+function attachDocumentInspection(rewriter, inspector2) {
+  attachHeaderInspection(rewriter, inspector2.header);
+  return rewriter.on("html", inspector2.html).on(FOOTER_GROUP, inspector2.group).on(`${FOOTER_GROUP} a`, inspector2.anchor).on(`${FOOTER_GROUP} *`, inspector2.descendant);
 }
 function createLanguageRewrite(policy, context) {
   if (!policy || context?.siteLanguage !== policy.language || !Number.isInteger(context.languageGroup)) return null;
@@ -1902,11 +1902,11 @@ function createRenderingInspector(plan) {
     }
   };
 }
-function attachRenderingInspection(rewriter, inspector) {
-  rewriter.on("html", inspector.html).on("head", inspector.head).on("header#atIdViewHeader", inspector.header).on("[data-domain][data-sitename]", inspector.marker);
-  if (!inspector.home) return rewriter;
-  rewriter.on(HOME_SECTION, inspector.section).on(LOGO_WIDGET, inspector.widget).on(LOGO_IMAGE, inspector.image);
-  if (HERO_PRIORITY) rewriter.on("head meta[charset]", inspector.charset).on("head script", inspector.script).on(HERO, inspector.hero).on("head link", inspector.preload);
+function attachRenderingInspection(rewriter, inspector2) {
+  rewriter.on("html", inspector2.html).on("head", inspector2.head).on("header#atIdViewHeader", inspector2.header).on("[data-domain][data-sitename]", inspector2.marker);
+  if (!inspector2.home) return rewriter;
+  rewriter.on(HOME_SECTION, inspector2.section).on(LOGO_WIDGET, inspector2.widget).on(LOGO_IMAGE, inspector2.image);
+  if (HERO_PRIORITY) rewriter.on("head meta[charset]", inspector2.charset).on("head script", inspector2.script).on(HERO, inspector2.hero).on("head link", inspector2.preload);
   return rewriter;
 }
 function attachRenderingRewrite(rewriter, plan) {
@@ -1932,15 +1932,15 @@ function isExpectedSiteMarker(domain, name, site) {
 }
 async function identifyPublicSite(html, site, Rewriter, { collectReadiness = false, renderPlan, onDocumentContext } = {}) {
   let identified = false;
-  const inspector = collectReadiness ? createDocumentInspector(site.language) : null;
+  const inspector2 = collectReadiness ? createDocumentInspector(site.language) : null;
   const rendering = renderPlan?.kind === "page" && !renderPlan.searchPage ? createRenderingInspector(renderPlan) : null;
   const rewriter = new Rewriter().on("[data-domain][data-sitename]", { element(element) {
     if (isExpectedSiteMarker(element.getAttribute("data-domain"), element.getAttribute("data-sitename"), site)) identified = true;
   } });
-  if (inspector) attachDocumentInspection(rewriter, inspector);
+  if (inspector2) attachDocumentInspection(rewriter, inspector2);
   if (rendering) attachRenderingInspection(rewriter, rendering);
   await rewriter.transform(new Response(html)).text();
-  if (inspector || rendering) onDocumentContext?.(Object.freeze({ ...inspector?.context(), rendering: rendering?.context() ?? null }));
+  if (inspector2 || rendering) onDocumentContext?.(Object.freeze({ ...inspector2?.context(), rendering: rendering?.context() ?? null }));
   return identified;
 }
 function createDeliveryValueRewriter(plan) {
@@ -2355,7 +2355,7 @@ function createDeferredFeatures(plan, staged, rewriteValue) {
 // renderer/src/single-pass.js
 async function rewriteValidatedDocument(html, plan, Rewriter) {
   let identified = false;
-  const inspector = plan.readinessPolicy ? createDocumentInspector(plan.site.language) : null;
+  const inspector2 = plan.readinessPolicy ? createDocumentInspector(plan.site.language) : null;
   const rendering = plan.kind === "page" && !plan.searchPage ? createRenderingInspector(plan) : null;
   const staged = createDeferredMarkers(html);
   const rewriteValue = createDeliveryValueRewriter(plan);
@@ -2363,7 +2363,7 @@ async function rewriteValidatedDocument(html, plan, Rewriter) {
   const rewriter = new Rewriter().on("[data-domain][data-sitename]", { element(element) {
     if (isExpectedSiteMarker(element.getAttribute("data-domain"), element.getAttribute("data-sitename"), plan.site)) identified = true;
   } });
-  if (inspector) attachDocumentInspection(rewriter, inspector);
+  if (inspector2) attachDocumentInspection(rewriter, inspector2);
   if (rendering) attachRenderingInspection(rewriter, rendering);
   features.attach(rewriter);
   const core = createCoreDocumentRewriter(
@@ -2375,7 +2375,7 @@ async function rewriteValidatedDocument(html, plan, Rewriter) {
   if (!identified) return { identified: false };
   try {
     core.validate();
-    const context = Object.freeze({ ...inspector?.context(), rendering: rendering?.context() ?? null });
+    const context = Object.freeze({ ...inspector2?.context(), rendering: rendering?.context() ?? null });
     return { identified: true, html: staged.commit(serialized, features.resolver(context)) };
   } catch (error2) {
     return { identified: true, error: error2 };
@@ -2931,10 +2931,10 @@ function createImageInspector(profile) {
     }
   };
 }
-function attach(rewriter, inspector, profile) {
+function attach(rewriter, inspector2, profile) {
   const section = `section[id="${profile.sectionId}"]`;
   const widget = `[id="${profile.widgetId}"]`;
-  return rewriter.on("html", inspector.html).on("head", inspector.head).on("body", inspector.body).on("div.UtePc", inspector.root).on(section, inspector.section).on(widget, inspector.widget).on(`div.UtePc > ${section} ${widget} img`, inspector.image).on(`${section} div`, inspector.ancestor).on("[data-domain][data-sitename]", inspector.marker).on("head meta[charset]", inspector.charset).on("meta[http-equiv]", inspector.meta).on("script", inspector.script).on("img", inspector.beforeImage);
+  return rewriter.on("html", inspector2.html).on("head", inspector2.head).on("body", inspector2.body).on("div.UtePc", inspector2.root).on(section, inspector2.section).on(widget, inspector2.widget).on(`div.UtePc > ${section} ${widget} img`, inspector2.image).on(`${section} div`, inspector2.ancestor).on("[data-domain][data-sitename]", inspector2.marker).on("head meta[charset]", inspector2.charset).on("meta[http-equiv]", inspector2.meta).on("script", inspector2.script).on("img", inspector2.beforeImage);
 }
 function cancelQuietly(reader) {
   try {
@@ -2978,13 +2978,13 @@ async function inspectResponse(response, profile, Rewriter, timing) {
       const html = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
       const roundtrip = encoder3.encode(html);
       if (roundtrip.length !== bytes.length || !roundtrip.every((value, index) => value === bytes[index])) return null;
-      const inspector = createImageInspector(profile);
-      parserReader = attach(new Rewriter(), inspector, profile).transform(new Response(bytes)).body.getReader();
+      const inspector2 = createImageInspector(profile);
+      parserReader = attach(new Rewriter(), inspector2, profile).transform(new Response(bytes)).body.getReader();
       while (!(await parserReader.read()).done) {
         if (aborted) return null;
       }
       if (aborted) return null;
-      const selected = inspector.result();
+      const selected = inspector2.result();
       if (!selected) return null;
       const nonce = authorizedNonce(response.headers.get("Content-Security-Policy"), selected.nonces);
       if (!nonce) return null;
@@ -3092,8 +3092,8 @@ function createCssInspector(site) {
     }
   };
 }
-function attach2(rewriter, inspector) {
-  return rewriter.on("html", inspector.html).on("head", inspector.head).on("body", inspector.body).on("base", inspector.base).on("[data-domain][data-sitename]", inspector.marker).on("head meta[charset]", inspector.charset).on("meta[http-equiv]", inspector.meta).on("script", inspector.script).on("link", inspector.link).on("head link", inspector.headLink);
+function attach2(rewriter, inspector2) {
+  return rewriter.on("html", inspector2.html).on("head", inspector2.head).on("body", inspector2.body).on("base", inspector2.base).on("[data-domain][data-sitename]", inspector2.marker).on("head meta[charset]", inspector2.charset).on("meta[http-equiv]", inspector2.meta).on("script", inspector2.script).on("link", inspector2.link).on("head link", inspector2.headLink);
 }
 function cssFallbackScript() {
   return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
@@ -3201,13 +3201,13 @@ async function inspect(response, site, Rewriter, timing) {
       const html = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
       const roundtrip = encoder4.encode(html);
       if (roundtrip.length !== bytes.length || !roundtrip.every((value, index) => value === bytes[index])) return null;
-      const inspector = createCssInspector(site);
-      parserReader = attach2(new Rewriter(), inspector).transform(new Response(bytes)).body.getReader();
+      const inspector2 = createCssInspector(site);
+      parserReader = attach2(new Rewriter(), inspector2).transform(new Response(bytes)).body.getReader();
       while (!(await parserReader.read()).done) {
         if (aborted) return null;
       }
       if (aborted) return null;
-      const nonces = inspector.result();
+      const nonces = inspector2.result();
       if (!nonces) return null;
       const nonce = authorizedNonce(response.headers.get("Content-Security-Policy"), nonces);
       if (!nonce) return null;
@@ -3248,15 +3248,1114 @@ async function withCssStatic(response, request, environment, options = {}) {
   }
 }
 
+// src/cache-routes.js
+var CACHE_PATHS = Object.freeze(Object.fromEntries(Object.entries({
+  "es": [
+    "/",
+    "/aviso-legal-politica-privacidad",
+    "/contacto",
+    "/guia-de-recursos",
+    "/nuestros-servicios-en-espana",
+    "/nuestros-servicios-en-espana/investigacion-origen-espanol",
+    "/nuestros-servicios-en-espana/nacionalidad-espanola-por-residencia",
+    "/nuestros-servicios-en-espana/obtencion-de-partidas-y-certificados-en-espana",
+    "/nuestros-servicios-en-espana/residencia-en-espana",
+    "/nuestros-servicios-en-panama",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama",
+    "/nuestros-servicios-en-panama/cuenta-bancaria-en-panama",
+    "/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama",
+    "/sobre-nosotros",
+    "/guia-de-recursos/accionistas-directores-y-capital",
+    "/guia-de-recursos/como-buscar-partida-abuelo-espanol-sin-conocer-municipio",
+    "/guia-de-recursos/fundaciones-y-fideicomisos",
+    "/guia-de-recursos/guia-nacionalidad-espanola-por-residencia",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1",
+    "/guia-de-recursos/tipos-certificados-espana",
+    "/nuestros-servicios-en-espana/establecimiento-e-inversion-espana",
+    "/nuestros-servicios-en-espana/expedientes-lmd-iniciados-espana",
+    "/nuestros-servicios-en-espana/nacionalidad-por-opcion-vias-familiares-espana",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama/fundaci%C3%B3n-inter%C3%A9s-privado-en-panama",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama/negocios-internacional",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama/operativa-en-panama",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama/operativa-oficina-virtual",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama/sa-en-panama",
+    "/nuestros-servicios-en-panama/crear-empresa-en-panama/srl-en-panama",
+    "/nuestros-servicios-en-panama/cuenta-bancaria-en-panama/cuenta-bancaria-corporativa-en-panama",
+    "/nuestros-servicios-en-panama/cuenta-bancaria-en-panama/cuenta-bancaria-personal-en-panama",
+    "/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-grandbay-en-panama",
+    "/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-local-comercial-en-panama",
+    "/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-plaza-catedral-en-panama",
+    "/nuestros-servicios-en-panama/inversion-inmobiliaria-en-panama/inmueble-inversion-ph-start-herald-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/permiso-educativo-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/permiso-extranjero-10-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/permiso-tecnico-15-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/sede-multinacionales-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/visado-familiar-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/visado-inversionista-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/visado-jubilados-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/visado-paises-amigos-en-panama",
+    "/nuestros-servicios-en-panama/residencia-en-panama/visado-profesional-en-panama",
+    "/guia-de-recursos/accionistas-directores-y-capital/capital-social-sociedad-an%C3%B3nima-paname%C3%B1a",
+    "/guia-de-recursos/accionistas-directores-y-capital/comparativa-acciones-nominativas-frente-a-las-acciones-al-portador",
+    "/guia-de-recursos/accionistas-directores-y-capital/debo-escoger-el-servicio-de-directores-nominales-al-crear-una-s-a",
+    "/guia-de-recursos/accionistas-directores-y-capital/diferencias-accionistas-y-directores-en-las-sociedades-an%C3%B3nimas-de-panam%C3%A1",
+    "/guia-de-recursos/accionistas-directores-y-capital/directores-nominales-procedimiento-para-uso-del-documento-de-renuncia",
+    "/guia-de-recursos/fundaciones-y-fideicomisos/comparativa-sociedades-an%C3%B3nimas-vs-fundaciones-inter%C3%A9s-privado",
+    "/guia-de-recursos/fundaciones-y-fideicomisos/distinciones-legales-fundaciones-de-inter%C3%A9s-privado-vs-fideicomisos",
+    "/guia-de-recursos/fundaciones-y-fideicomisos/qui%C3%A9n-administra-las-fundaciones-de-inter%C3%A9s-privado-y-c%C3%B3mo-se-manejan",
+    "/guia-de-recursos/fundaciones-y-fideicomisos/qui%C3%A9nes-pueden-ser-beneficiarios-de-una-fundaci%C3%B3n-de-inter%C3%A9s-privado",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/atractivo-del-registro",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-s-a-vs-s-r-l-en-panam%C3%A1",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-s-r-l-y-otras-figuras-jur%C3%ADdicas",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-sociedad-extranjera-s-a-y-redomiciliaci%C3%B3n",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/comparativa-sociedades-an%C3%B3nimas-operativas-y-no-operativas",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/requisitos-para-el-registro-de-una-sociedad-en-panam%C3%A1",
+    "/guia-de-recursos/registro-y-tipos-de-sociedades-en-panam%C3%A1/tipos-de-sociedades-opciones-para-ejercer-actividades-comerciales",
+    "/nuestros-servicios-en-espana/establecimiento-e-inversion-espana/inmueble-inversi%C3%B3n-canyelles",
+    "/nuestros-servicios-en-espana/establecimiento-e-inversion-espana/inmueble-inversi%C3%B3n-llagostera"
+  ],
+  "en": [
+    "/",
+    "/about-us",
+    "/contact-us",
+    "/legal-notice-privacy-policy",
+    "/our-services-in-panama",
+    "/our-services-in-panama/bank-account-in-panama",
+    "/our-services-in-panama/real-estate-investment-in-panama",
+    "/our-services-in-panama/residence-in-panama",
+    "/our-services-in-panama/start-business-in-panama",
+    "/our-services-in-spain",
+    "/our-services-in-spain/obtaining-records-and-certificates-in-spain",
+    "/our-services-in-spain/residency-in-spain",
+    "/our-services-in-spain/spanish-ancestry-research",
+    "/our-services-in-spain/spanish-citizenship-by-residence",
+    "/resource-hub",
+    "/our-services-in-panama/bank-account-in-panama/corporate-bank-account-in-panama",
+    "/our-services-in-panama/bank-account-in-panama/personal-bank-account-in-panama",
+    "/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-catedral-square-in-panama",
+    "/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-commercial-space-in-panama",
+    "/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-grandbay-in-panama",
+    "/our-services-in-panama/real-estate-investment-in-panama/investment-property-ph-start-herald-in-panama",
+    "/our-services-in-spain/business-setup-investment-spain",
+    "/our-services-in-panama/residence-in-panama/family-visa",
+    "/our-services-in-panama/residence-in-panama/foreign-worker-10",
+    "/our-services-in-panama/residence-in-panama/friendly-nations-visa",
+    "/our-services-in-panama/residence-in-panama/investor-visa",
+    "/our-services-in-panama/residence-in-panama/multinational-headquarters",
+    "/our-services-in-panama/residence-in-panama/professional-visa",
+    "/our-services-in-panama/residence-in-panama/retiree-visa",
+    "/our-services-in-panama/residence-in-panama/student-permit",
+    "/our-services-in-panama/residence-in-panama/technical-permit-15",
+    "/our-services-in-panama/start-business-in-panama/business-international",
+    "/our-services-in-panama/start-business-in-panama/operating-in-panama",
+    "/our-services-in-panama/start-business-in-panama/private-interest-foundation",
+    "/our-services-in-panama/start-business-in-panama/sa-in-panama",
+    "/our-services-in-panama/start-business-in-panama/srl-in-panama",
+    "/our-services-in-panama/start-business-in-panama/virtual-office",
+    "/our-services-in-spain/nationality-by-option-family-routes-spain",
+    "/our-services-in-spain/ongoing-lmd-applications-spain",
+    "/resource-hub/for-your-foundations-and-trusts",
+    "/resource-hub/guide-citizenship-by-residence-spain",
+    "/resource-hub/how-to-find-spanish-grandfathers-birth-record-without-knowing-municipality",
+    "/resource-hub/registration-and-types-of-companies",
+    "/resource-hub/shareholders-directors-and-capital",
+    "/resource-hub/types-of-certificates-spain",
+    "/our-services-in-spain/business-setup-investment-spain/investment-property-canyelles-spain",
+    "/our-services-in-spain/business-setup-investment-spain/investment-property-llagostera-spain",
+    "/resource-hub/for-your-foundations-and-trusts/comparative-corporations-vs-private-interest-foundations",
+    "/resource-hub/for-your-foundations-and-trusts/legal-distinctions-private-interest-foundations-vs-trusts",
+    "/resource-hub/for-your-foundations-and-trusts/who-administers-private-interest-foundations-and-how-are-they-managed",
+    "/resource-hub/for-your-foundations-and-trusts/who-can-be-beneficiaries-of-a-private-interest-foundation",
+    "/resource-hub/registration-and-types-of-companies/comparative-foreign-company-s-a-and-redomiciliation",
+    "/resource-hub/registration-and-types-of-companies/comparative-operating-and-non-operating-anonymous-corporation",
+    "/resource-hub/registration-and-types-of-companies/comparative-s-a-vs-s-r-l-in-panam%C3%A1",
+    "/resource-hub/registration-and-types-of-companies/comparative-s-r-l-and-other-legal-entities",
+    "/resource-hub/registration-and-types-of-companies/requirements-for-registering-a-company-in-panama",
+    "/resource-hub/registration-and-types-of-companies/the-appeal-of-registering-a-company-in-panama",
+    "/resource-hub/registration-and-types-of-companies/types-of-companies-for-conducting-commercial-activities",
+    "/resource-hub/shareholders-directors-and-capital/comparative-registered-shares-vs-bearer-shares",
+    "/resource-hub/shareholders-directors-and-capital/differences-shareholders-and-directors-in-anonymous-corporation-in-pana",
+    "/resource-hub/shareholders-directors-and-capital/nominee-directors-procedure-for-the-use-of-the-resignation-letter",
+    "/resource-hub/shareholders-directors-and-capital/share-capital-panamanian-anonymous-corporation",
+    "/resource-hub/shareholders-directors-and-capital/should-i-choose-the-nominee-directors-service-when-incorporating-a-s-a"
+  ],
+  "fr": [
+    "/",
+    "/a-propos",
+    "/contactez-nous",
+    "/guide-de-ressources",
+    "/mentions-legales-politique-confidentialite",
+    "/nos-Services-au-espagne",
+    "/nos-Services-au-espagne/nationalite-espagnole-par-residence",
+    "/nos-Services-au-espagne/obtention-actes-et-certificats-en-espagne",
+    "/nos-Services-au-espagne/recherche-origines-espagnoles",
+    "/nos-Services-au-espagne/residence-en-espagne",
+    "/nos-services-au-panama",
+    "/nos-services-au-panama/compte-bancaire-au-panama",
+    "/nos-services-au-panama/creer-entreprise-au-panama",
+    "/nos-services-au-panama/investissement-immobilier-au-panama",
+    "/nos-services-au-panama/residence-au-panama",
+    "/guide-de-ressources/actionnaires-administrateurs-et-capital",
+    "/guide-de-ressources/comment-retrouver-acte-naissance-grand-pere-espagnol-sans-connaitre-commune",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s",
+    "/guide-de-ressources/guide-nationalite-par-residence-espagne",
+    "/guide-de-ressources/pour-vos-fondations-et-fiducies",
+    "/guide-de-ressources/types-de-certificats-espagne",
+    "/nos-Services-au-espagne/creation-activite-investissement-espagne",
+    "/nos-Services-au-espagne/dossiers-lmd-deja-engages-espagne",
+    "/nos-Services-au-espagne/nationalite-par-option-voies-familiales-espagne",
+    "/nos-services-au-panama/compte-bancaire-au-panama/compte-bancaire-corporatif-au-panama",
+    "/nos-services-au-panama/compte-bancaire-au-panama/compte-bancaire-personnel-au-panama",
+    "/nos-services-au-panama/creer-entreprise-au-panama/affaire-international",
+    "/nos-services-au-panama/creer-entreprise-au-panama/bureau-virtuel",
+    "/nos-services-au-panama/creer-entreprise-au-panama/fondation-dint%C3%A9r%C3%AAt-priv%C3%A9-au-panama",
+    "/nos-services-au-panama/creer-entreprise-au-panama/op%C3%A9rationnelle-au-panama",
+    "/nos-services-au-panama/creer-entreprise-au-panama/sa-au-panama",
+    "/nos-services-au-panama/creer-entreprise-au-panama/srl-au-panama",
+    "/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-commerciaux-au-panama",
+    "/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-ph-grandbay-au-panama",
+    "/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-ph-place-cathedrale-au-panama",
+    "/nos-services-au-panama/investissement-immobilier-au-panama/bien-investissement-ph-start-herald-au-panama",
+    "/nos-services-au-panama/residence-au-panama/permis-etrangers-10-au-panama",
+    "/nos-services-au-panama/residence-au-panama/permis-etudiant-au-panama",
+    "/nos-services-au-panama/residence-au-panama/permis-technique-15-au-panama",
+    "/nos-services-au-panama/residence-au-panama/sieges-multinationaux-au-panama",
+    "/nos-services-au-panama/residence-au-panama/visa-Investisseur-au-panama",
+    "/nos-services-au-panama/residence-au-panama/visa-familial-au-panama",
+    "/nos-services-au-panama/residence-au-panama/visa-pays-amicaux-au-panama",
+    "/nos-services-au-panama/residence-au-panama/visa-professionnels-au-panama",
+    "/nos-services-au-panama/residence-au-panama/visa-retraite-au-panama",
+    "/guide-de-ressources/actionnaires-administrateurs-et-capital/capital-social-soci%C3%A9t%C3%A9-anonyme-panam%C3%A9enne",
+    "/guide-de-ressources/actionnaires-administrateurs-et-capital/comparatif-actions-nominatives-vs-actions-au-porteur",
+    "/guide-de-ressources/actionnaires-administrateurs-et-capital/diff%C3%A9rences-actionnaires-et-administrateurs-dans-les-soci%C3%A9t%C3%A9s-anonymes",
+    "/guide-de-ressources/actionnaires-administrateurs-et-capital/directeurs-nominaux-proc%C3%A9dure-dutilisation-du-document-de-d%C3%A9mission",
+    "/guide-de-ressources/actionnaires-administrateurs-et-capital/dois-je-choisir-le-service-de-directeurs-nominaux-lors-de-la-cr%C3%A9ation-s-a",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparatif-s-a-vs-s-r-l-au-panam%C3%A1",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparatif-s-r-l-et-autres-formes-juridiques",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparatif-soci%C3%A9t%C3%A9-%C3%A9trang%C3%A8re-s-a-et-redomiciliation",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/comparative-operating-and-non-operating-public-limited-companies",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/exigences-pour-lenregistrement-dune-soci%C3%A9t%C3%A9-au-panama",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/lattrait-de-lenregistrement-dune-soci%C3%A9t%C3%A9-au-panama",
+    "/guide-de-ressources/cr%C3%A9ation-et-types-de-soci%C3%A9t%C3%A9s/types-de-soci%C3%A9t%C3%A9s-options-pour-exercer-des-activit%C3%A9s-commerciales",
+    "/guide-de-ressources/pour-vos-fondations-et-fiducies/comparatif-soci%C3%A9t%C3%A9s-anonymes-vs-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9",
+    "/guide-de-ressources/pour-vos-fondations-et-fiducies/distinctions-juridiques-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9-vs-fiducies",
+    "/guide-de-ressources/pour-vos-fondations-et-fiducies/qui-administre-les-fondations-dint%C3%A9r%C3%AAt-priv%C3%A9-et-comment-sont-elles-g%C3%A9r%C3%A9es",
+    "/guide-de-ressources/pour-vos-fondations-et-fiducies/qui-peut-%C3%AAtre-b%C3%A9n%C3%A9ficiaire-dune-fondation-dint%C3%A9r%C3%AAt-priv%C3%A9",
+    "/nos-Services-au-espagne/creation-activite-investissement-espagne/bien-investissement-canyelles-spagne",
+    "/nos-Services-au-espagne/creation-activite-investissement-espagne/bien-investissement-llagostera-espagne"
+  ],
+  "it": [
+    "/",
+    "/chi-siamo",
+    "/contatto",
+    "/guida-risorse",
+    "/i-nostri-servizi-a-panama",
+    "/i-nostri-servizi-a-panama/conto-bancario-a-panama",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama",
+    "/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama",
+    "/i-nostri-servizi-a-panama/residenza-a-panama",
+    "/i-nostri-servizi-a-spagna",
+    "/i-nostri-servizi-a-spagna/cittadinanza-spagnola-per-residenza",
+    "/i-nostri-servizi-a-spagna/ottenimento-di-atti-e-certificati-in-spagna",
+    "/i-nostri-servizi-a-spagna/residenza-in-spagna",
+    "/i-nostri-servizi-a-spagna/ricerca-origini-spagnole",
+    "/note-legali-informativa-privacy",
+    "/guida-risorse/azionisti-direttori-e-capitale",
+    "/guida-risorse/come-trovare-atto-nascita-nonno-spagnolo-senza-conoscere-comune",
+    "/guida-risorse/fondazioni-e-trust",
+    "/guida-risorse/guida-cittadinanza-per-residenza-spagna",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama",
+    "/guida-risorse/tipi-di-certificati-spagna",
+    "/i-nostri-servizi-a-panama/conto-bancario-a-panama/conto-bancario-impresa-a-panama",
+    "/i-nostri-servizi-a-panama/conto-bancario-a-panama/conto-bancario-personale-a-panama",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama/affari-internazionali",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama/fondazione-di-interesse-privato-a-panama",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama/operativa-a-panama",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama/sa-a-panama",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama/srl-a-panama",
+    "/i-nostri-servizi-a-panama/creazione-impresa-a-panama/ufficio-virtuale",
+    "/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-commerciale-a-panama",
+    "/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-grandbay-a-panama",
+    "/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-piazza-cattedrale-a-panama",
+    "/i-nostri-servizi-a-panama/investimento-immobiliare-a-panama/immobile-investimento-ph-start-herald-a-panama",
+    "/i-nostri-servizi-a-spagna/insediamento-investimento",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/paesi-amici",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/pensionato",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/professionisti",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/ricongiungimento-familiare",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/sede-multinazionali",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/straniero-10",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/studenti",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/tecnico-15",
+    "/i-nostri-servizi-a-panama/residenza-a-panama/visto-investitore",
+    "/i-nostri-servizi-a-spagna/lmd-pratiche-avviate",
+    "/i-nostri-servizi-a-spagna/opzione-famiglia",
+    "/guida-risorse/azionisti-direttori-e-capitale/capitale-sociale-societ%C3%A0-anonima-panamense",
+    "/guida-risorse/azionisti-direttori-e-capitale/confronto-azioni-nominative-vs-azioni-al-portatore",
+    "/guida-risorse/azionisti-direttori-e-capitale/devo-scegliere-il-servizio-di-direttori-nominali-nella-creazione-di-una-s-a",
+    "/guida-risorse/azionisti-direttori-e-capitale/differenze-azionisti-e-direttori-nelle-societ%C3%A0-anonime-di-panama",
+    "/guida-risorse/azionisti-direttori-e-capitale/direttori-nominali-procedura-per-luso-del-documento-di-dimissioni",
+    "/guida-risorse/fondazioni-e-trust/chi-amministra-le-fondazioni-di-interesse-privato-e-come-vengono-gestite",
+    "/guida-risorse/fondazioni-e-trust/chi-pu%C3%B2-essere-beneficiario-di-una-fondazione-di-interesse-privato",
+    "/guida-risorse/fondazioni-e-trust/confronto-societ%C3%A0-anonime-vs-fondazioni-di-interesse-privato",
+    "/guida-risorse/fondazioni-e-trust/distinzioni-giuridiche-fondazioni-di-interesse-privato-vs-trust",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-s-a-vs-s-r-l-a-panama",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-s-r-l-e-altre-figure-giuridiche",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-societ%C3%A0-anonime-operative-e-non-operative",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/confronto-societ%C3%A0-straniera-s-a-e-redomiciliazione",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/il-fascino-della-registrazione-delle-societ%C3%A0-a-panama",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/requisiti-per-la-registrazione-di-una-societ%C3%A0-a-panama",
+    "/guida-risorse/registro-e-tipi-di-societ%C3%A0-a-panama/tipi-di-societ%C3%A0-opzioni-per-svolgere-attivit%C3%A0-commerciali",
+    "/i-nostri-servizi-a-spagna/insediamento-investimento/immobile-investimento-canyelles-a-panama",
+    "/i-nostri-servizi-a-spagna/insediamento-investimento/immobile-investimento-llagostera-a-spagna"
+  ]
+}).map(([language, paths]) => [language, Object.freeze(paths)])));
+var pathSets = Object.fromEntries(Object.entries(CACHE_PATHS).map(([language, paths]) => [language, new Set(paths)]));
+var PREVIEW2 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var HOST_LANGUAGES = Object.freeze(Object.fromEntries(["es", "en", "fr", "it"].map((language) => [
+  (language === "es" ? "www" : language) + ".panamalegallab.com",
+  language
+])));
+var revisionPattern = /^[a-zA-Z0-9_-]{1,64}$/u;
+var sensitiveHeaders = [
+  "Authorization",
+  "Range",
+  "If-None-Match",
+  "If-Modified-Since",
+  "If-Match",
+  "If-Unmodified-Since",
+  "If-Range"
+];
+function targetForCache(request, mode = "off", revision = "pll-html-template-v2") {
+  if (!["preview", "all"].includes(mode) || request.method !== "GET" || !revisionPattern.test(revision)) return null;
+  if (!requestBoundary(request).allowed) return null;
+  const url = new URL(request.url);
+  if (url.protocol !== "https:" || url.search || url.hash || request.url.includes("?")) return null;
+  if (sensitiveHeaders.some((name) => request.headers.has(name))) return null;
+  const control = request.headers.get("Cache-Control") ?? "";
+  if (/\b(?:no-cache|no-store)\b|(?:^|,)\s*max-age\s*=\s*"?0"?(?:\s*,|\s*$)/iu.test(control) || /\bno-cache\b/iu.test(request.headers.get("Pragma") ?? "")) return null;
+  const preview = url.origin === PREVIEW2;
+  if (!preview && mode !== "all") return null;
+  const match = preview ? /^\/(es|en|fr|it)(\/.*)$/u.exec(url.pathname) : null;
+  const language = preview ? match?.[1] : HOST_LANGUAGES[url.hostname];
+  const path = preview ? match?.[2] : url.pathname;
+  if (!language || !pathSets[language].has(path)) return null;
+  return Object.freeze({
+    origin: "https://" + (language === "es" ? "www" : language) + ".panamalegallab.com",
+    path,
+    language,
+    siteName: language === "es" ? "panamalegallab" : "panamlegallab-" + language,
+    revision
+  });
+}
+function cacheKeyFor(request, identity) {
+  if (!revisionPattern.test(identity.revision)) throw new Error("Invalid cache revision");
+  const url = new URL(request.url);
+  return new Request(url.origin + "/_pll-internal-cache/" + identity.revision + "/" + identity.language + "/" + encodeURIComponent(url.pathname), { method: "GET" });
+}
+
+// src/html-template.js
+var TEMPLATE_HEADER = "X-PLL-HTML-Template";
+var TEMPLATE_TTL_MS = 3e5;
+var TEMPLATE_BODY_LIMIT = 1048576;
+var HEADER_LIMIT = 16384;
+var DEADLINE_MS = 1e3;
+var MAX_NONCES = 256;
+var encoder5 = new TextEncoder();
+var noncePattern3 = /^[A-Za-z0-9+/_-]{16,256}={0,2}$/u;
+var htmlType = /^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
+var identityKeys = ["origin", "path", "language", "siteName", "revision"];
+var languages = Object.freeze({ es: "www", en: "en", fr: "fr", it: "it" });
+var allowedVary = /* @__PURE__ */ new Set(["sec-fetch-dest", "sec-fetch-mode", "sec-fetch-site", "accept-encoding"]);
+var validators = [
+  "Content-Length",
+  "Content-Encoding",
+  "ETag",
+  "Content-MD5",
+  "Digest",
+  "Content-Digest",
+  "Repr-Digest",
+  "Last-Modified",
+  "Age"
+];
+var rawText = /* @__PURE__ */ new Set(["script", "style", "title", "textarea", "xmp", "iframe", "noembed", "noframes", "noscript"]);
+var reportOnlyPolicies = /* @__PURE__ */ new Set([
+  "require-trusted-types-for 'script';report-uri https://csp.withgoogle.com/csp/6b8ce7c01e3dacd3d2c7a8cd322ff979/mr",
+  "script-src 'unsafe-inline';report-uri https://csp.withgoogle.com/csp/script-inclusions/6b8ce7c01e3dacd3d2c7a8cd322ff979"
+]);
+var validReportOnly = (value) => value === null || reportOnlyPolicies.has(value);
+function validIdentity(value) {
+  if (!value || Object.keys(value).length !== identityKeys.length || !identityKeys.every((key) => typeof value[key] === "string")) return false;
+  const { origin, path, language, siteName, revision } = value;
+  if (!Object.hasOwn(languages, language) || origin !== `https://${languages[language]}.panamalegallab.com` || siteName !== (language === "es" ? "panamalegallab" : `panamlegallab-${language}`) || !/^[a-zA-Z0-9_-]{1,80}$/u.test(revision) || path.length > 4096 || !/^\/[\x21-\x7e]*$/u.test(path) || /[?#\\]/u.test(path)) return false;
+  try {
+    return new URL(origin + path).pathname === path;
+  } catch {
+    return false;
+  }
+}
+var sameIdentity = (left, right) => validIdentity(left) && validIdentity(right) && identityKeys.every((key) => left[key] === right[key]);
+var validVary = (value) => typeof value === "string" && value.length < 1024 && (!value || value.split(",").every((name) => allowedVary.has(name.trim().toLowerCase())));
+function policyNonce(csp) {
+  if (typeof csp !== "string" || !csp || csp.length > 8192 || /[,\u0000-\u001f\u007f]/u.test(csp)) return null;
+  const directives = /* @__PURE__ */ new Map();
+  for (const raw of csp.split(";")) {
+    const parts = raw.trim().split(/\s+/u), name = parts.shift()?.toLowerCase();
+    if (!name) continue;
+    if (!/^[a-z][a-z-]*$/u.test(name) || directives.has(name)) return null;
+    directives.set(name, parts);
+  }
+  if (["default-src", "style-src", "style-src-elem", "style-src-attr", "script-src-elem", "script-src-attr"].some((name) => directives.has(name))) return null;
+  const sources = [...csp.matchAll(/'nonce-([^']+)'/gu)];
+  if (sources.length !== 1 || !noncePattern3.test(sources[0][1]) || !directives.get("script-src")?.includes(sources[0][0])) return null;
+  return sources[0][1];
+}
+function supportedResponse(response, internal = false) {
+  return response?.status === 200 && response.body && htmlType.test(response.headers.get("Content-Type") ?? "") && !["Set-Cookie", "Content-Encoding"].some((name) => response.headers.has(name)) && validReportOnly(response.headers.get("Content-Security-Policy-Report-Only")) && !/\bprivate\b/iu.test(response.headers.get("Cache-Control") ?? "") && (internal || validVary(response.headers.get("Vary") ?? ""));
+}
+function inspector(identity) {
+  let state = { html: 0, head: 0, body: 0, charset: 0, marker: 0, canonical: 0, headCanonical: 0, safe: true, records: [] };
+  const count = (name) => ({ element() {
+    state = { ...state, [name]: state[name] + 1 };
+  } });
+  const handlers = {
+    ...Object.fromEntries(["html", "head", "body"].map((name) => [name, count(name)])),
+    base: { element() {
+      state = { ...state, safe: false };
+    } },
+    "head meta[charset]": { element(el) {
+      state = {
+        ...state,
+        charset: state.charset + 1,
+        safe: state.safe && /^utf-?8$/iu.test(el.getAttribute("charset") ?? "")
+      };
+    } },
+    "meta[http-equiv]": { element(el) {
+      if (/^content-security-policy(?:-report-only)?$/iu.test(el.getAttribute("http-equiv")?.trim() ?? ""))
+        state = { ...state, safe: false };
+    } },
+    "[data-domain][data-sitename]": { element(el) {
+      state = {
+        ...state,
+        marker: state.marker + 1,
+        safe: state.safe && el.getAttribute("data-domain") === "panamalegallab.com" && el.getAttribute("data-sitename") === identity.siteName
+      };
+    } },
+    "link[rel]": { element(el) {
+      if (el.getAttribute("rel")?.trim().toLowerCase() === "canonical")
+        state = { ...state, canonical: state.canonical + 1, safe: state.safe && el.getAttribute("href") === identity.origin + identity.path };
+    } },
+    "head link[rel]": { element(el) {
+      if (el.getAttribute("rel")?.trim().toLowerCase() === "canonical")
+        state = { ...state, headCanonical: state.headCanonical + 1 };
+    } },
+    script: { element(el) {
+      if (el.getAttribute("nonce") === null) state = { ...state, safe: false };
+    } },
+    "[nonce]": { element(el) {
+      const tag = el.tagName.toLowerCase(), value = el.getAttribute("nonce");
+      state = {
+        ...state,
+        safe: state.safe && ["script", "style", "link"].includes(tag) && noncePattern3.test(value ?? "") && state.records.length < MAX_NONCES,
+        records: state.records.length < MAX_NONCES ? [...state.records, { tag, value }] : state.records
+      };
+    } }
+  };
+  return { handlers, result: () => state.safe && ["html", "head", "body", "charset", "marker", "canonical", "headCanonical"].every((name) => state[name] === 1) ? state.records : null };
+}
+function attributeSpans(html) {
+  const lower = html.replace(/[A-Z]/gu, (letter) => letter.toLowerCase());
+  let cursor = 0, records = [], tags = 0;
+  while (cursor < html.length) {
+    const start = html.indexOf("<", cursor);
+    if (start < 0) break;
+    if (html.startsWith("<!--", start)) {
+      const end = html.indexOf("-->", start + 4);
+      if (end < 0) return null;
+      cursor = end + 3;
+      continue;
+    }
+    if (/^<\//u.test(html.slice(start, start + 2)) || /^<!doctype\s/iu.test(html.slice(start, start + 16))) {
+      const end = html.indexOf(">", start + 2);
+      if (end < 0) return null;
+      cursor = end + 1;
+      continue;
+    }
+    const opening = /^<([a-z][a-z0-9:-]*)(?=[\s/>])/iu.exec(html.slice(start, start + 128));
+    if (!opening || ++tags > 16384) return null;
+    const tag = opening[1].toLowerCase();
+    let at = start + opening[0].length;
+    const seen = /* @__PURE__ */ new Set();
+    let closed = false;
+    while (at < html.length) {
+      const whitespace2 = /^\s*/u.exec(html.slice(at))[0].length;
+      at += whitespace2;
+      if (html[at] === ">") {
+        at++;
+        closed = true;
+        break;
+      }
+      if (html.slice(at, at + 2) === "/>") {
+        at += 2;
+        closed = true;
+        break;
+      }
+      const attribute = /^[^\s"'<>/=]+/u.exec(html.slice(at, at + 512));
+      if (!attribute) return null;
+      const name = attribute[0].toLowerCase();
+      if (seen.has(name)) return null;
+      seen.add(name);
+      at += attribute[0].length;
+      at += /^\s*/u.exec(html.slice(at))[0].length;
+      if (html[at] !== "=") {
+        if (name === "nonce") return null;
+        continue;
+      }
+      at++;
+      at += /^\s*/u.exec(html.slice(at))[0].length;
+      const quote = html[at], quoted = quote === '"' || quote === "'";
+      const valueStart = at + (quoted ? 1 : 0);
+      const valueEnd = quoted ? html.indexOf(quote, valueStart) : valueStart + /^[^\s>]+/u.exec(html.slice(valueStart))?.[0]?.length;
+      if (!Number.isInteger(valueEnd) || valueEnd < valueStart) return null;
+      if (name === "nonce") {
+        if (!quoted || !["script", "style", "link"].includes(tag) || records.length >= MAX_NONCES) return null;
+        records = [...records, { tag, value: html.slice(valueStart, valueEnd), start: valueStart, end: valueEnd }];
+      }
+      at = valueEnd + (quoted ? 1 : 0);
+    }
+    if (!closed) return null;
+    cursor = at;
+    if (rawText.has(tag)) {
+      const end = lower.indexOf("</" + tag, at);
+      if (end < 0) return null;
+      const closing = new RegExp("^</" + tag + "\\s*>", "iu").exec(html.slice(end, end + 256));
+      if (!closing) return null;
+      cursor = end + closing[0].length;
+    }
+  }
+  return records;
+}
+function nonceSpans(html, records, scriptNonce) {
+  for (const name of ["html", "head", "body"]) {
+    if ([...html.matchAll(new RegExp("<" + name + "(?=[\\s>])", "giu"))].length !== 1 || [...html.matchAll(new RegExp("</" + name + "\\s*>", "giu"))].length !== 1) return null;
+  }
+  const spans = attributeSpans(html);
+  if (!spans || spans.length !== records.length || !spans.every((row, i) => row.tag === records[i].tag && row.value === records[i].value)) return null;
+  const styles = [...new Set(records.filter((row) => row.tag !== "script").map((row) => row.value))];
+  if (styles.length !== 1 || styles[0] === scriptNonce || !noncePattern3.test(styles[0]) || !records.some((row) => row.tag === "script") || records.some((row) => row.tag === "script" && row.value !== scriptNonce)) return null;
+  const nonces = [scriptNonce, styles[0]];
+  for (const nonce of nonces) {
+    const expected = spans.filter((row) => row.value === nonce).map((row) => row.start);
+    let index = 0;
+    for (let at = html.indexOf(nonce); at !== -1; at = html.indexOf(nonce, at + nonce.length)) {
+      if (expected[index++] !== at) return null;
+    }
+    if (index !== expected.length) return null;
+  }
+  return { nonces, spans: spans.map(({ start, end, value }) => ({ start, end, family: value === scriptNonce ? 0 : 1 })) };
+}
+var digest = async (bytes, cryptoImpl) => [...new Uint8Array(await cryptoImpl.subtle.digest("SHA-256", bytes))].map((value) => value.toString(16).padStart(2, "0")).join("");
+function cancel(reader) {
+  try {
+    reader?.cancel().catch(() => {
+    });
+  } catch {
+  }
+}
+async function readBytes(reader) {
+  const buffer = new Uint8Array(TEMPLATE_BODY_LIMIT);
+  let size = 0, chunks = 0, empty = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (++chunks > 2048 || !value.byteLength && ++empty > 8 || size + value.byteLength > TEMPLATE_BODY_LIMIT) return null;
+    buffer.set(value, size);
+    size += value.byteLength;
+  }
+  return buffer.slice(0, size);
+}
+function decode2(bytes) {
+  return new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
+}
+function matchesNonce(bytes, span, nonce) {
+  if (span.start < 1 || span.end >= bytes.length || span.end - span.start !== nonce.length) return false;
+  const quote = bytes[span.start - 1];
+  if (quote !== 34 && quote !== 39 || bytes[span.end] !== quote) return false;
+  for (let index = 0; index < nonce.length; index++) if (bytes[span.start + index] !== nonce[index]) return false;
+  return true;
+}
+function byteSpans(html, selected, bytes) {
+  const encodedNonces = selected.nonces.map((value) => encoder5.encode(value));
+  let chars = 0, offset = 0, spans = [];
+  for (const span of selected.spans) {
+    offset += encoder5.encode(html.slice(chars, span.start)).length;
+    const nonce = encoder5.encode(html.slice(span.start, span.end));
+    const next = { start: offset, end: offset + nonce.length, family: span.family };
+    if (!matchesNonce(bytes, next, encodedNonces[next.family])) return null;
+    spans = [...spans, next];
+    offset = next.end;
+    chars = span.end;
+  }
+  return offset + encoder5.encode(html.slice(chars)).length === bytes.length ? spans : null;
+}
+function replaceNonceBytes(bytes, cert, replacements) {
+  const originals = cert.nonces.map((value) => encoder5.encode(value));
+  if (!cert.spans.every((span) => matchesNonce(bytes, span, originals[span.family]))) return null;
+  const next = replacements.map((value) => encoder5.encode(value));
+  const size = cert.bytes + cert.spans.reduce((delta, span) => delta + next[span.family].length - originals[span.family].length, 0);
+  if (!Number.isSafeInteger(size) || size < 1 || size > TEMPLATE_BODY_LIMIT + MAX_NONCES * (32 - 16)) return null;
+  const output = new Uint8Array(size);
+  let from = 0, to = 0;
+  for (const span of cert.spans) {
+    const unchanged = bytes.subarray(from, span.start);
+    output.set(unchanged, to);
+    to += unchanged.length;
+    output.set(next[span.family], to);
+    to += next[span.family].length;
+    from = span.end;
+  }
+  output.set(bytes.subarray(from), to);
+  return output;
+}
+function readTemplateCertificate(response, identity, now = Date.now()) {
+  try {
+    const header = response.headers.get(TEMPLATE_HEADER);
+    if (!supportedResponse(response, true) || !header || header.length > HEADER_LIMIT || !/^[A-Za-z0-9+/]+={0,2}$/u.test(header) || !Number.isSafeInteger(now)) return null;
+    const decoded = atob(header);
+    if (btoa(decoded) !== header) return null;
+    const cert = JSON.parse(decoded);
+    if (!cert || Object.keys(cert).sort().join(",") !== "bytes,createdAt,csp,expiresAt,identity,nonces,reportOnly,sha256,spans,v,vary" || cert.v !== 2 || !sameIdentity(cert.identity, identity) || !Number.isSafeInteger(cert.createdAt) || cert.createdAt < 0 || cert.expiresAt !== cert.createdAt + TEMPLATE_TTL_MS || now < cert.createdAt || now >= cert.expiresAt || !/^[a-f0-9]{64}$/u.test(cert.sha256) || !Number.isSafeInteger(cert.bytes) || cert.bytes < 1 || cert.bytes > TEMPLATE_BODY_LIMIT || !validVary(cert.vary) || cert.csp !== response.headers.get("Content-Security-Policy") || cert.reportOnly !== response.headers.get("Content-Security-Policy-Report-Only") || !Array.isArray(cert.nonces) || cert.nonces.length !== 2 || !cert.nonces.every((value) => noncePattern3.test(value)) || cert.nonces[0] === cert.nonces[1] || policyNonce(cert.csp) !== cert.nonces[0] || !Array.isArray(cert.spans) || !cert.spans.length || cert.spans.length > MAX_NONCES) return null;
+    let end = -1;
+    for (const span of cert.spans) {
+      if (!span || Object.keys(span).sort().join(",") !== "end,family,start" || ![0, 1].includes(span.family) || !Number.isSafeInteger(span.start) || !Number.isSafeInteger(span.end) || span.start <= end || span.start < 0 || span.end > cert.bytes || span.end - span.start !== cert.nonces[span.family].length) return null;
+      end = span.end;
+    }
+    return cert.spans.some((row) => row.family === 0) && cert.spans.some((row) => row.family === 1) ? cert : null;
+  } catch {
+    return null;
+  }
+}
+async function certifyHtml(response, identity, options = {}) {
+  let sourceReader, parserReader, timer, aborted = false;
+  try {
+    if (!supportedResponse(response) || !validIdentity(identity) || response.headers.has(TEMPLATE_HEADER)) return response;
+    const nonce = policyNonce(response.headers.get("Content-Security-Policy"));
+    const Rewriter = options.Rewriter ?? globalThis.HTMLRewriter;
+    const now = options.now ?? Date.now, createdAt = now(), cryptoImpl = options.cryptoImpl ?? globalThis.crypto;
+    if (!nonce || typeof Rewriter !== "function" || !Number.isSafeInteger(createdAt) || createdAt < 0) return response;
+    const timeout = new Promise((resolve) => {
+      timer = setTimeout(() => {
+        aborted = true;
+        resolve(null);
+      }, DEADLINE_MS);
+    });
+    sourceReader = response.clone().body.getReader();
+    const inspect2 = (async () => {
+      const bytes = await readBytes(sourceReader);
+      if (!bytes || aborted) return null;
+      const html = decode2(bytes);
+      if (html === null) return null;
+      const check = inspector(identity);
+      let rewriter = new Rewriter();
+      for (const [selector, handler3] of Object.entries(check.handlers)) rewriter = rewriter.on(selector, handler3);
+      parserReader = rewriter.transform(new Response(bytes)).body.getReader();
+      let finished = false;
+      for (let count = 0; count < 4096; count++) {
+        if ((await parserReader.read()).done) {
+          finished = true;
+          break;
+        }
+        if (aborted) return null;
+      }
+      if (!finished) return null;
+      const records = check.result();
+      if (!records || aborted) return null;
+      const selected = nonceSpans(html, records, nonce);
+      if (!selected) return null;
+      const spans = byteSpans(html, selected, bytes);
+      if (!spans) return null;
+      const sha256 = await digest(bytes, cryptoImpl);
+      if (aborted) return null;
+      const cert = {
+        v: 2,
+        identity: { ...identity },
+        createdAt,
+        expiresAt: createdAt + TEMPLATE_TTL_MS,
+        bytes: bytes.length,
+        sha256,
+        csp: response.headers.get("Content-Security-Policy"),
+        reportOnly: response.headers.get("Content-Security-Policy-Report-Only"),
+        vary: response.headers.get("Vary") ?? "",
+        nonces: selected.nonces,
+        spans
+      };
+      const encoded2 = btoa(JSON.stringify(cert));
+      return encoded2.length <= HEADER_LIMIT ? encoded2 : null;
+    })();
+    const encoded = await Promise.race([inspect2, timeout]);
+    if (!encoded) return response;
+    const headers3 = new Headers(response.headers);
+    headers3.set(TEMPLATE_HEADER, encoded);
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers: headers3 });
+  } catch {
+    return response;
+  } finally {
+    aborted = true;
+    clearTimeout(timer);
+    cancel(sourceReader);
+    cancel(parserReader);
+  }
+}
+function freshNonce(cryptoImpl) {
+  const bytes = cryptoImpl.getRandomValues(new Uint8Array(24));
+  return btoa(String.fromCharCode(...bytes)).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+}
+async function renewTemplate(response, identity, options = {}) {
+  let reader, timer, aborted = false;
+  try {
+    const now = options.now ?? Date.now, cryptoImpl = options.cryptoImpl ?? globalThis.crypto;
+    const cert = readTemplateCertificate(response, identity, now());
+    if (!cert) return null;
+    const timeout = new Promise((resolve) => {
+      timer = setTimeout(() => {
+        aborted = true;
+        cancel(reader);
+        resolve(null);
+      }, DEADLINE_MS);
+    });
+    const deliver = (async () => {
+      reader = response.body.getReader();
+      const bytes = await readBytes(reader);
+      if (!bytes || aborted || bytes.length !== cert.bytes || await digest(bytes, cryptoImpl) !== cert.sha256) return null;
+      if (now() >= cert.expiresAt || aborted) return null;
+      const nonces = [freshNonce(cryptoImpl), freshNonce(cryptoImpl)];
+      if (nonces[0] === nonces[1] || nonces.some((value) => cert.nonces.includes(value))) return null;
+      const result = replaceNonceBytes(bytes, cert, nonces);
+      if (!result) return null;
+      const headers3 = new Headers(response.headers);
+      for (const name of [...validators, TEMPLATE_HEADER]) headers3.delete(name);
+      headers3.set("Content-Security-Policy", cert.csp.replace(`'nonce-${cert.nonces[0]}'`, `'nonce-${nonces[0]}'`));
+      headers3.set("Cache-Control", "no-store");
+      if (cert.vary) headers3.set("Vary", cert.vary);
+      else headers3.delete("Vary");
+      return new Response(result, { status: 200, headers: headers3 });
+    })();
+    return await Promise.race([deliver, timeout]);
+  } catch {
+    return null;
+  } finally {
+    aborted = true;
+    clearTimeout(timer);
+    cancel(reader);
+  }
+}
+
+// src/html-memory-cache.js
+var MEMORY_CACHE_MAX_BYTES = 8 * 1024 * 1024;
+var MEMORY_CACHE_MAX_ENTRIES = 32;
+var MEMORY_CAPTURE_DEADLINE_MS = 1e3;
+var MEMORY_BODY_LIMIT = 1048576;
+var STORE_DEADLINE_MS = 100;
+var MAX_STORE_OPERATIONS = 8;
+var REVISION = "pll-html-memory-v1";
+var CERTIFICATE = "X-PLL-HTML-Template";
+var encoder6 = new TextEncoder();
+var internalHeader = (name) => /^x-pll-(?:html-)?template/iu.test(name);
+var replayHeaders = [
+  "Age",
+  "CF-Ray",
+  "CF-Cache-Status",
+  "Server-Timing",
+  "Date",
+  "X-Cloud-Trace-Context",
+  "X-Request-ID",
+  "X-Correlation-ID",
+  "X-PLL-HTML-Cache",
+  "X-PLL-HTML-Cache-Age",
+  "X-PLL-HTML-Cache-Source"
+];
+function cancel2(reader) {
+  try {
+    reader?.cancel().catch(() => {
+    });
+  } catch {
+  }
+}
+function headersWithoutReplay(input) {
+  const headers3 = new Headers(input);
+  for (const name of replayHeaders) headers3.delete(name);
+  return headers3;
+}
+function outward(response, state, age, source) {
+  const headers3 = new Headers([...response.headers].filter(([name]) => !internalHeader(name)));
+  if (state === "HIT") for (const name of replayHeaders) headers3.delete(name);
+  if (state === "MISS" || state === "HIT") headers3.set("Cache-Control", "no-store");
+  headers3.set("X-PLL-HTML-Cache", state);
+  headers3.delete("X-PLL-HTML-Cache-Age");
+  headers3.delete("X-PLL-HTML-Cache-Source");
+  if (age !== void 0) headers3.set("X-PLL-HTML-Cache-Age", String(age));
+  if (source) headers3.set("X-PLL-HTML-Cache-Source", source);
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers: headers3 });
+}
+function validClock(value, current) {
+  return value && Number.isSafeInteger(value.createdAt) && value.createdAt >= 0 && value.createdAt <= current && value.expiresAt === value.createdAt + 3e5 && value.expiresAt > current;
+}
+async function capture(response, timing) {
+  let reader, timer, stopped = false;
+  try {
+    reader = response.clone().body.getReader();
+    const read = (async () => {
+      const buffer = new Uint8Array(MEMORY_BODY_LIMIT);
+      let size = 0, chunks = 0, empty = 0;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) return buffer.slice(0, size);
+        if (stopped || !(value instanceof Uint8Array) || ++chunks > 2048 || !value.byteLength && ++empty > 8 || size + value.byteLength > MEMORY_BODY_LIMIT) return null;
+        buffer.set(value, size);
+        size += value.byteLength;
+      }
+    })();
+    const deadline = new Promise((resolve) => {
+      timer = timing.setTimeout(() => {
+        stopped = true;
+        cancel2(reader);
+        resolve(null);
+      }, MEMORY_CAPTURE_DEADLINE_MS);
+    });
+    return await Promise.race([read, deadline]);
+  } catch {
+    return null;
+  } finally {
+    stopped = true;
+    timing.clearTimeout(timer);
+    cancel2(reader);
+  }
+}
+function copyEntry(value, key) {
+  if (typeof key !== "string" || !key || key.length > 8192 || !(value?.bytes instanceof Uint8Array) || value.bytes.byteLength < 1 || value.bytes.byteLength > MEMORY_BODY_LIMIT || !Array.isArray(value.headers) || value.headers.length > 64) return null;
+  if (!value.headers.every((pair) => Array.isArray(pair) && pair.length === 2 && pair.every((item) => typeof item === "string"))) return null;
+  const headers3 = [...headersWithoutReplay(value.headers)].map((pair) => Object.freeze(pair));
+  const characters = key.length + headers3.reduce((sum, pair) => sum + pair[0].length + pair[1].length, 0);
+  if (characters > 65536) return null;
+  return Object.freeze({
+    bytes: new Uint8Array(value.bytes),
+    headers: Object.freeze(headers3),
+    createdAt: value.createdAt,
+    expiresAt: value.expiresAt,
+    // Conservative payload accounting includes UTF-16 metadata and fixed entry overhead.
+    // Transient response copies and the JavaScript engine's whole heap are separate.
+    size: value.bytes.byteLength + 2 * characters + 4096
+  });
+}
+function createHtmlMemoryCache({
+  mode = "off",
+  now = Date.now,
+  certify = certifyHtml,
+  renew = renewTemplate,
+  readCertificate = readTemplateCertificate,
+  timing = globalThis,
+  maxBytes = MEMORY_CACHE_MAX_BYTES,
+  maxEntries = MEMORY_CACHE_MAX_ENTRIES,
+  store
+} = {}) {
+  if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > MEMORY_CACHE_MAX_BYTES || !Number.isSafeInteger(maxEntries) || maxEntries < 1 || maxEntries > MEMORY_CACHE_MAX_ENTRIES)
+    throw new RangeError("Cache budgets exceed the fixed limits");
+  let entries = /* @__PURE__ */ new Map(), fillInFlight = false, storeEnabled = Boolean(store), storePending = 0;
+  const total = (rows) => rows.reduce((sum, [, row]) => sum + row.size, 0);
+  const expire = () => {
+    entries = new Map([...entries].filter(([, row]) => validClock(row, now())));
+  };
+  const drop = (key, expected) => {
+    if (entries.get(key) === expected) entries = new Map([...entries].filter(([name]) => name !== key));
+  };
+  const touch = (key) => {
+    const row = entries.get(key);
+    if (row) entries = new Map([...entries].filter(([name]) => name !== key).concat([[key, row]]));
+  };
+  function admit(key, value) {
+    const entry = copyEntry(value, key);
+    if (!entry || !validClock(entry, now()) || entry.size > maxBytes) return false;
+    const previous = entries.get(key);
+    if (previous && previous.createdAt > entry.createdAt) return false;
+    let rows = [...entries].filter(([name, row]) => name !== key && validClock(row, now()));
+    while (rows.length && (rows.length >= maxEntries || total(rows) + entry.size > maxBytes)) rows = rows.slice(1);
+    entries = new Map([...rows, [key, entry]]);
+    return true;
+  }
+  async function stored(method, ...args) {
+    if (!storeEnabled || storePending >= MAX_STORE_OPERATIONS) return { ok: false };
+    storePending += 1;
+    let timer;
+    const work = Promise.resolve().then(() => store[method](...args)).then((value) => {
+      storePending -= 1;
+      return { ok: true, value };
+    }, () => {
+      storePending -= 1;
+      storeEnabled = false;
+      return { ok: false };
+    });
+    const deadline = new Promise((resolve) => {
+      timer = timing.setTimeout(() => {
+        storeEnabled = false;
+        resolve({ ok: false });
+      }, STORE_DEADLINE_MS);
+    });
+    try {
+      return await Promise.race([work, deadline]);
+    } finally {
+      timing.clearTimeout(timer);
+    }
+  }
+  async function hit(entry, target, source) {
+    let response;
+    try {
+      if (!validClock(entry, now())) return null;
+      response = new Response(entry.bytes, { headers: entry.headers });
+      const certificate = readCertificate(response, target, now());
+      if (!validClock(certificate, now()) || certificate.createdAt !== entry.createdAt || certificate.expiresAt !== entry.expiresAt || certificate.bytes !== entry.bytes.byteLength) return null;
+      const renewed = await renew(response, target, { now });
+      if (!(renewed instanceof Response) || renewed.status !== 200 || !validClock(entry, now())) {
+        cancel2(renewed?.body);
+        return null;
+      }
+      return outward(renewed, "HIT", Math.floor((now() - entry.createdAt) / 1e3), source);
+    } catch {
+      return null;
+    } finally {
+      cancel2(response?.body);
+    }
+  }
+  async function fill(response, target, key) {
+    if (response.status !== 200 || !response.body || response.headers.has(CERTIFICATE)) return outward(response, "BYPASS");
+    let fresh = response;
+    try {
+      const certified = await certify(response, target, { now });
+      if (!(certified instanceof Response)) return outward(response, "BYPASS");
+      fresh = certified;
+      const certificate = readCertificate(certified, target, now());
+      if (!validClock(certificate, now())) return outward(fresh, "BYPASS");
+      const bytes = await capture(certified, timing);
+      if (!bytes || bytes.byteLength !== certificate.bytes || !validClock(certificate, now())) return outward(fresh, "BYPASS");
+      const entry = copyEntry({
+        bytes,
+        headers: [...certified.headers],
+        createdAt: certificate.createdAt,
+        expiresAt: certificate.expiresAt
+      }, key);
+      if (!entry || !admit(key, entry)) return outward(fresh, "BYPASS");
+      if (storeEnabled) await stored("put", key, {
+        bytes: new Uint8Array(entry.bytes),
+        headers: entry.headers.map((pair) => [...pair]),
+        createdAt: entry.createdAt,
+        expiresAt: entry.expiresAt
+      });
+      return outward(fresh, "MISS");
+    } catch {
+      return outward(fresh, "BYPASS");
+    }
+  }
+  async function handle(request, deliver) {
+    const target = targetForCache(request, mode, REVISION);
+    if (!target) return outward(await deliver(), "BYPASS");
+    expire();
+    const key = cacheKeyFor(request, target).url, memory = entries.get(key);
+    if (memory) {
+      const response = await hit(memory, target, "memory");
+      if (response) {
+        touch(key);
+        return response;
+      }
+      drop(key, memory);
+    }
+    if (storeEnabled) {
+      const found = await stored("get", key);
+      if (found.ok && found.value) {
+        let row;
+        try {
+          row = copyEntry(found.value, key);
+        } catch {
+          row = null;
+        }
+        if (row) {
+          const response = await hit(row, target, "sqlite");
+          if (response) {
+            admit(key, row);
+            return response;
+          }
+        }
+      }
+    }
+    if (fillInFlight) return outward(await deliver(), "BYPASS");
+    fillInFlight = true;
+    try {
+      const response = await deliver();
+      return await fill(response, target, key);
+    } finally {
+      fillInFlight = false;
+    }
+  }
+  return Object.freeze({ handle, snapshot: () => Object.freeze({
+    entries: entries.size,
+    accountedBytes: total([...entries]),
+    maxBytes,
+    maxEntries,
+    fillInFlight,
+    storeEnabled,
+    storePending
+  }) });
+}
+
+// src/sqlite-template-store.js
+var SQLITE_TEMPLATE_SLOTS = 32;
+var SQLITE_TEMPLATE_BODY_LIMIT = 1048576;
+var SQLITE_TEMPLATE_HEADERS_LIMIT = 65536;
+var TTL_MS = 3e5;
+var KEY_LIMIT = 8192;
+var encoder7 = new TextEncoder();
+var previewHost2 = "recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var headerName = /^[!#$%&'*+.^_\x60|~0-9a-z-]+$/iu;
+var schema = `CREATE TABLE IF NOT EXISTS pll_html_templates_v1 (
+  slot INTEGER PRIMARY KEY CHECK(slot >= 0 AND slot < 32),
+  cache_key TEXT NOT NULL CHECK(length(cache_key) <= 8192),
+  body BLOB NOT NULL CHECK(typeof(body) = 'blob' AND length(body) BETWEEN 1 AND 1048576),
+  headers TEXT NOT NULL CHECK(length(CAST(headers AS BLOB)) <= 65536),
+  created_at INTEGER NOT NULL CHECK(created_at >= 0),
+  expires_at INTEGER NOT NULL CHECK(expires_at > created_at AND expires_at <= created_at + 300000)
+)`;
+var select = `SELECT cache_key, body, headers, created_at, expires_at
+  FROM pll_html_templates_v1 WHERE slot = ? AND cache_key = ? LIMIT 1`;
+var upsert = `INSERT INTO pll_html_templates_v1
+  (slot, cache_key, body, headers, created_at, expires_at) VALUES (?, ?, ?, ?, ?, ?)
+  ON CONFLICT(slot) DO UPDATE SET cache_key = excluded.cache_key, body = excluded.body,
+    headers = excluded.headers, created_at = excluded.created_at, expires_at = excluded.expires_at
+  WHERE excluded.cache_key <> pll_html_templates_v1.cache_key
+    OR excluded.created_at >= pll_html_templates_v1.created_at`;
+function validKey(key) {
+  if (typeof key !== "string" || key.length > KEY_LIMIT || /[^\x21-\x7e]/u.test(key)) return false;
+  try {
+    const url = new URL(key);
+    if (url.href !== key || url.protocol !== "https:" || url.username || url.password || url.port || url.search || url.hash) return false;
+    const match = /^\/_pll-internal-cache\/[a-z0-9_-]{1,64}\/(es|en|fr|it)\/%2F[^/?#]*$/iu.exec(url.pathname);
+    if (!match) return false;
+    const host = (match[1].toLowerCase() === "es" ? "www" : match[1].toLowerCase()) + ".panamalegallab.com";
+    return url.hostname === host || url.hostname === previewHost2;
+  } catch {
+    return false;
+  }
+}
+function slotFor(key) {
+  let hash = 2166136261;
+  for (let index = 0; index < key.length; index++) hash = Math.imul(hash ^ key.charCodeAt(index), 16777619) >>> 0;
+  return hash % SQLITE_TEMPLATE_SLOTS;
+}
+function headerRecords(value) {
+  if (!Array.isArray(value) || !value.length || value.length > 128) return null;
+  let chars = 0;
+  const names = /* @__PURE__ */ new Set();
+  for (const pair of value) {
+    if (!Array.isArray(pair) || pair.length !== 2 || typeof pair[0] !== "string" || typeof pair[1] !== "string" || pair[0].length > 256 || pair[1].length > SQLITE_TEMPLATE_HEADERS_LIMIT || !headerName.test(pair[0]) || /[\u0000-\u0008\u000a-\u001f\u007f-\u009f]/u.test(pair[1]) || names.has(pair[0].toLowerCase()) || pair[0].toLowerCase() === "set-cookie") return null;
+    chars += pair[0].length + pair[1].length + 6;
+    if (chars > SQLITE_TEMPLATE_HEADERS_LIMIT) return null;
+    names.add(pair[0].toLowerCase());
+  }
+  const records = value.map((pair) => Object.freeze([pair[0], pair[1]]));
+  const json = JSON.stringify(records);
+  return encoder7.encode(json).byteLength <= SQLITE_TEMPLATE_HEADERS_LIMIT ? { records: Object.freeze(records), json } : null;
+}
+function freshTimes(createdAt, expiresAt, current) {
+  return Number.isSafeInteger(createdAt) && createdAt >= 0 && Number.isSafeInteger(expiresAt) && createdAt <= current && expiresAt > current && expiresAt > createdAt && expiresAt - createdAt <= TTL_MS;
+}
+function ownedBytes(value) {
+  if (!(value instanceof Uint8Array) && !(value instanceof ArrayBuffer)) return null;
+  if (!value.byteLength || value.byteLength > SQLITE_TEMPLATE_BODY_LIMIT) return null;
+  return value instanceof Uint8Array ? new Uint8Array(value) : new Uint8Array(value.slice(0));
+}
+function createSqliteTemplateStore(sql, { now = Date.now } = {}) {
+  let state = "new", reason = null;
+  const disable = (value) => {
+    state = "disabled";
+    reason = value;
+  };
+  try {
+    if (typeof sql?.exec !== "function") disable("unavailable");
+  } catch {
+    disable("unavailable");
+  }
+  if (typeof now !== "function") disable("invalid-clock");
+  function clock() {
+    try {
+      const value = now();
+      return Number.isSafeInteger(value) && value >= 0 ? value : null;
+    } catch {
+      return null;
+    }
+  }
+  function ready() {
+    if (state === "disabled") return false;
+    if (state === "new") {
+      try {
+        sql.exec(schema);
+        state = "ready";
+      } catch {
+        disable("storage-error");
+        return false;
+      }
+    }
+    return true;
+  }
+  async function get(key) {
+    const current = clock();
+    if (!validKey(key) || current === null || !ready()) return null;
+    try {
+      const rows = sql.exec(select, slotFor(key), key).toArray();
+      if (!Array.isArray(rows) || rows.length !== 1) return null;
+      const row = rows[0];
+      if (row?.cache_key !== key || !freshTimes(row.created_at, row.expires_at, current) || typeof row.headers !== "string" || row.headers.length > SQLITE_TEMPLATE_HEADERS_LIMIT) return null;
+      const headers3 = headerRecords(JSON.parse(row.headers));
+      if (!headers3) return null;
+      const bytes = ownedBytes(row.body);
+      if (!bytes) return null;
+      return Object.freeze({ bytes, headers: headers3.records, createdAt: row.created_at, expiresAt: row.expires_at });
+    } catch {
+      disable("storage-error");
+      return null;
+    }
+  }
+  async function put(key, entry) {
+    const current = clock();
+    if (!validKey(key) || current === null || !entry || !freshTimes(entry.createdAt, entry.expiresAt, current)) return;
+    const headers3 = headerRecords(entry.headers);
+    if (!headers3) return;
+    const bytes = ownedBytes(entry.bytes);
+    if (!bytes || !ready()) return;
+    try {
+      sql.exec(upsert, slotFor(key), key, bytes.buffer, headers3.json, entry.createdAt, entry.expiresAt);
+    } catch {
+      disable("storage-error");
+    }
+  }
+  return Object.freeze({ get, put, snapshot: () => Object.freeze({ state, reason }) });
+}
+
 // src/backend-core.js
 var MAX_IN_FLIGHT = 8;
-function createRendererClass(Base, makeHandler) {
+function createRendererClass(Base, makeHandler, { cacheMode: cacheMode2 = "off", cacheOptions = {} } = {}) {
   return class extends Base {
     constructor(ctx, env) {
       super(ctx, env);
       this.environment = env;
       this.handle = makeHandler();
       this.inFlight = 0;
+      let store = cacheOptions.store;
+      if (["preview", "all"].includes(cacheMode2) && !Object.hasOwn(cacheOptions, "store")) {
+        try {
+          const sql = ctx?.storage?.sql;
+          if (sql) store = createSqliteTemplateStore(sql, { now: cacheOptions.now ?? Date.now });
+        } catch {
+        }
+      }
+      this.htmlCache = createHtmlMemoryCache({ ...cacheOptions, mode: cacheMode2, store });
     }
     async fetch(request) {
       const boundary = requestBoundary(request);
@@ -3268,10 +4367,13 @@ function createRendererClass(Base, makeHandler) {
         this.inFlight -= 1;
       };
       try {
-        const rendered = await this.handle(request);
-        const images = await withImageFormat(rendered, request, this.environment);
-        const delivered = await withCssStatic(images, request, this.environment);
-        return holdResponseSlot(withBackendVersion(delivered, this.environment), release);
+        const result = await this.htmlCache.handle(request, async () => {
+          const rendered = await this.handle(request);
+          const images = await withImageFormat(rendered, request, this.environment);
+          const delivered = await withCssStatic(images, request, this.environment);
+          return withBackendVersion(delivered, this.environment);
+        });
+        return holdResponseSlot(withBackendVersion(result, this.environment), release);
       } catch {
         release();
         return withBackendVersion(temporaryResponse(boundary, request.method), this.environment);
@@ -3281,7 +4383,8 @@ function createRendererClass(Base, makeHandler) {
 }
 
 // src/backend.js
-var PllRenderer = class extends createRendererClass(DurableObject, createDeliveryHandler) {
+var cacheMode = true ? "all" : "off";
+var PllRenderer = class extends createRendererClass(DurableObject, createDeliveryHandler, { cacheMode }) {
 };
 var backend_default = { fetch: (request) => backendNotFound(request.method) };
 export {
