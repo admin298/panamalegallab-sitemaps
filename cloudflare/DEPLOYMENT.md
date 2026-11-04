@@ -1,85 +1,38 @@
-# Cloudflare: estado y procedimiento de entrega
+# Cloudflare: entrega actual
 
-Estado al 3 de noviembre de 2026: publicado y aceptado en producción. Las 43 páginas comprobadas respondieron con el contenido adaptado y la versión esperada. Este documento es la referencia operativa actual. Los documentos del frontend anterior se mantienen como historial.
+Aceptada en producción: 2026-11-04T16:33:18Z. El [recibo](frontend/css-static/activation-receipt.json) identifica la validación.
 
-La solución mantiene Google Sites como origen del contenido e imágenes. Pages comprueba la petición y la pasa por una conexión interna a un Durable Object SQLite, donde se ejecuta el mismo adaptador de contenido y SEO validado. La configuración usa el plan gratuito. El backend no tiene una ruta pública de proxy, dominio propio, workers.dev ni URLs públicas de preview. Su entrada HTTP predeterminada devuelve 404.
+Paquete: `frontend/css-static/`. Pages real: `bc2cd6ed-c1ed-448e-9873-df07ee3e7a53`. Backend real: `44ca5e88-b938-4087-8269-cb9efb27016d`; SHA256 `faf97097fac5c117459a4843c8a2235ccc143e767289b34216351081c5ed13dc`. El código frontend Pages permanece en `3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9` y el renderer de referencia en `58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509`. Los assets estáticos de Pages sí se actualizan.
 
-## Identidad del paquete verificado
+## CSS estático exacto
 
-| Componente | Identidad |
-| --- | --- |
-| Código y compilados | `frontend/durable-free/` |
-| Proyecto Pages | `pll-seo-preview-20261102` |
-| Worker del backend | `pll-renderer-free-20261103` |
-| Clase SQLite | `PllRenderer` |
-| Conexión de Pages | `PLL_RENDERER` |
-| Objeto fijo | `pll-renderer-v1` |
-| Versión real del backend probado | `6a508332-86d1-4e6f-9856-1380e95b8fb5` |
-| Namespace SQLite conectado | `585ce224e0634c4bb0f61402e313787a` |
-| Despliegue preview probado | `415a1f22-8edd-49d9-80e5-7fd48cf09db1` |
-| Despliegue de producción aceptado | `4f080bac-378b-4a5e-b055-eab7df8502bf` |
-| SHA256 del frontend | `3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9` |
-| SHA256 del backend | `9bc11f3b59345396838c7fca7d56e8e414d3be892ba9c542d504fef34368852b` |
-| SHA256 del renderer de referencia | `58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509` |
+La hoja pública original de Google se entrega desde `/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css` con SHA256 `7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61` y 1954605 bytes decodificados, sin minificar ni transformar. Se conserva [su procedencia y atribución](frontend/css-static/assets/provenance.json). El reemplazo solo se aplica a esa versión y URI de origen exactas; el resto del CSS y fuentes conserva su origen. Un error inicial al cargar la copia local restaura la hoja original de Google. Un cambio de versión en Google conserva el origen hasta revisar y publicar una nueva copia.
 
-Los dos compilados están en `frontend/durable-free/dist/`. `X-PLL-Backend-Version` identifica la versión real del backend y `X-PLL-RendererSha256` identifica el renderer. Comprobar ambos permite detectar una conexión ausente o una versión anterior después de un despliegue.
+En la muestra finita de ocho cargas, la duración de CSS mejora en 4/4 parejas y FCP en 3/3 parejas con dato disponible; falta el FCP de un control de escritorio. LCP de escritorio es mixto: una pareja empeora +457 ms. El control móvil de 19,19 segundos de CSS externo se conserva como observación atípica. No se afirma mejora general de LCP, puntuación PageSpeed ni reducción de bytes del CSS: la comparación comprimida registrada fue 225846 B de Google y 242742 B de Cloudflare.
 
-El [recibo público de activación](frontend/durable-free/activation-receipt.json) resume la aceptación sin capturas de HTML, cabeceras de visitantes, direcciones IP ni registros de peticiones. La producción usa el mismo ZIP de tres archivos probado en preview, SHA256 `81c5cc369c31991fe4f11c64901908ca2932a8abdf219ca028f18b8afb4cabf1`.
+## Imágenes existentes
 
-## Verificación disponible
+Las ocho imágenes indicadas solicitan la representación nativa WebP de Google CDN. Los procesos de portada conservan los píxeles; las fotografías de banca tienen conversión con pérdida permitida y aprobada visualmente. Se conservan las fotografías, encuadres y dimensiones. Este ahorro de imágenes no demuestra por sí solo una mejora de velocidad de toda la página.
 
-- 15 pruebas de wrappers, límites, entrega de cuerpos y transporte; cobertura de sus módulos: 100% de líneas, 96,47% de ramas y 95,24% de funciones. Cuatro pruebas adicionales de configuración.
-- 145 redirecciones comprobadas mediante GET y HEAD, conservando las consultas; búsqueda pública y sus límites por cliente comprobados en el runtime nativo.
-- 39 páginas comparadas sin conexión a Internet: contenido exacto y recursos de imágenes, CSS, scripts, mapas y formularios preservados; producción y preview difieren únicamente en los metadatos públicos de versión y el noindex de preview.
-- Preview publicado: cuatro páginas de control y las 35 páginas pendientes respondieron correctamente, con backend y renderer identificados. En las primeras cuatro muestras reales, Pages consumió 1–2 ms de CPU y el Durable Object 40–69 ms. Son muestras puntuales, no una garantía de capacidad bajo carga.
-- Producción publicada: cuatro portadas, cuatro contactos y las 35 páginas pendientes, 43 de 43 con HTTP 200, indexación permitida, canonical de su dominio público, versión del backend y renderer exactos. Se comprobaron 387 enlaces de cabecera y 129 enlaces de pie, sin destinos de teléfono incorrectos detectados, fallback de entrega ni errores 1102 en estas peticiones. Las cuatro páginas de contacto conservaron sus iframes originales de mapa y formulario.
-- Telemetría real de producción: 43 muestras completas correspondientes a esas peticiones, todas con resultado `ok`, máximo 2 ms de CPU en Pages. La cifra corresponde al frontend; no se atribuye al renderer del Durable Object.
-- Navegación real en navegador: escritorio español → empresa → francés y móvil francés → empresa equivalente en italiano. Ambos recorridos conservaron el servicio consultado; después se restauró el tamaño de pantalla habitual.
+| Perfil / idioma | Bytes originales | Bytes WebP | Dimensiones | Calidad |
+| --- | ---: | ---: | --- | --- |
+| home-process / es | 809989 | 679044 | 696×1024 | Exactos |
+| home-process / en | 768218 | 650554 | 653×1024 | Exactos |
+| home-process / fr | 715640 | 610636 | 599×1024 | Exactos |
+| home-process / it | 783212 | 659520 | 669×1024 | Exactos |
+| bank-corporate / es | 73518 | 51862 | 427×683 | Con pérdida aprobada |
+| bank-corporate / en | 84198 | 59946 | 491×683 | Con pérdida aprobada |
+| bank-corporate / fr | 73251 | 51794 | 424×683 | Con pérdida aprobada |
+| bank-corporate / it | 75192 | 53914 | 446×683 | Con pérdida aprobada |
 
-El frontend sigue sujeto al límite gratuito de Pages de 10 ms de CPU por petición. El Durable Object SQLite tiene un presupuesto de CPU distinto y cuotas gratuitas de peticiones y duración. Confirmar las cuotas actuales de toda la cuenta antes de cambiar tráfico. La revisión comprobó que la cuenta continuaba en Free. No se activó ningún plan de pago.
+## Publicación y cuotas
 
-## Preparación reproducible
+Se conserva el Worker `pll-renderer-free-20261103`, clase `PllRenderer`, namespace `585ce224e0634c4bb0f61402e313787a`, binding `PLL_RENDERER` y objeto fijo `pll-renderer-v1`. No crear otro Worker ni namespace. Preview y producción comparten backend y cuotas. Se mantiene Free, HTML no-store y Google Sites como origen vivo; la cuota gratuita sigue siendo finita. El asset CSS estático se excluye exactamente de la invocación Worker y admite caché immutable; eso no convierte el HTML en contenido cacheado.
 
-Desde `cloudflare/frontend/durable-free/`:
-
-```sh
-npm ci
-npm run build
-npm run coverage
-node --test config/config.test.mjs
-npx --yes wrangler@4.157.0 deploy --config config/backend.wrangler.json --dry-run --outdir .wrangler-dry-run
-```
-
-La preparación requiere Node.js compatible con las dependencias fijadas en `package-lock.json`. Las pruebas locales nativas abren únicamente conexiones locales; todos sus destinos externos están interceptados. Las capturas privadas usadas para la comparación de 39 páginas no forman parte de este repositorio.
-
-Las dos configuraciones portables son idénticas a las verificadas excepto por la eliminación de `$schema`, una referencia del editor a herramientas locales ausentes del repositorio. No cambia ninguna opción de ejecución o despliegue.
-
-## Procedimiento para próximas publicaciones
-
-La activación anterior ya está completada y aceptada. Para otra versión, repetir las comprobaciones antes de sustituir los identificadores del recibo; no asumir que una nueva compilación conserva automáticamente esta aceptación.
-
-Preview y producción comparten ahora el mismo backend. Cambiar su código afecta a ambos entornos. Para ensayar otra versión del backend, usar primero un Worker y namespace separados con sus nombres y bindings revisados; conservar el backend aceptado hasta validar esa versión. Las instrucciones y la configuración siguientes describen la instalación exacta ya aceptada, no un aislamiento automático de nuevas versiones.
-
-1. Verificar cuenta, hashes y versión revisada. Autenticarse mediante el acceso oficial de Cloudflare cuando se disponga de la autorización correspondiente. No crear claves dentro del repositorio.
-2. Para reinstalar el backend aceptado, desde la carpeta del paquete usar `npx --yes wrangler@4.157.0 deploy --config config/backend.wrangler.json`. Esta operación crea o actualiza el namespace SQLite declarado en `exports`; copiar solamente el JavaScript no lo crea. Las actualizaciones de un Durable Object pueden tardar en activarse: confirmar el ID de versión devuelto, sin asumir que el primer resultado ya usa código nuevo. Para otro backend, revisar primero el destino aislado indicado arriba.
-3. En Dashboard, configurar Pages → Settings → Bindings → Durable Object: `PLL_RENDERER` apunta a `PllRenderer` del Worker `pll-renderer-free-20261103`. Preview y producción son ajustes separados, pero ambos apuntan intencionadamente al mismo namespace y al mismo objeto. Comparten cuotas y capacidad.
-4. Conservar el despliegue vigente en producción mientras se configura preview. Subir los tres archivos de `dist/frontend/` como un ZIP de Pages. El alias exacto `recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev` activa los mismos controles de contenido que producción y mantiene `noindex, nofollow` y `no-store`.
-5. Antes de adoptar producción, comprobar la versión real, las cuatro páginas de control, las 35 pendientes, ambas métricas de CPU y errores, enlaces entre idiomas, teléfonos, formularios y mapas sin enviar consultas reales. Después conectar producción y publicar exactamente el mismo frontend aprobado; verificar de nuevo sus dominios públicos.
-
-`config/pages.wrangler.json` describe los bindings esperados en ambos entornos. El procedimiento actual los gestiona en Dashboard. Usar ese archivo con Wrangler Pages convierte esos campos en fuente de configuración; no mezclar ambos métodos sin revisar la configuración efectiva.
+Desde la carpeta del paquete: `npm ci`, `npm run build`, las pruebas de su README y revisión de hashes. Publicar primero los cinco assets exactos de Pages, verificar MIME, hash y exclusión estática; después activar el backend. La publicación autorizada usa `config/backend.all.wrangler.json` con `PLL_IMAGE_FORMAT=all` y `PLL_CSS_STATIC=all`. El default `config/backend.wrangler.json` mantiene ambas variables off. Los perfiles difieren solo en estas dos variables; `backend.all-css.wrangler.json` pone imágenes off y no representa la activación combinada. Confirmar versiones reales, fallback y los cuatro idiomas después.
 
 ## Reversión
 
-Si falla preview, conservar producción. Si falla después de adoptar producción, restaurar desde el historial de Pages el despliegue de emergencia `d9d24838-84a1-4d71-a7bf-2fde5e6e2878`, que redirige temporalmente al Google Sites publicado y no depende del binding. Es una recuperación temporal con funciones de SEO y navegación distintas al adaptador completo. Los paquetes históricos anteriores a esta recuperación están archivados, pero el adaptador anterior excedió el presupuesto de CPU de Pages y no debe restaurarse como solución definitiva.
+Primero desactivar únicamente `PLL_CSS_STATIC=off` en una copia del perfil all, manteniendo `PLL_IMAGE_FORMAT=all` y el mismo Worker/SQLite. Tras confirmar que el HTML vuelve a usar Google, conservar el asset CSS inerte para visitantes con documentos anteriores. No borrar primero el asset. La recuperación amplia conserva `frontend/durable-free/dist/backend/worker.js` (SHA256 `9bc11f3b59345396838c7fca7d56e8e414d3be892ba9c542d504fef34368852b`) y su configuración. Restaurarlos en el MISMO Worker/SQLite, confirmar el nuevo ID real y renderer esperado, sin borrar namespaces ni ejecutar migraciones de borrado. El Pages frontend conserva el binding actual; el Pages de emergencia histórico sigue siendo la recuperación temporal documentada.
 
-No eliminar el namespace ni aplicar migraciones de borrado durante una reversión. El paquete actual no añade fallback automático por fallo de transporte: responde temporalmente con 503, sin filtrar errores internos. El renderer conserva sus reglas de compatibilidad de origen ya existentes.
-
-La prueba de envío y recepción real del formulario sigue aplazada por el usuario. Las imágenes actuales se conservan. La automatización de GitHub y sitemaps sigue fuera de este cambio.
-
-## Documentación oficial
-
-- [Durable Objects: límites](https://developers.cloudflare.com/durable-objects/platform/limits/)
-- [Durable Objects: precios y cuotas gratuitas](https://developers.cloudflare.com/durable-objects/platform/pricing/)
-- [Declaración y migraciones SQLite](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/)
-- [Conexión de Pages con Durable Objects](https://developers.cloudflare.com/pages/functions/bindings/#durable-objects)
-- [Metadatos de versión](https://developers.cloudflare.com/workers/runtime-apis/bindings/version-metadata/)
+Las fuentes y recibos anteriores permanecen intactos. No se añaden automatizaciones, envíos de formulario, recursos de pago ni un proxy de imágenes.
