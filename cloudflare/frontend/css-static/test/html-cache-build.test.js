@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 test('HTML cache remains behind the exact accepted thin Pages code and finite free budgets', async () => {
   const read = name => readFile(new URL('../' + name, import.meta.url));
   const manifest = JSON.parse(await read('build-manifest.json'));
-  assert.equal(manifest.release, 'pll-html-do-cache-20261104-v1');
+  assert.equal(manifest.release, 'pll-native-impressions-20261105-v1');
   assert.equal(manifest.htmlCache.placement, 'durable-object');
   assert.ok(['off', 'preview', 'all'].includes(manifest.htmlCache.mode));
   assert.equal(manifest.htmlCache.perVisitDurableObjectCalls, 1);
