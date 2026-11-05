@@ -1,0 +1,63 @@
+{
+  "state": "LOGGER_PORTABLE_AND_PUBLIC_ACCEPTED",
+  "release": "pll-native-impressions-20261105-v1",
+  "tests": 146,
+  "baseTestsRetained": 126,
+  "newTests": 18,
+  "passed": 146,
+  "coverage": {
+    "lines": 99.94,
+    "branches": 89.8,
+    "functions": 97.42
+  },
+  "changedNativePolicyCoverage": {
+    "lines": 100,
+    "branches": 96.92,
+    "functions": 100
+  },
+  "sourceFrozenRendererFiles": 26,
+  "pagesUnchangedSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "backend": {
+    "bytes": 410590,
+    "sha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8"
+  },
+  "saved252NativeReplay": {
+    "state": "PASS",
+    "fixtureDate": "2026-11-04",
+    "count": 252,
+    "byLanguage": {
+      "es": 63,
+      "en": 63,
+      "fr": 63,
+      "it": 63
+    },
+    "nativeParserPassesPerDocument": 1,
+    "onlyConfigField357Changed": true,
+    "cspAndOtherBytesExact": true,
+    "externalHttp": 0,
+    "receipt": "Local evidence/REPLAY252-SUMMARY.json; no raw HTML in portable archive."
+  },
+  "codeReview": "Independent review is recorded separately in local review/. Live acceptance belongs to root.",
+  "freshDependencyNetworkAudit": true,
+  "newDependencies": 0,
+  "newPaidResources": 0,
+  "newBindings": 0,
+  "recurringJobs": 0,
+  "externalNetworkActionsByBuilder": 0,
+  "limits": [
+    "No current252production/browser speed claim.",
+    "Google Sites native impressions intentionally suppressed; GA4 needs consent-aware runtime validation.",
+    "A future script/schema shape leaves native impression config unchanged.",
+    "No per-visitor script digest fetch; exact versioned public URLs and source hashes reviewed before build."
+  ],
+  "retainedPortabilityGuardTests": 2,
+  "productionAccepted": true,
+  "backendVersion": "7ffb8661-8eeb-459f-8264-89288caf15fb",
+  "runtimeReceipt": "activation-receipt.json",
+  "newResourceBindings": 0,
+  "addedPolicyVars": [
+    "PLL_NATIVE_IMPRESSIONS"
+  ],
+  "heroSourceIncluded": false,
+  "freshDependencyAuditReceiptSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8"
+}

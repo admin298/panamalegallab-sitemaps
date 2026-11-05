@@ -1,0 +1,63 @@
+{
+  "state": "LOGGER_PORTABLE_BUILD_TEST_AND_PUBLIC_ACCEPTANCE_PASS",
+  "variant": "logger",
+  "tests": 146,
+  "passed": 146,
+  "failed": 0,
+  "coverage": {
+    "lines": 99.94,
+    "branches": 89.8,
+    "functions": 97.42
+  },
+  "outputs": [
+    {
+      "path": "dist/frontend/_worker.js",
+      "bytes": 3349,
+      "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/backend/worker.js",
+      "bytes": 410590,
+      "sha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/_routes.json",
+      "bytes": 133,
+      "sha256": "c589b22cd100b77043e1ccdc94eb1a36be6cd76f59112a04b78229cafd7fb694",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/_headers",
+      "bytes": 181,
+      "sha256": "5277e7f7d51173b09a153d64f355b1723992ec622152519c5dc51780e33cfc10",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/deployment.txt",
+      "bytes": 34,
+      "sha256": "30c445f45cb2876c2289fdd42ac64eed59dd4a01362f2b7a4d19f849d632ed6c",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+      "bytes": 1954605,
+      "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
+      "matchesCandidate": true
+    }
+  ],
+  "retainedPortabilityGuardTests": 2,
+  "existingLockPreserved": true,
+  "newDependencies": 0,
+  "externalRequests": 0,
+  "freshNetworkAudit": true,
+  "productionAccepted": true,
+  "runtimeReceipt": "activation-receipt.json",
+  "syntaxValidation": "esbuild and the complete executed Node test suites parsed/imported selected code; no separate lint script is configured",
+  "localWrapperOnly": "existing dependencies resolved by validation/reuse-dependencies.mjs, excluded from source archive",
+  "runtimeVersion": "7ffb8661-8eeb-459f-8264-89288caf15fb",
+  "newAuditByThisPackager": false,
+  "auditReceiptSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8",
+  "sourceCodeAndBuildArtifactsUnchangedSince146TestPass": true
+}

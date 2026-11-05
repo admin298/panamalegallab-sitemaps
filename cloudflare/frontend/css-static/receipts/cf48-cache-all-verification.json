@@ -1,0 +1,109 @@
+{
+  "state": "INITIAL_RENDER_ADOPTED_FINAL_IMAGE_HEALTH_PENDING",
+  "release": "pll-initial-render-20261105-v1",
+  "backendVersion": "cf48c90c-24d6-420d-bc93-0cecad7cdc46",
+  "backend": {
+    "bytes": 422116,
+    "sha256": "896f502739aff3d6879279f7cf93685e78a12d364b9dfbf61fb3b1d7ec70df4e"
+  },
+  "runtimeReceipt": "activation-receipt.json",
+  "activationReceiptSha256": "68c7126c36c0834be1a1ef33dd51193759b71f2b791ebc20c8d8c4bdee0cc11f",
+  "tests": 163,
+  "passed": 163,
+  "failed": 0,
+  "inheritedPortableTests": 146,
+  "addedTests": 17,
+  "retainedPortabilityGuardTests": 2,
+  "cssHelperTests": 19,
+  "cssHelperPassed": 19,
+  "coverage": {
+    "lines": 99.68,
+    "branches": 89.01,
+    "functions": 94.7
+  },
+  "initialRenderModuleCoverage": {
+    "lines": 100,
+    "functions": 100,
+    "branches": 95.18
+  },
+  "homeOverlayCoverage": {
+    "lines": 100,
+    "functions": 61.11,
+    "branches": 88.33,
+    "note": "Native integration executes parser handlers in workerd outside Node function coverage; aggregate thresholds pass."
+  },
+  "sourceFrozenRendererFiles": 26,
+  "pagesUnchangedSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "historicalReplay": {
+    "date": "2026-11-04",
+    "pages": 252,
+    "fonts": 252,
+    "lazyFrames": 20,
+    "newRatioHints": 3,
+    "existingSpanishRatioPreserved": 1,
+    "otherAcceptedBytesAndCspExact": true,
+    "externalRequests": 0,
+    "nativeParserPasses": 1
+  },
+  "previewAcceptance": {
+    "views": 12,
+    "pairs": 6,
+    "state": "GO",
+    "retries": 0,
+    "allImageHashesGeometryFontsLinksAndNormalizedCspMatch": true,
+    "noInitialInvalidFontOrFormRequestsInCandidates": true,
+    "sixFormsLoadedAfterScrollWithoutSubmission": true,
+    "browsersClosed": true,
+    "analysisSha256": "d7ee18bba5aa02fa16d33d910a17513dca653299a226ea071868f690aa650f4f",
+    "esMobileLcpMedianMs": {
+      "control": 8178,
+      "candidate": 7936
+    },
+    "secondEsPairRegressionMsRetained": 324,
+    "itDesktopCls": {
+      "control": 0.136316,
+      "candidate": 0.001681
+    }
+  },
+  "publicHttp": {
+    "views": 8,
+    "accepted": 8,
+    "state": "PASS",
+    "retries": 0,
+    "receiptSha256": "d2e9ba1eb7e562df1c1703eefbb5861b92c1767a050dacf46cc2fde89105f7eb"
+  },
+  "productionAccepted": true,
+  "newResourceBindings": 0,
+  "addedPolicyVars": [
+    "PLL_INITIAL_RENDER"
+  ],
+  "newDependencies": 0,
+  "newPaidResources": 0,
+  "recurringJobs": 0,
+  "externalNetworkActionsByPackager": 0,
+  "npmAudit": {
+    "vulnerabilities": 0,
+    "dependencies": 83,
+    "receiptSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8",
+    "newDependencies": 0
+  },
+  "historicalReceipts": [
+    "activation-7ff-receipt.json",
+    "activation-f550-receipt.json",
+    "receipts/7ff-verification.json",
+    "receipts/7ff-portable-validation.json"
+  ],
+  "limits": [
+    "Small finite lab sample, not field CWV or global speed guarantee.",
+    "252 historical replays are not252 fresh browser inspections.",
+    "No hreflang head tags were observed; existing protected sitemap hreflang alternates are retained.",
+    "Form delivery, Analytics conversion receipt/campaign attribution and GSC remain deferred.",
+    "New PageSpeed score not yet recorded."
+  ],
+  "publicationReady": false,
+  "finalHealthVerification": {
+    "state": "PENDING",
+    "reason": "Public PageSpeed observed Google image403s; operator is investigating cache versus bypass.",
+    "publicGetScope": "Eight successful document GETs do not establish final image health."
+  }
+}
