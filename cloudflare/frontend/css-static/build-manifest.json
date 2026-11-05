@@ -1,15 +1,32 @@
 {
-  "release": "pll-native-impressions-20261105-v1",
+  "release": "pll-initial-render-20261105-v1",
   "rendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
   "htmlCache": {
     "placement": "durable-object",
-    "mode": "all",
+    "mode": "off",
     "certificateVersion": 2,
     "revision": "pll-html-memory-v1-impressions-v1-off",
     "revisionsByImpressionMode": {
       "off": "pll-html-memory-v1-impressions-v1-off",
       "preview": "pll-html-memory-v1-impressions-v1-preview",
       "all": "pll-html-memory-v1-impressions-v1-all"
+    },
+    "revisionsByPolicyMode": {
+      "off": {
+        "off": "pll-html-memory-v1-impressions-v1-off",
+        "preview": "pll-html-memory-v1-impressions-v1-off-initial-v1-preview",
+        "all": "pll-html-memory-v1-impressions-v1-off-initial-v1-all"
+      },
+      "preview": {
+        "off": "pll-html-memory-v1-impressions-v1-preview",
+        "preview": "pll-html-memory-v1-impressions-v1-preview-initial-v1-preview",
+        "all": "pll-html-memory-v1-impressions-v1-preview-initial-v1-all"
+      },
+      "all": {
+        "off": "pll-html-memory-v1-impressions-v1-all",
+        "preview": "pll-html-memory-v1-impressions-v1-all-initial-v1-preview",
+        "all": "pll-html-memory-v1-impressions-v1-all-initial-v1-all"
+      }
     },
     "maximumAgeSeconds": 300,
     "maximumEntries": 32,
@@ -22,6 +39,23 @@
     "recurringJobs": 0,
     "addedBindings": 0,
     "newPaidResources": 0
+  },
+  "initialRender": {
+    "modeVariable": "PLL_INITIAL_RENDER",
+    "modes": [
+      "off",
+      "preview",
+      "all"
+    ],
+    "removedUrl": "https://fonts.googleapis.com/css?family=Century%20Gothic%3Ai%2Cbi%2C700%2C400&display=swap",
+    "previewControlParameter": "_pll_initial_render",
+    "previewControlValue": "control",
+    "previewCandidateValue": "candidate",
+    "shape": "Exact invalid-font link removal; recognized Apps Script iframe loading lazy; recognized four-home overlay auto-ratio hint. Unsupported shapes preserved.",
+    "frame": "Same URL, sandbox, permissions and dimensions; native loading lazy only.",
+    "overlay": "Only recognized four homepage widgets and localized alt; aspect-ratio auto 1168 / 854 when no inline style; intrinsic ratio retained.",
+    "parser": "Reuses the existing native inspector and raw-text spans; no extra parse or upstream fetch.",
+    "styling": "Font-family, fallback stacks and all valid font stylesheets remain byte-identical."
   },
   "impressions": {
     "modeVariable": "PLL_NATIVE_IMPRESSIONS",
@@ -62,15 +96,15 @@
     "transformations": "none",
     "provenance": "Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted."
   },
-  "builtAt": "2026-11-05T11:22:44.576Z",
+  "builtAt": "2026-11-05T17:32:48.931Z",
   "files": {
     "dist/frontend/_worker.js": {
       "bytes": 3349,
       "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
     },
     "dist/backend/worker.js": {
-      "bytes": 410590,
-      "sha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8"
+      "bytes": 422116,
+      "sha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521"
     },
     "dist/frontend/_routes.json": {
       "bytes": 133,

@@ -1,63 +1,138 @@
 {
-  "state": "LOGGER_PORTABLE_AND_PUBLIC_ACCEPTED",
-  "release": "pll-native-impressions-20261105-v1",
-  "tests": 146,
-  "baseTestsRetained": 126,
-  "newTests": 18,
-  "passed": 146,
-  "coverage": {
-    "lines": 99.94,
-    "branches": 89.8,
-    "functions": 97.42
-  },
-  "changedNativePolicyCoverage": {
-    "lines": 100,
-    "branches": 96.92,
-    "functions": 100
-  },
-  "sourceFrozenRendererFiles": 26,
-  "pagesUnchangedSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "state": "CURRENT_F62_PACKET_READY_FOR_USER_APPROVAL_MOBILE_SPEED_OPEN",
+  "backendVersionReportedByOperator": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
   "backend": {
-    "bytes": 410590,
-    "sha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8"
+    "bytes": 422116,
+    "sha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521"
   },
-  "saved252NativeReplay": {
-    "state": "PASS",
-    "fixtureDate": "2026-11-04",
-    "count": 252,
-    "byLanguage": {
-      "es": 63,
-      "en": 63,
-      "fr": 63,
-      "it": 63
-    },
-    "nativeParserPassesPerDocument": 1,
-    "onlyConfigField357Changed": true,
-    "cspAndOtherBytesExact": true,
-    "externalHttp": 0,
-    "receipt": "Local evidence/REPLAY252-SUMMARY.json; no raw HTML in portable archive."
+  "htmlCacheMode": "off",
+  "policyVars": {
+    "PLL_IMAGE_FORMAT": "all",
+    "PLL_CSS_STATIC": "all",
+    "PLL_NATIVE_IMPRESSIONS": "all",
+    "PLL_INITIAL_RENDER": "all"
   },
-  "codeReview": "Independent review is recorded separately in local review/. Live acceptance belongs to root.",
-  "freshDependencyNetworkAudit": true,
+  "tests": 163,
+  "passed": 163,
+  "failed": 0,
+  "newTests": 0,
+  "sourceCoverage": {
+    "lines": 99.68,
+    "functions": 94.7,
+    "branches": 89.01
+  },
+  "coverageBasis": "Previous coverage run; source/test files remain byte-identical. No repeat coverage run.",
+  "helperTestsBasis": "Previous helper suite passed 19/19; helper source unchanged; not rerun.",
+  "sourceProof": "CACHE-OFF-RECEIPT.json",
+  "sourceProofSha256": "30bc112afbbb1f590f49e8632075566129f44174660b917cd4b737610deb0e37",
+  "sourceFilesComparedByRecoveryProof": 99,
+  "newRuntimeCode": false,
+  "soleBackendChange": "Compiled existing HTML cache mode from all to off; source unchanged.",
+  "fiveFrontendArtifactsUnchanged": true,
+  "perHtmlVisit": {
+    "pagesExecutions": 1,
+    "durableObjectCalls": 1,
+    "googleOriginFetches": 1,
+    "freshHtml": true
+  },
+  "runtimeBounds": {
+    "maximumInFlight": 8,
+    "queue": false,
+    "recurringJobs": 0
+  },
+  "historicalCacheBudgetsDormant": {
+    "maximumAgeSeconds": 300,
+    "maximumEntries": 32,
+    "maximumMemoryBytes": 8388608,
+    "persistentSlots": 32
+  },
   "newDependencies": 0,
-  "newPaidResources": 0,
-  "newBindings": 0,
-  "recurringJobs": 0,
-  "externalNetworkActionsByBuilder": 0,
-  "limits": [
-    "No current252production/browser speed claim.",
-    "Google Sites native impressions intentionally suppressed; GA4 needs consent-aware runtime validation.",
-    "A future script/schema shape leaves native impression config unchanged.",
-    "No per-visitor script digest fetch; exact versioned public URLs and source hashes reviewed before build."
-  ],
-  "retainedPortabilityGuardTests": 2,
-  "productionAccepted": true,
-  "backendVersion": "7ffb8661-8eeb-459f-8264-89288caf15fb",
-  "runtimeReceipt": "activation-receipt.json",
   "newResourceBindings": 0,
-  "addedPolicyVars": [
-    "PLL_NATIVE_IMPRESSIONS"
+  "newPaidResources": 0,
+  "networkActionsByPackager": 0,
+  "runtimeReceipt": "activation-receipt.json",
+  "historicalReceipts": [
+    "activation-cf48-cache-all-receipt.json",
+    "activation-7ff-receipt.json",
+    "activation-f550-receipt.json"
   ],
-  "heroSourceIncluded": false,
-  "freshDependencyAuditReceiptSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8"
+  "productionAccepted": true,
+  "publicationReady": true,
+  "finalHealthVerification": {
+    "state": "PASS",
+    "scope": "Five public views in four languages; 97 image transfers returned HTTP 200, zero broken images; late Spanish check at 234.604 seconds had fresh URLs and preserved hashes.",
+    "mobileSpeed": "OPEN",
+    "proof": "activation-receipt.json"
+  },
+  "limits": [
+    "Do not routinely restore HTML cache all after aged image tokens failed.",
+    "PageSpeed report 543kcq01on records a single external run (56 mobile / 78 desktop); no causal, global speed or field CWV improvement claimed. Mobile speed remains open.",
+    "Form delivery, Analytics conversions/attribution and GSC remain deferred."
+  ],
+  "backendVersion": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+  "activationReceiptSha256": "e7ec7683262924c0c2916245aebb483e580e2c8145f6b68396a3df6fe3e0b7a5",
+  "performanceComplete": false,
+  "publicImageHealth": {
+    "state": "PASS",
+    "views": 5,
+    "languages": 4,
+    "queryFree": true,
+    "version": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+    "allCacheBypass": true,
+    "imageTransfers200": 97,
+    "brokenImages": 0,
+    "laterEsSeconds": 234.604,
+    "laterEsImageUrlsNew": true,
+    "photoLogoOverlayHashesPreserved": true,
+    "retries": 0,
+    "allBrowsersClosed": true,
+    "verdict": "diagnostic/image-403/cache-off-validation/results/FINAL-VERDICT.json",
+    "verdictSha256": "152d543d85a5d11b6632df17b31d8d6beb0a4c1cb0d9d7a0c722a88a202573a6"
+  },
+  "pageSpeed": {
+    "report": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on",
+    "atLocal": "2026-11-05 18:42:26 CET",
+    "mobile": {
+      "performance": 56,
+      "fcpSeconds": 2.9,
+      "lcpSeconds": 14.7,
+      "tbtMs": 370,
+      "cls": 0.005
+    },
+    "desktop": {
+      "performance": 78,
+      "fcpSeconds": 0.7,
+      "lcpSeconds": 2.4,
+      "tbtMs": 210,
+      "cls": 0.001
+    },
+    "accessibility": 100,
+    "seo": 100,
+    "bestPractices": 96,
+    "agenticBrowsing": "2/2",
+    "image403ObservedInExpandedConsoleAudits": false,
+    "remainingConsoleError": "Google play.log cross-origin telemetry error",
+    "limits": "Single external run, not causal comparison or field-CWV. Mobile performance remains open."
+  },
+  "sourceCodeAndBuildArtifactsUnchangedSince163OffModeTestPass": true,
+  "readyForUserApproval": true,
+  "githubApprovalStatus": "PENDING_EXPLICIT_USER_APPROVAL",
+  "remoteActionsAuthorized": false,
+  "proposedBranch": "codex/initial-render-free-20261105",
+  "rejectedResponsiveStudy": {
+    "state": "RESPONSIVE_IMAGE_SRCSET_REJECTED_NOT_PUBLISHED",
+    "correctedEarlyViews": 4,
+    "earlySavings": "Short observation windows only; not adopted.",
+    "lateSafetyCase": {
+      "views": 1,
+      "rotationSecondsAfterFreshResponse": 160.013,
+      "previouslyUnfetchedSelectedWidth": 1280,
+      "imageResponses403": 9,
+      "brokenImages": 9
+    },
+    "activeExperimentalCode": false,
+    "activeBackendUnchanged": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+    "decision": "Keep current photo delivery; no responsive experiment code adopted.",
+    "criticalCssNextDirection": "Plan only; not implemented."
+  }
 }

@@ -1,0 +1,122 @@
+{
+  "state": "LOGGER_PUBLIC_ACCEPTED_HERO_REJECTED",
+  "acceptedAtUtc": "2026-11-05T12:50:31.893Z",
+  "productionAccepted": true,
+  "acceptedRelease": "pll-native-impressions-20261105-v1",
+  "backendVersion": "7ffb8661-8eeb-459f-8264-89288caf15fb",
+  "backendSha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8",
+  "backendBytes": 410590,
+  "policyMode": "all",
+  "htmlCacheMode": "all",
+  "cacheRevision": "pll-html-memory-v1-impressions-v1-all",
+  "frontendSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "rendererSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "addedPolicyVars": [
+    {
+      "name": "PLL_NATIVE_IMPRESSIONS",
+      "activeValue": "all",
+      "modes": [
+        "off",
+        "preview",
+        "all"
+      ],
+      "apiKind": "environment variable/configuration binding"
+    }
+  ],
+  "newResourceBindings": 0,
+  "resourceBindingsMeaning": "No new Durable Object namespace/export, storage or service binding. Policy environment variables are separately added and visible as API bindings.",
+  "preservedResources": [
+    "existing Worker",
+    "DO namespace/export",
+    "SQLite storage",
+    "Pages-to-DO service binding",
+    "Pages",
+    "DNS",
+    "recovery rules"
+  ],
+  "newPaidResources": 0,
+  "recurringJobs": 0,
+  "liveEvidence": {
+    "receiptSha256": "2a083d1ad9bc256c4be035891cc2a32b26c2e940edb0599a8b5dd600996ba7e9",
+    "previewPrimaryViews": 16,
+    "controlNativeRequests": 61,
+    "candidateNativeRequests": 0,
+    "publicPrimaryViews": 4,
+    "publicPrimaryNativeRequests": 0,
+    "functionalLanguages": [
+      "es",
+      "en",
+      "fr",
+      "it"
+    ],
+    "documentBudget": 39,
+    "originalItalianFailedReceiptPreserved": true,
+    "italianAcceptance": "Separate hover smoke; no original FAIL rewritten."
+  },
+  "localPortableValidation": {
+    "tests": 146,
+    "passed": 146,
+    "retainedPortabilityGuardTests": 2,
+    "sixBuildArtifactsMatchAcceptedCandidate": true,
+    "receipt": "portable-validation.json"
+  },
+  "dependencyAudit": {
+    "vulnerabilities": 0,
+    "dependencies": 83,
+    "registry": "official npm registry, operator-provided fresh audit",
+    "reportSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8",
+    "packageLockSha256": "3de3a2f38128f3650702b6e04415a264607f78d488821de0309c5c32c9d6767e",
+    "installOrUpdatePerformed": false,
+    "cacheIncluded": false
+  },
+  "previousReceipt": {
+    "path": "activation-f550-receipt.json",
+    "sha256": "c3d33a1e2cb6716ca3d983d643c03a12cab729f601c7b6be5a8a54a5a2cabd36"
+  },
+  "heroSelection": "NOT_SELECTED_FAILED_FIXED_ACCEPTANCE_GUARDS",
+  "currentTransientPreviewDeployment": "Ended. Accepted logger version restored at100% and verified with four bounded public GETs.",
+  "limits": [
+    "Zero native impression calls observed in finite16s untouched content windows; not an infinite-time or measured quota/billing guarantee.",
+    "GA4 script/config/dataLayer and consent preserved before rejecting in anonymous functional contexts; no event delivery claim.",
+    "Search is excluded from the impression policy. Ordinary GET/HTTP200/canonical/noindex checks do not prove search RPC result completeness.",
+    "252preferred pages have separate offline backend contract evidence; these live browser samples are not252live performance measurements.",
+    "This phase did not change images, photos, GoogleSites, DNS, accounts, plan, fees or recovery rules."
+  ],
+  "heroSourceIncluded": false,
+  "postHeroRollback": {
+    "restoredVersion": "7ffb8661-8eeb-459f-8264-89288caf15fb",
+    "operatorCommandExit": 0,
+    "publicPolicyVars": {
+      "PLL_IMAGE_FORMAT": "all",
+      "PLL_CSS_STATIC": "all",
+      "PLL_NATIVE_IMPRESSIONS": "all"
+    },
+    "heroVariablePresent": false,
+    "fourHttpChecks": {
+      "state": "PASS_FOUR_PUBLIC_ROLLBACK_GETS",
+      "receiptSha256": "1e0d3afe247eab7104a1af5a3a3ad4c64e503767766c8fc36d70b1a6ccc50b4d",
+      "restoredVersion": "7ffb8661-8eeb-459f-8264-89288caf15fb",
+      "completed": 4,
+      "attempts": 4,
+      "retries": 0,
+      "languages": [
+        "es",
+        "en",
+        "fr",
+        "it"
+      ],
+      "allHttp200": true,
+      "canonicalAndNativeFlagCorrect": true,
+      "originalPhotoAndLoader": true,
+      "heroPolicyAbsent": true,
+      "heroTrialBudget": {
+        "previewDocuments": 37,
+        "rollbackHttpGets": 4,
+        "maximumDocuments": 41
+      },
+      "rawBodiesIncluded": false,
+      "newChecksByPackager": 0
+    },
+    "currentAcceptedBackendRestoredAt100Percent": true
+  }
+}
