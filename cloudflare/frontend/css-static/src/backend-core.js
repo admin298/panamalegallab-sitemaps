@@ -4,6 +4,7 @@ import { withImageFormat } from './image-format.js';
 import { withCssStatic } from './css-static.js';
 import { createHtmlMemoryCache } from './html-memory-cache.js';
 import { createSqliteTemplateStore } from './sqlite-template-store.js';
+import { impressionCacheRevision } from './native-impressions.js';
 
 export const MAX_IN_FLIGHT = 8;
 
@@ -21,7 +22,8 @@ export function createRendererClass(Base, makeHandler, { cacheMode = 'off', cach
           if (sql) store = createSqliteTemplateStore(sql, { now: cacheOptions.now ?? Date.now });
         } catch { /* Optional persistence cannot prevent normal rendering. */ }
       }
-      this.htmlCache = createHtmlMemoryCache({ ...cacheOptions, mode: cacheMode, store });
+      this.htmlCache = createHtmlMemoryCache({ ...cacheOptions, mode: cacheMode, store,
+        revision: cacheOptions.revision??impressionCacheRevision(env?.PLL_NATIVE_IMPRESSIONS) });
     }
 
     async fetch(request) {

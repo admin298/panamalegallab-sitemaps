@@ -1,5 +1,7 @@
 import { planDeliveryRequest } from '../renderer/src/plan.js';
 import { authorizedNonce } from './image-helpers.js';
+import { collectRawTextSpans, elementAttributes, applyTextEdits } from './html-spans.js';
+import { impressionPolicyEnabled, impressionDocumentEdit } from './native-impressions.js';
 
 export const CSS_NATIVE_URL='https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA';
 export const CSS_ASSET_PATH='/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css';
@@ -10,12 +12,15 @@ const utf8Html=/^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
 const noncePattern=/^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
 const encoder=new TextEncoder();
 
-function eligibleSite(request, mode) {
-  if(request.method!=='GET'||!['preview','all'].includes(mode))return null;
+function eligiblePolicies(request, environment) {
+  const mode=environment?.PLL_CSS_STATIC, impressionMode=environment?.PLL_NATIVE_IMPRESSIONS;
+  if(request.method!=='GET'||![mode,impressionMode].some(value=>['preview','all'].includes(value)))return null;
   const plan=planDeliveryRequest(request.url,request.method);
   if(plan.kind!=='page'||plan.searchPage)return null;
-  if(plan.mode==='production')return mode==='all'?plan.site:null;
-  return plan.previewOrigin===PREVIEW&&new URL(request.url).searchParams.get('_pll_speed')!=='control'?plan.site:null;
+  const css=plan.mode==='production'?mode==='all':plan.previewOrigin===PREVIEW
+    &&['preview','all'].includes(mode)&&new URL(request.url).searchParams.get('_pll_speed')!=='control';
+  const impressions=impressionPolicyEnabled(request,impressionMode,plan);
+  return css||impressions?{site:plan.site,css,impressions}:null;
 }
 
 export function stylePolicyAbsent(csp) {
@@ -32,8 +37,12 @@ function approvedLink(get) {
 }
 
 export function createCssInspector(site) {
-  let state={html:0,head:0,body:0,marker:0,charset:0,links:0,selected:0,safe:true,nonces:[]};
+  let state={html:0,head:0,body:0,marker:0,charset:0,links:0,selected:0,safe:true,cssSafe:true,nonces:[]};
   const count=name=>({element(){state={...state,[name]:state[name]+1};}});
+  const context=()=>{
+    const valid=state.safe&&['html','head','body','marker','charset'].every(name=>state[name]===1);
+    return {nonces:valid?state.nonces:null,cssValid:valid&&state.cssSafe&&['links','selected'].every(name=>state[name]===1)};
+  };
   return {
     ...Object.fromEntries(['html','head','body'].map(name=>[name,count(name)])),
     base:{element(){state={...state,safe:false};}},
@@ -48,8 +57,9 @@ export function createCssInspector(site) {
       if(nonce!==null)state={...state,nonces:[...state.nonces,nonce],safe:state.safe&&state.nonces.length<256};}},
     link:{element(element){if(element.getAttribute('data-id')==='_cl')state={...state,links:state.links+1};}},
     headLink:{element(element){if(element.getAttribute('data-id')==='_cl')state={...state,selected:state.selected+1,
-      safe:state.safe&&approvedLink(name=>element.getAttribute(name))};}},
-    result(){return state.safe&&['html','head','body','marker','charset','links','selected'].every(name=>state[name]===1)?state.nonces:null;},
+      cssSafe:state.cssSafe&&approvedLink(name=>element.getAttribute(name))};}},
+    context,
+    result(){const result=context();return result.cssValid?result.nonces:null;},
   };
 }
 
@@ -66,45 +76,7 @@ export function cssFallbackScript() {
   return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
 }
 
-function linkAttributes(tag) {
-  const attrs=new Map();let rest=tag.slice(5,-1),offset=5;
-  while(rest.length){
-    if(/^\s*\/?\s*$/u.test(rest))break;
-    const match=/^\s+([a-z_:][a-z0-9_:.-]*)(?:\s*=\s*(?:"([^"<>]*)"|'([^'<>]*)'))?/iu.exec(rest);
-    if(!match)return null;
-    const name=match[1].toLowerCase();if(attrs.has(name))return null;
-    const value=match[2]??match[3]??'';
-    const valueAt=match[0].indexOf('=');
-    attrs.set(name,{value,start:offset+(valueAt<0?match[0].length:match[0].search(/["']/u)+1),length:value.length});
-    offset+=match[0].length;rest=rest.slice(match[0].length);
-  }
-  return attrs;
-}
-
-function inertSpans(html) {
-  // ASCII folding preserves source offsets even for Unicode letters such as İ.
-  const lower=html.replace(/[A-Z]/gu,letter=>letter.toLowerCase()),spans=[];
-  const starts=/<!--|<(script|style|title|textarea|xmp|iframe|noembed|noframes|noscript)\b[^<>]*>/giu;
-  let match;
-  // Advance past each complete raw-text block. Missing closes fail immediately;
-  // repeated malformed openers cannot trigger quadratic regular-expression scans.
-  while((match=starts.exec(html))!==null){
-    let end;
-    if(match[0]==='<!--'){
-      const close=html.indexOf('-->',starts.lastIndex);if(close<0)return null;end=close+3;
-    }else{
-      const name=match[1].toLowerCase(),close=lower.indexOf('</'+name,starts.lastIndex);
-      if(close<0)return null;
-      const closing=/^<\/[a-z]+\s*>/iu.exec(html.slice(close,close+256));
-      if(!closing||!closing[0].toLowerCase().startsWith('</'+name)||!/^\s*>$/u.test(closing[0].slice(name.length+2)))return null;
-      end=close+closing[0].length;
-    }
-    spans.push({start:match.index,end});starts.lastIndex=end;
-  }
-  return spans;
-}
-
-export function spliceCssLink(html,nonce) {
+function cssLinkEdits(html,nonce,inert) {
   if(!noncePattern.test(nonce))return null;
   const heads=[...html.matchAll(/<head(?:\s[^<>]*)?>/giu)],ends=[...html.matchAll(/<\/head\s*>/giu)];
   if(heads.length!==1||ends.length!==1||/["']/u.test(heads[0][0]))return null;
@@ -112,10 +84,10 @@ export function spliceCssLink(html,nonce) {
   if(begin>=end)return null;
   // Native parsing proves structure, while this read-only classifier keeps the
   // exact-byte splice out of comments and raw-text/script strings.
-  const inert=inertSpans(html);if(!inert)return null;
+  if(!inert)return null;
   const candidates=[];
   for(const match of html.matchAll(/<link\b[^<>]*>/giu)){
-    const attrs=linkAttributes(match[0]);if(!attrs)return null;
+    const attrs=elementAttributes(match[0],'link');if(!attrs)return null;
     if(attrs.get('data-id')?.value!=='_cl')continue;
     if(match.index<begin||match.index>=end||inert.some(span=>match.index>=span.start&&match.index<span.end)
       ||!approvedLink(name=>attrs.get(name)?.value??null))return null;
@@ -123,8 +95,13 @@ export function spliceCssLink(html,nonce) {
   }
   if(candidates.length!==1)return null;
   const span=candidates[0];
-  const rewritten=html.slice(0,span.start)+CSS_ASSET_PATH+html.slice(span.end);
-  return rewritten.slice(0,begin)+`<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}</script>`+rewritten.slice(begin);
+  return [{start:span.start,end:span.end,replacement:CSS_ASSET_PATH},
+    {start:begin,end:begin,replacement:`<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}</script>`}];
+}
+
+export function spliceCssLink(html,nonce) {
+  const edits=cssLinkEdits(html,nonce,collectRawTextSpans(html));
+  return edits?applyTextEdits(html,edits):null;
 }
 
 function cancelQuietly(reader) {
@@ -141,7 +118,7 @@ async function readBounded(reader) {
   return bytes;
 }
 
-async function inspect(response,site,Rewriter,timing) {
+async function inspect(response,policies,Rewriter,timing) {
   let sourceReader,parserReader,timer,aborted=false;
   const deadline=new Promise(resolve=>{timer=timing.setTimeout(()=>{aborted=true;resolve(null);},CSS_DEADLINE_MS);timer?.unref?.();});
   try{
@@ -151,13 +128,19 @@ async function inspect(response,site,Rewriter,timing) {
       const html=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);
       const roundtrip=encoder.encode(html);
       if(roundtrip.length!==bytes.length||!roundtrip.every((value,index)=>value===bytes[index]))return null;
-      const inspector=createCssInspector(site);
+      const inspector=createCssInspector(policies.site);
       parserReader=attach(new Rewriter(),inspector).transform(new Response(bytes)).body.getReader();
       while(!(await parserReader.read()).done){if(aborted)return null;}
       if(aborted)return null;
-      const nonces=inspector.result();if(!nonces)return null;
-      const nonce=authorizedNonce(response.headers.get('Content-Security-Policy'),nonces);if(!nonce)return null;
-      const result=spliceCssLink(html,nonce);return result?encoder.encode(result):null;
+      const context=inspector.context();if(!context.nonces)return null;
+      const nonce=authorizedNonce(response.headers.get('Content-Security-Policy'),context.nonces);if(!nonce)return null;
+      const spans=collectRawTextSpans(html);if(!spans)return null;
+      const css=policies.css&&context.cssValid?cssLinkEdits(html,nonce,spans):null;
+      const impressions=policies.impressions?impressionDocumentEdit(html,policies.site,nonce,spans):null;
+      if(!css&&!impressions)return null;
+      const edits=[...(css??[]),...(impressions?[impressions]:[])];
+      const result=applyTextEdits(html,edits);
+      return result?{bytes:encoder.encode(result),css:Boolean(css),impressions:Boolean(impressions)}:null;
     })();
     return await Promise.race([inspection,deadline]);
   }catch{return null;}
@@ -167,15 +150,17 @@ async function inspect(response,site,Rewriter,timing) {
 export async function withCssStatic(response,request,environment,options={}) {
   try{
     if(response.status!==200||!response.body||response.headers.has('Content-Encoding')
-      ||!utf8Html.test(response.headers.get('Content-Type')??'')
-      ||!stylePolicyAbsent(response.headers.get('Content-Security-Policy')))return response;
-    const site=eligibleSite(request,environment?.PLL_CSS_STATIC);if(!site)return response;
+      ||!utf8Html.test(response.headers.get('Content-Type')??''))return response;
+    const selected=eligiblePolicies(request,environment);if(!selected)return response;
+    const policies={...selected,css:selected.css&&stylePolicyAbsent(response.headers.get('Content-Security-Policy'))};
+    if(!policies.css&&!policies.impressions)return response;
     const Rewriter=options.Rewriter??globalThis.HTMLRewriter;if(typeof Rewriter!=='function')return response;
-    const bytes=await inspect(response,site,Rewriter,options.timing??globalThis);if(!bytes)return response;
+    const result=await inspect(response,policies,Rewriter,options.timing??globalThis);if(!result)return response;
     const headers=new Headers(response.headers);
     for(const name of ['Content-Length','ETag','Content-MD5','Digest','Content-Digest','Repr-Digest'])headers.delete(name);
-    headers.set('X-PLL-CSS-Policy',`static-exact-v1-${site.language}`);
-    const delivered=new Response(bytes,{status:response.status,statusText:response.statusText,headers});
+    if(result.css)headers.set('X-PLL-CSS-Policy',`static-exact-v1-${policies.site.language}`);
+    if(result.impressions)headers.set('X-PLL-Impression-Policy',`native-noop-v1-${policies.site.language}`);
+    const delivered=new Response(result.bytes,{status:response.status,statusText:response.statusText,headers});
     try{response.body.cancel().catch(()=>{});}catch{/* Already closed. */}
     return delivered;
   }catch{return response;}
