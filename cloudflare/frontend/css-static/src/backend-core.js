@@ -5,6 +5,7 @@ import { withCssStatic } from './css-static.js';
 import { createHtmlMemoryCache } from './html-memory-cache.js';
 import { createSqliteTemplateStore } from './sqlite-template-store.js';
 import { impressionCacheRevision } from './native-impressions.js';
+import { initialRenderCacheRevision } from './initial-render.js';
 
 export const MAX_IN_FLIGHT = 8;
 
@@ -23,7 +24,7 @@ export function createRendererClass(Base, makeHandler, { cacheMode = 'off', cach
         } catch { /* Optional persistence cannot prevent normal rendering. */ }
       }
       this.htmlCache = createHtmlMemoryCache({ ...cacheOptions, mode: cacheMode, store,
-        revision: cacheOptions.revision??impressionCacheRevision(env?.PLL_NATIVE_IMPRESSIONS) });
+        revision: cacheOptions.revision??initialRenderCacheRevision(impressionCacheRevision(env?.PLL_NATIVE_IMPRESSIONS),env?.PLL_INITIAL_RENDER) });
     }
 
     async fetch(request) {
