@@ -1,11 +1,16 @@
 {
-  "release": "pll-html-do-cache-20261104-v1",
+  "release": "pll-native-impressions-20261105-v1",
   "rendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
   "htmlCache": {
     "placement": "durable-object",
     "mode": "all",
     "certificateVersion": 2,
-    "revision": "pll-html-memory-v1",
+    "revision": "pll-html-memory-v1-impressions-v1-off",
+    "revisionsByImpressionMode": {
+      "off": "pll-html-memory-v1-impressions-v1-off",
+      "preview": "pll-html-memory-v1-impressions-v1-preview",
+      "all": "pll-html-memory-v1-impressions-v1-all"
+    },
     "maximumAgeSeconds": 300,
     "maximumEntries": 32,
     "maximumMemoryBytes": 8388608,
@@ -18,6 +23,37 @@
     "addedBindings": 0,
     "newPaidResources": 0
   },
+  "impressions": {
+    "modeVariable": "PLL_NATIVE_IMPRESSIONS",
+    "modes": [
+      "off",
+      "preview",
+      "all"
+    ],
+    "previewOrigin": "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev",
+    "previewControlParameter": "_pll_native_impressions",
+    "previewControlValue": "control",
+    "previewCandidateValue": "candidate",
+    "viewScriptUrls": {
+      "es": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.es.qy5mfCdpnEs.O/am=AAAAGAAE/d=1/rs=AGEqA5myW6a9fBZOxA6oOP-YGbdeAZqtvw/m=view",
+      "en": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.en_US.CY2eaMNW2S0.O/am=AAAAGAAE/d=1/rs=AGEqA5kb6BcqE8ZiALmvuVdjL4tgdVXDVw/m=view",
+      "fr": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.fr.n7p6j6I-UBA.O/am=AAAAGAAE/d=1/rs=AGEqA5mTu1u34PhOtTHK1HLqd4to_aHlsQ/m=view",
+      "it": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.it.L62eI84RIxw.O/am=AAAAGAAE/d=1/rs=AGEqA5lO7vpeB4msuV03jy7XAwfq28rwfA/m=view"
+    },
+    "viewScriptSha256": {
+      "es": "35b980f4ba24606cb0ad0095c7abfa4bdc59c5b8e2ad15fe3595abf0d456f31a",
+      "en": "1283715e57fa0d96c5d59b167d3a976ca529ac86e2c05b5dd2c9ffdc7a71a3a1",
+      "fr": "57edbc582ec37ca406f7643d85412d3d6564f99364c3be54e3708e2ffbf7bdfe",
+      "it": "374b063be81e604403ce3ed8628b4c6aeebd6325ac5505a9c4e317b33ecd0a8f"
+    },
+    "nativeField": 357,
+    "arrayIndex": 356,
+    "recognizedArrayLength": 518,
+    "changedValue": true,
+    "mutation": "Exact recognized native configuration token only; docs-liap, GA4 and all unrelated bytes preserved.",
+    "unsupportedShape": "Original document unchanged by this policy; no endpoint acknowledgement or relay.",
+    "parser": "Reuses the CSS native inspector and raw-text spans; one native parse, no extra upstream fetch."
+  },
   "css": {
     "originalUri": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA",
     "path": "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
@@ -26,15 +62,15 @@
     "transformations": "none",
     "provenance": "Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted."
   },
-  "builtAt": "2026-11-04T20:17:39.195Z",
+  "builtAt": "2026-11-05T11:22:44.576Z",
   "files": {
     "dist/frontend/_worker.js": {
       "bytes": 3349,
       "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
     },
     "dist/backend/worker.js": {
-      "bytes": 404071,
-      "sha256": "b418914671ad90e2e53ee4bd190bbfde2ed0636600bff7142f113933ccd793ff"
+      "bytes": 410590,
+      "sha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8"
     },
     "dist/frontend/_routes.json": {
       "bytes": 133,
