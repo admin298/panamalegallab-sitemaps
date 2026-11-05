@@ -73,10 +73,11 @@ function copyEntry(value, key) {
 
 export function createHtmlMemoryCache({ mode = 'off', now = Date.now, certify = certifyHtml,
   renew = renewTemplate, readCertificate = readTemplateCertificate, timing = globalThis,
-  maxBytes = MEMORY_CACHE_MAX_BYTES, maxEntries = MEMORY_CACHE_MAX_ENTRIES, store } = {}) {
+  maxBytes = MEMORY_CACHE_MAX_BYTES, maxEntries = MEMORY_CACHE_MAX_ENTRIES, store, revision = REVISION } = {}) {
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > MEMORY_CACHE_MAX_BYTES
     || !Number.isSafeInteger(maxEntries) || maxEntries < 1 || maxEntries > MEMORY_CACHE_MAX_ENTRIES)
     throw new RangeError('Cache budgets exceed the fixed limits');
+  if(typeof revision!=='string'||!/^[a-zA-Z0-9_-]{1,64}$/u.test(revision))throw new RangeError('Invalid cache identity');
   let entries = new Map(), fillInFlight = false, storeEnabled = Boolean(store), storePending = 0;
   const total = rows => rows.reduce((sum, [, row]) => sum + row.size, 0);
   const expire = () => { entries = new Map([...entries].filter(([, row]) => validClock(row, now()))); };
@@ -137,7 +138,7 @@ export function createHtmlMemoryCache({ mode = 'off', now = Date.now, certify = 
     } catch { return outward(fresh, 'BYPASS'); }
   }
   async function handle(request, deliver) {
-    const target = targetForCache(request, mode, REVISION);
+    const target = targetForCache(request, mode, revision);
     if (!target) return outward(await deliver(), 'BYPASS');
     expire(); const key = cacheKeyFor(request, target).url, memory = entries.get(key);
     if (memory) {

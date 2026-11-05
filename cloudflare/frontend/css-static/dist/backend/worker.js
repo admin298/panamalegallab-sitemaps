@@ -3030,33 +3030,165 @@ async function withImageFormat(response, request, environment, options = {}) {
   }
 }
 
+// src/html-spans.js
+function collectRawTextSpans(html) {
+  if (typeof html !== "string") return null;
+  const lower = html.replace(/[A-Z]/gu, (letter) => letter.toLowerCase()), spans = [];
+  const starts = /<!--|<(script|style|title|textarea|xmp|iframe|noembed|noframes|noscript)\b[^<>]*>/giu;
+  let match;
+  while ((match = starts.exec(html)) !== null) {
+    const openEnd = starts.lastIndex;
+    const kind = match[0] === "<!--" ? "comment" : match[1].toLowerCase();
+    let contentEnd, end;
+    if (kind === "comment") {
+      contentEnd = html.indexOf("-->", openEnd);
+      if (contentEnd < 0) return null;
+      end = contentEnd + 3;
+    } else {
+      contentEnd = lower.indexOf("</" + kind, openEnd);
+      if (contentEnd < 0) return null;
+      const closing = /^<\/[a-z]+\s*>/iu.exec(html.slice(contentEnd, contentEnd + 256));
+      if (!closing || !closing[0].toLowerCase().startsWith("</" + kind) || !/^\s*>$/u.test(closing[0].slice(kind.length + 2))) return null;
+      end = contentEnd + closing[0].length;
+    }
+    spans.push(Object.freeze({ start: match.index, end, kind, openEnd, contentEnd }));
+    starts.lastIndex = end;
+  }
+  return spans;
+}
+function elementAttributes(tag, name) {
+  if (typeof tag !== "string" || !/^[a-z][a-z0-9-]*$/u.test(name) || !new RegExp("^<" + name + "\\b[^<>]*>$", "iu").test(tag)) return null;
+  const attrs = /* @__PURE__ */ new Map();
+  let offset = name.length + 1, rest = tag.slice(offset, -1);
+  while (rest.length) {
+    if (/^\s*\/?\s*$/u.test(rest)) break;
+    const match = /^\s+([a-z_:][a-z0-9_:.-]*)(?:\s*=\s*(?:"([^"<>]*)"|'([^'<>]*)'))?/iu.exec(rest);
+    if (!match) return null;
+    const field = match[1].toLowerCase();
+    if (attrs.has(field)) return null;
+    const value = match[2] ?? match[3] ?? "", equals = match[0].indexOf("=");
+    attrs.set(field, { value, start: offset + (equals < 0 ? match[0].length : match[0].search(/["']/u) + 1), length: value.length });
+    offset += match[0].length;
+    rest = rest.slice(match[0].length);
+  }
+  return attrs;
+}
+function applyTextEdits(html, edits) {
+  const ordered = [...edits].sort((left, right) => left.start - right.start);
+  let end = 0;
+  for (const edit of ordered) {
+    if (!Number.isSafeInteger(edit.start) || !Number.isSafeInteger(edit.end) || edit.start < end || edit.start < 0 || edit.end < edit.start || edit.end > html.length || typeof edit.replacement !== "string") return null;
+    end = edit.end;
+  }
+  let result = html;
+  for (const edit of ordered.toReversed()) result = result.slice(0, edit.start) + edit.replacement + result.slice(edit.end);
+  return result;
+}
+
+// src/native-impressions.js
+var IMPRESSION_VIEW_SCRIPTS = Object.freeze({
+  es: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.es.qy5mfCdpnEs.O/am=AAAAGAAE/d=1/rs=AGEqA5myW6a9fBZOxA6oOP-YGbdeAZqtvw/m=view",
+  en: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.en_US.CY2eaMNW2S0.O/am=AAAAGAAE/d=1/rs=AGEqA5kb6BcqE8ZiALmvuVdjL4tgdVXDVw/m=view",
+  fr: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.fr.n7p6j6I-UBA.O/am=AAAAGAAE/d=1/rs=AGEqA5mTu1u34PhOtTHK1HLqd4to_aHlsQ/m=view",
+  it: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.it.L62eI84RIxw.O/am=AAAAGAAE/d=1/rs=AGEqA5lO7vpeB4msuV03jy7XAwfq28rwfA/m=view"
+});
+var PREVIEW = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var noncePattern2 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
+var normalizedMode = (mode) => ["preview", "all"].includes(mode) ? mode : "off";
+function impressionCacheRevision(mode) {
+  return "pll-html-memory-v1-impressions-v1-" + normalizedMode(mode);
+}
+function impressionPolicyEnabled(request, mode, plan) {
+  if (request.method !== "GET" || normalizedMode(mode) === "off" || plan?.kind !== "page" || plan.searchPage) return false;
+  if (plan.mode === "production") return mode === "all";
+  if (plan.mode !== "preview" || plan.previewOrigin !== PREVIEW) return false;
+  const values = new URL(request.url).searchParams.getAll("_pll_native_impressions");
+  return values.length === 0 || values.length === 1 && values[0] === "candidate";
+}
+function impressionConfigEdit(script) {
+  if (typeof script !== "string" || script.length > 512e3) return null;
+  const assignment = /^(\s*_at_config\s*=\s*)/u.exec(script);
+  if (!assignment) return null;
+  try {
+    const remainder = script.slice(assignment[1].length);
+    if (remainder[0] !== "[") return null;
+    const last = arrayElementSpan(remainder, 517), json = remainder.slice(0, last.end + 1);
+    const suffix = remainder.slice(last.end + 1);
+    if (!/^\s*;/u.test(suffix) || /\b_at_config\s*=/u.test(suffix)) return null;
+    const config = JSON.parse(json);
+    if (!Array.isArray(config) || config.length !== 518 || config[212] !== 0 || config[316] !== null || ![null, false, true].includes(config[356])) return null;
+    const span = arrayElementSpan(json, 356), token = json.slice(span.start, span.end);
+    const leading = /^\s*/u.exec(token)[0].length, trailing = /\s*$/u.exec(token)[0].length;
+    return Object.freeze({
+      start: assignment[1].length + span.start + leading,
+      end: assignment[1].length + span.end - trailing,
+      replacement: "true",
+      changed: config[356] !== true
+    });
+  } catch {
+    return null;
+  }
+}
+function impressionDocumentEdit(html, site, nonce, spans) {
+  const expected = SITES[site?.language];
+  if (!expected || site.upstreamPrefix !== expected.upstreamPrefix || site.productionHost !== expected.productionHost || !noncePattern2.test(nonce) || !Array.isArray(spans)) return null;
+  let viewCount = 0, configCount = 0, result = null;
+  for (const span of spans) {
+    if (span.kind !== "script") continue;
+    const attrs = elementAttributes(html.slice(span.start, span.openEnd), "script");
+    if (!attrs) return null;
+    const src = attrs.get("src")?.value;
+    if (src !== void 0) {
+      if (src.startsWith("https://www.gstatic.com/_/atari/_/js/") && src.includes("/m=view")) {
+        if (src !== IMPRESSION_VIEW_SCRIPTS[site.language] || attrs.get("nonce")?.value !== nonce) return null;
+        viewCount += 1;
+      }
+      continue;
+    }
+    const script = html.slice(span.openEnd, span.contentEnd);
+    if (!/^\s*_at_config\s*=/u.test(script)) continue;
+    if (attrs.get("nonce")?.value !== nonce || attrs.has("type") && attrs.get("type").value.toLowerCase() !== "text/javascript") return null;
+    const edit = impressionConfigEdit(script);
+    if (!edit) return null;
+    configCount += 1;
+    result = Object.freeze({ ...edit, start: span.openEnd + edit.start, end: span.openEnd + edit.end });
+  }
+  return viewCount === 1 && configCount === 1 ? result : null;
+}
+
 // src/css-static.js
 var CSS_NATIVE_URL = "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA";
 var CSS_ASSET_PATH = "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css";
 var CSS_BODY_LIMIT = 1310720;
 var CSS_DEADLINE_MS = 1e3;
-var PREVIEW = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var PREVIEW2 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
 var utf8Html2 = /^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
-var noncePattern2 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
+var noncePattern3 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
 var encoder4 = new TextEncoder();
-function eligibleSite(request, mode) {
-  if (request.method !== "GET" || !["preview", "all"].includes(mode)) return null;
+function eligiblePolicies(request, environment) {
+  const mode = environment?.PLL_CSS_STATIC, impressionMode = environment?.PLL_NATIVE_IMPRESSIONS;
+  if (request.method !== "GET" || ![mode, impressionMode].some((value) => ["preview", "all"].includes(value))) return null;
   const plan = planDeliveryRequest(request.url, request.method);
   if (plan.kind !== "page" || plan.searchPage) return null;
-  if (plan.mode === "production") return mode === "all" ? plan.site : null;
-  return plan.previewOrigin === PREVIEW && new URL(request.url).searchParams.get("_pll_speed") !== "control" ? plan.site : null;
+  const css = plan.mode === "production" ? mode === "all" : plan.previewOrigin === PREVIEW2 && ["preview", "all"].includes(mode) && new URL(request.url).searchParams.get("_pll_speed") !== "control";
+  const impressions = impressionPolicyEnabled(request, impressionMode, plan);
+  return css || impressions ? { site: plan.site, css, impressions } : null;
 }
 function stylePolicyAbsent(csp) {
   return typeof csp === "string" && csp.length > 0 && !csp.split(",").some((policy) => policy.split(";").some((raw) => /^(?:default-src|style-src(?:-elem|-attr)?)$/iu.test(raw.trim().split(/\s+/u)[0])));
 }
 function approvedLink(get) {
-  return get("href") === CSS_NATIVE_URL && get("data-id") === "_cl" && get("rel")?.toLowerCase() === "stylesheet" && noncePattern2.test(get("nonce") ?? "") && get("integrity") === null;
+  return get("href") === CSS_NATIVE_URL && get("data-id") === "_cl" && get("rel")?.toLowerCase() === "stylesheet" && noncePattern3.test(get("nonce") ?? "") && get("integrity") === null;
 }
 function createCssInspector(site) {
-  let state = { html: 0, head: 0, body: 0, marker: 0, charset: 0, links: 0, selected: 0, safe: true, nonces: [] };
+  let state = { html: 0, head: 0, body: 0, marker: 0, charset: 0, links: 0, selected: 0, safe: true, cssSafe: true, nonces: [] };
   const count = (name) => ({ element() {
     state = { ...state, [name]: state[name] + 1 };
   } });
+  const context = () => {
+    const valid = state.safe && ["html", "head", "body", "marker", "charset"].every((name) => state[name] === 1);
+    return { nonces: valid ? state.nonces : null, cssValid: valid && state.cssSafe && ["links", "selected"].every((name) => state[name] === 1) };
+  };
   return {
     ...Object.fromEntries(["html", "head", "body"].map((name) => [name, count(name)])),
     base: { element() {
@@ -3084,11 +3216,13 @@ function createCssInspector(site) {
       if (element.getAttribute("data-id") === "_cl") state = {
         ...state,
         selected: state.selected + 1,
-        safe: state.safe && approvedLink((name) => element.getAttribute(name))
+        cssSafe: state.cssSafe && approvedLink((name) => element.getAttribute(name))
       };
     } },
+    context,
     result() {
-      return state.safe && ["html", "head", "body", "marker", "charset", "links", "selected"].every((name) => state[name] === 1) ? state.nonces : null;
+      const result = context();
+      return result.cssValid ? result.nonces : null;
     }
   };
 }
@@ -3098,56 +3232,16 @@ function attach2(rewriter, inspector2) {
 function cssFallbackScript() {
   return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
 }
-function linkAttributes(tag) {
-  const attrs = /* @__PURE__ */ new Map();
-  let rest = tag.slice(5, -1), offset = 5;
-  while (rest.length) {
-    if (/^\s*\/?\s*$/u.test(rest)) break;
-    const match = /^\s+([a-z_:][a-z0-9_:.-]*)(?:\s*=\s*(?:"([^"<>]*)"|'([^'<>]*)'))?/iu.exec(rest);
-    if (!match) return null;
-    const name = match[1].toLowerCase();
-    if (attrs.has(name)) return null;
-    const value = match[2] ?? match[3] ?? "";
-    const valueAt = match[0].indexOf("=");
-    attrs.set(name, { value, start: offset + (valueAt < 0 ? match[0].length : match[0].search(/["']/u) + 1), length: value.length });
-    offset += match[0].length;
-    rest = rest.slice(match[0].length);
-  }
-  return attrs;
-}
-function inertSpans(html) {
-  const lower = html.replace(/[A-Z]/gu, (letter) => letter.toLowerCase()), spans = [];
-  const starts = /<!--|<(script|style|title|textarea|xmp|iframe|noembed|noframes|noscript)\b[^<>]*>/giu;
-  let match;
-  while ((match = starts.exec(html)) !== null) {
-    let end;
-    if (match[0] === "<!--") {
-      const close = html.indexOf("-->", starts.lastIndex);
-      if (close < 0) return null;
-      end = close + 3;
-    } else {
-      const name = match[1].toLowerCase(), close = lower.indexOf("</" + name, starts.lastIndex);
-      if (close < 0) return null;
-      const closing = /^<\/[a-z]+\s*>/iu.exec(html.slice(close, close + 256));
-      if (!closing || !closing[0].toLowerCase().startsWith("</" + name) || !/^\s*>$/u.test(closing[0].slice(name.length + 2))) return null;
-      end = close + closing[0].length;
-    }
-    spans.push({ start: match.index, end });
-    starts.lastIndex = end;
-  }
-  return spans;
-}
-function spliceCssLink(html, nonce) {
-  if (!noncePattern2.test(nonce)) return null;
+function cssLinkEdits(html, nonce, inert) {
+  if (!noncePattern3.test(nonce)) return null;
   const heads = [...html.matchAll(/<head(?:\s[^<>]*)?>/giu)], ends = [...html.matchAll(/<\/head\s*>/giu)];
   if (heads.length !== 1 || ends.length !== 1 || /["']/u.test(heads[0][0])) return null;
   const begin = heads[0].index + heads[0][0].length, end = ends[0].index;
   if (begin >= end) return null;
-  const inert = inertSpans(html);
   if (!inert) return null;
   const candidates = [];
   for (const match of html.matchAll(/<link\b[^<>]*>/giu)) {
-    const attrs = linkAttributes(match[0]);
+    const attrs = elementAttributes(match[0], "link");
     if (!attrs) return null;
     if (attrs.get("data-id")?.value !== "_cl") continue;
     if (match.index < begin || match.index >= end || inert.some((span2) => match.index >= span2.start && match.index < span2.end) || !approvedLink((name) => attrs.get(name)?.value ?? null)) return null;
@@ -3156,8 +3250,10 @@ function spliceCssLink(html, nonce) {
   }
   if (candidates.length !== 1) return null;
   const span = candidates[0];
-  const rewritten = html.slice(0, span.start) + CSS_ASSET_PATH + html.slice(span.end);
-  return rewritten.slice(0, begin) + `<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}<\/script>` + rewritten.slice(begin);
+  return [
+    { start: span.start, end: span.end, replacement: CSS_ASSET_PATH },
+    { start: begin, end: begin, replacement: `<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}<\/script>` }
+  ];
 }
 function cancelQuietly2(reader) {
   try {
@@ -3184,7 +3280,7 @@ async function readBounded2(reader) {
   }
   return bytes;
 }
-async function inspect(response, site, Rewriter, timing) {
+async function inspect(response, policies, Rewriter, timing) {
   let sourceReader, parserReader, timer, aborted = false;
   const deadline = new Promise((resolve) => {
     timer = timing.setTimeout(() => {
@@ -3201,18 +3297,24 @@ async function inspect(response, site, Rewriter, timing) {
       const html = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
       const roundtrip = encoder4.encode(html);
       if (roundtrip.length !== bytes.length || !roundtrip.every((value, index) => value === bytes[index])) return null;
-      const inspector2 = createCssInspector(site);
+      const inspector2 = createCssInspector(policies.site);
       parserReader = attach2(new Rewriter(), inspector2).transform(new Response(bytes)).body.getReader();
       while (!(await parserReader.read()).done) {
         if (aborted) return null;
       }
       if (aborted) return null;
-      const nonces = inspector2.result();
-      if (!nonces) return null;
-      const nonce = authorizedNonce(response.headers.get("Content-Security-Policy"), nonces);
+      const context = inspector2.context();
+      if (!context.nonces) return null;
+      const nonce = authorizedNonce(response.headers.get("Content-Security-Policy"), context.nonces);
       if (!nonce) return null;
-      const result = spliceCssLink(html, nonce);
-      return result ? encoder4.encode(result) : null;
+      const spans = collectRawTextSpans(html);
+      if (!spans) return null;
+      const css = policies.css && context.cssValid ? cssLinkEdits(html, nonce, spans) : null;
+      const impressions = policies.impressions ? impressionDocumentEdit(html, policies.site, nonce, spans) : null;
+      if (!css && !impressions) return null;
+      const edits = [...css ?? [], ...impressions ? [impressions] : []];
+      const result = applyTextEdits(html, edits);
+      return result ? { bytes: encoder4.encode(result), css: Boolean(css), impressions: Boolean(impressions) } : null;
     })();
     return await Promise.race([inspection, deadline]);
   } catch {
@@ -3226,17 +3328,20 @@ async function inspect(response, site, Rewriter, timing) {
 }
 async function withCssStatic(response, request, environment, options = {}) {
   try {
-    if (response.status !== 200 || !response.body || response.headers.has("Content-Encoding") || !utf8Html2.test(response.headers.get("Content-Type") ?? "") || !stylePolicyAbsent(response.headers.get("Content-Security-Policy"))) return response;
-    const site = eligibleSite(request, environment?.PLL_CSS_STATIC);
-    if (!site) return response;
+    if (response.status !== 200 || !response.body || response.headers.has("Content-Encoding") || !utf8Html2.test(response.headers.get("Content-Type") ?? "")) return response;
+    const selected = eligiblePolicies(request, environment);
+    if (!selected) return response;
+    const policies = { ...selected, css: selected.css && stylePolicyAbsent(response.headers.get("Content-Security-Policy")) };
+    if (!policies.css && !policies.impressions) return response;
     const Rewriter = options.Rewriter ?? globalThis.HTMLRewriter;
     if (typeof Rewriter !== "function") return response;
-    const bytes = await inspect(response, site, Rewriter, options.timing ?? globalThis);
-    if (!bytes) return response;
+    const result = await inspect(response, policies, Rewriter, options.timing ?? globalThis);
+    if (!result) return response;
     const headers3 = new Headers(response.headers);
     for (const name of ["Content-Length", "ETag", "Content-MD5", "Digest", "Content-Digest", "Repr-Digest"]) headers3.delete(name);
-    headers3.set("X-PLL-CSS-Policy", `static-exact-v1-${site.language}`);
-    const delivered = new Response(bytes, { status: response.status, statusText: response.statusText, headers: headers3 });
+    if (result.css) headers3.set("X-PLL-CSS-Policy", `static-exact-v1-${policies.site.language}`);
+    if (result.impressions) headers3.set("X-PLL-Impression-Policy", `native-noop-v1-${policies.site.language}`);
+    const delivered = new Response(result.bytes, { status: response.status, statusText: response.statusText, headers: headers3 });
     try {
       response.body.cancel().catch(() => {
       });
@@ -3512,7 +3617,7 @@ var CACHE_PATHS = Object.freeze(Object.fromEntries(Object.entries({
   ]
 }).map(([language, paths]) => [language, Object.freeze(paths)])));
 var pathSets = Object.fromEntries(Object.entries(CACHE_PATHS).map(([language, paths]) => [language, new Set(paths)]));
-var PREVIEW2 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var PREVIEW3 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
 var HOST_LANGUAGES = Object.freeze(Object.fromEntries(["es", "en", "fr", "it"].map((language) => [
   (language === "es" ? "www" : language) + ".panamalegallab.com",
   language
@@ -3535,7 +3640,7 @@ function targetForCache(request, mode = "off", revision = "pll-html-template-v2"
   if (sensitiveHeaders.some((name) => request.headers.has(name))) return null;
   const control = request.headers.get("Cache-Control") ?? "";
   if (/\b(?:no-cache|no-store)\b|(?:^|,)\s*max-age\s*=\s*"?0"?(?:\s*,|\s*$)/iu.test(control) || /\bno-cache\b/iu.test(request.headers.get("Pragma") ?? "")) return null;
-  const preview = url.origin === PREVIEW2;
+  const preview = url.origin === PREVIEW3;
   if (!preview && mode !== "all") return null;
   const match = preview ? /^\/(es|en|fr|it)(\/.*)$/u.exec(url.pathname) : null;
   const language = preview ? match?.[1] : HOST_LANGUAGES[url.hostname];
@@ -3563,7 +3668,7 @@ var HEADER_LIMIT = 16384;
 var DEADLINE_MS = 1e3;
 var MAX_NONCES = 256;
 var encoder5 = new TextEncoder();
-var noncePattern3 = /^[A-Za-z0-9+/_-]{16,256}={0,2}$/u;
+var noncePattern4 = /^[A-Za-z0-9+/_-]{16,256}={0,2}$/u;
 var htmlType = /^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
 var identityKeys = ["origin", "path", "language", "siteName", "revision"];
 var languages = Object.freeze({ es: "www", en: "en", fr: "fr", it: "it" });
@@ -3608,7 +3713,7 @@ function policyNonce(csp) {
   }
   if (["default-src", "style-src", "style-src-elem", "style-src-attr", "script-src-elem", "script-src-attr"].some((name) => directives.has(name))) return null;
   const sources = [...csp.matchAll(/'nonce-([^']+)'/gu)];
-  if (sources.length !== 1 || !noncePattern3.test(sources[0][1]) || !directives.get("script-src")?.includes(sources[0][0])) return null;
+  if (sources.length !== 1 || !noncePattern4.test(sources[0][1]) || !directives.get("script-src")?.includes(sources[0][0])) return null;
   return sources[0][1];
 }
 function supportedResponse(response, internal = false) {
@@ -3657,7 +3762,7 @@ function inspector(identity) {
       const tag = el.tagName.toLowerCase(), value = el.getAttribute("nonce");
       state = {
         ...state,
-        safe: state.safe && ["script", "style", "link"].includes(tag) && noncePattern3.test(value ?? "") && state.records.length < MAX_NONCES,
+        safe: state.safe && ["script", "style", "link"].includes(tag) && noncePattern4.test(value ?? "") && state.records.length < MAX_NONCES,
         records: state.records.length < MAX_NONCES ? [...state.records, { tag, value }] : state.records
       };
     } }
@@ -3743,7 +3848,7 @@ function nonceSpans(html, records, scriptNonce) {
   const spans = attributeSpans(html);
   if (!spans || spans.length !== records.length || !spans.every((row, i) => row.tag === records[i].tag && row.value === records[i].value)) return null;
   const styles = [...new Set(records.filter((row) => row.tag !== "script").map((row) => row.value))];
-  if (styles.length !== 1 || styles[0] === scriptNonce || !noncePattern3.test(styles[0]) || !records.some((row) => row.tag === "script") || records.some((row) => row.tag === "script" && row.value !== scriptNonce)) return null;
+  if (styles.length !== 1 || styles[0] === scriptNonce || !noncePattern4.test(styles[0]) || !records.some((row) => row.tag === "script") || records.some((row) => row.tag === "script" && row.value !== scriptNonce)) return null;
   const nonces = [scriptNonce, styles[0]];
   for (const nonce of nonces) {
     const expected = spans.filter((row) => row.value === nonce).map((row) => row.start);
@@ -3825,7 +3930,7 @@ function readTemplateCertificate(response, identity, now = Date.now()) {
     const decoded = atob(header);
     if (btoa(decoded) !== header) return null;
     const cert = JSON.parse(decoded);
-    if (!cert || Object.keys(cert).sort().join(",") !== "bytes,createdAt,csp,expiresAt,identity,nonces,reportOnly,sha256,spans,v,vary" || cert.v !== 2 || !sameIdentity(cert.identity, identity) || !Number.isSafeInteger(cert.createdAt) || cert.createdAt < 0 || cert.expiresAt !== cert.createdAt + TEMPLATE_TTL_MS || now < cert.createdAt || now >= cert.expiresAt || !/^[a-f0-9]{64}$/u.test(cert.sha256) || !Number.isSafeInteger(cert.bytes) || cert.bytes < 1 || cert.bytes > TEMPLATE_BODY_LIMIT || !validVary(cert.vary) || cert.csp !== response.headers.get("Content-Security-Policy") || cert.reportOnly !== response.headers.get("Content-Security-Policy-Report-Only") || !Array.isArray(cert.nonces) || cert.nonces.length !== 2 || !cert.nonces.every((value) => noncePattern3.test(value)) || cert.nonces[0] === cert.nonces[1] || policyNonce(cert.csp) !== cert.nonces[0] || !Array.isArray(cert.spans) || !cert.spans.length || cert.spans.length > MAX_NONCES) return null;
+    if (!cert || Object.keys(cert).sort().join(",") !== "bytes,createdAt,csp,expiresAt,identity,nonces,reportOnly,sha256,spans,v,vary" || cert.v !== 2 || !sameIdentity(cert.identity, identity) || !Number.isSafeInteger(cert.createdAt) || cert.createdAt < 0 || cert.expiresAt !== cert.createdAt + TEMPLATE_TTL_MS || now < cert.createdAt || now >= cert.expiresAt || !/^[a-f0-9]{64}$/u.test(cert.sha256) || !Number.isSafeInteger(cert.bytes) || cert.bytes < 1 || cert.bytes > TEMPLATE_BODY_LIMIT || !validVary(cert.vary) || cert.csp !== response.headers.get("Content-Security-Policy") || cert.reportOnly !== response.headers.get("Content-Security-Policy-Report-Only") || !Array.isArray(cert.nonces) || cert.nonces.length !== 2 || !cert.nonces.every((value) => noncePattern4.test(value)) || cert.nonces[0] === cert.nonces[1] || policyNonce(cert.csp) !== cert.nonces[0] || !Array.isArray(cert.spans) || !cert.spans.length || cert.spans.length > MAX_NONCES) return null;
     let end = -1;
     for (const span of cert.spans) {
       if (!span || Object.keys(span).sort().join(",") !== "end,family,start" || ![0, 1].includes(span.family) || !Number.isSafeInteger(span.start) || !Number.isSafeInteger(span.end) || span.start <= end || span.start < 0 || span.end > cert.bytes || span.end - span.start !== cert.nonces[span.family].length) return null;
@@ -4057,10 +4162,12 @@ function createHtmlMemoryCache({
   timing = globalThis,
   maxBytes = MEMORY_CACHE_MAX_BYTES,
   maxEntries = MEMORY_CACHE_MAX_ENTRIES,
-  store
+  store,
+  revision = REVISION
 } = {}) {
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > MEMORY_CACHE_MAX_BYTES || !Number.isSafeInteger(maxEntries) || maxEntries < 1 || maxEntries > MEMORY_CACHE_MAX_ENTRIES)
     throw new RangeError("Cache budgets exceed the fixed limits");
+  if (typeof revision !== "string" || !/^[a-zA-Z0-9_-]{1,64}$/u.test(revision)) throw new RangeError("Invalid cache identity");
   let entries = /* @__PURE__ */ new Map(), fillInFlight = false, storeEnabled = Boolean(store), storePending = 0;
   const total = (rows) => rows.reduce((sum, [, row]) => sum + row.size, 0);
   const expire = () => {
@@ -4156,7 +4263,7 @@ function createHtmlMemoryCache({
     }
   }
   async function handle(request, deliver) {
-    const target = targetForCache(request, mode, REVISION);
+    const target = targetForCache(request, mode, revision);
     if (!target) return outward(await deliver(), "BYPASS");
     expire();
     const key = cacheKeyFor(request, target).url, memory = entries.get(key);
@@ -4355,7 +4462,12 @@ function createRendererClass(Base, makeHandler, { cacheMode: cacheMode2 = "off",
         } catch {
         }
       }
-      this.htmlCache = createHtmlMemoryCache({ ...cacheOptions, mode: cacheMode2, store });
+      this.htmlCache = createHtmlMemoryCache({
+        ...cacheOptions,
+        mode: cacheMode2,
+        store,
+        revision: cacheOptions.revision ?? impressionCacheRevision(env?.PLL_NATIVE_IMPRESSIONS)
+      });
     }
     async fetch(request) {
       const boundary = requestBoundary(request);

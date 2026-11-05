@@ -4,6 +4,7 @@ import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { CSS_ASSET_PATH, CSS_NATIVE_URL } from './src/css-static.js';
+import { IMPRESSION_VIEW_SCRIPTS, impressionCacheRevision } from './src/native-impressions.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const cacheMode = process.env.PLL_HTML_CACHE_MODE ?? 'off';
@@ -14,6 +15,10 @@ const cssBytes=await readFile(path.join(root,'assets',cssName));
 const cssHash='7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61';
 if(cssBytes.length!==1_954_605||sha(cssBytes)!==cssHash)throw new Error('Exact captured CSS bytes changed.');
 const provenance = JSON.parse(await readFile(path.join(root, 'renderer-source-provenance.json'), 'utf8'));
+const impressionContract=JSON.parse(await readFile(path.join(root,'impression-contract-provenance.json'),'utf8'));
+if(JSON.stringify(impressionContract.viewScriptUrls)!==JSON.stringify(IMPRESSION_VIEW_SCRIPTS)
+  ||Object.values(impressionContract.viewScriptSha256).some(hash=>!/^[a-f0-9]{64}$/u.test(hash)))
+  throw new Error('Reviewed native impression script gates changed.');
 for (const [file, hash] of Object.entries(provenance.files)) {
   if (sha(await readFile(path.join(root, 'renderer', file))) !== hash)
     throw new Error(`Frozen renderer source changed: ${file}`);
@@ -40,12 +45,22 @@ await mkdir(path.dirname(path.join(root,cssRelative)),{recursive:true});
 await writeFile(path.join(root,cssRelative),cssBytes);
 files[cssRelative]={bytes:cssBytes.length,sha256:cssHash};
 if(files['dist/frontend/_worker.js'].sha256!=='3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9')throw new Error('Thin frontend identity changed.');
-const report = { release: 'pll-html-do-cache-20261104-v1', rendererWorkerSha256: provenance.rendererWorkerSha256,
+const report = { release: 'pll-native-impressions-20261105-v1', rendererWorkerSha256: provenance.rendererWorkerSha256,
   htmlCache: { placement: 'durable-object', mode: cacheMode, certificateVersion: 2,
-    revision: 'pll-html-memory-v1', maximumAgeSeconds: 300, maximumEntries: 32,
+    revision: impressionCacheRevision('off'),
+    revisionsByImpressionMode:Object.fromEntries(['off','preview','all'].map(mode=>[mode,impressionCacheRevision(mode)])),
+    maximumAgeSeconds: 300, maximumEntries: 32,
     maximumMemoryBytes: 8_388_608, persistentSlots: 32, maximumConcurrentFills: 1,
     perVisitPagesExecutions: 1, perVisitDurableObjectCalls: 1, perHitOriginCalls: 0,
     recurringJobs: 0, addedBindings: 0, newPaidResources: 0 },
+  impressions:{modeVariable:'PLL_NATIVE_IMPRESSIONS',modes:['off','preview','all'],
+    previewOrigin:'https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev',
+    previewControlParameter:'_pll_native_impressions',previewControlValue:'control',previewCandidateValue:'candidate',
+    viewScriptUrls:IMPRESSION_VIEW_SCRIPTS,viewScriptSha256:impressionContract.viewScriptSha256,
+    nativeField:357,arrayIndex:356,recognizedArrayLength:518,changedValue:true,
+    mutation:'Exact recognized native configuration token only; docs-liap, GA4 and all unrelated bytes preserved.',
+    unsupportedShape:'Original document unchanged by this policy; no endpoint acknowledgement or relay.',
+    parser:'Reuses the CSS native inspector and raw-text spans; one native parse, no extra upstream fetch.'},
   css:{originalUri:CSS_NATIVE_URL,path:CSS_ASSET_PATH,sha256:cssHash,bytes:cssBytes.length,transformations:'none',
     provenance:'Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted.'},
   builtAt: new Date().toISOString(), files };
