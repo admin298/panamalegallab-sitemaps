@@ -1,0 +1,95 @@
+{
+  "state": "INITIAL_RENDER_ADOPTED_FINAL_IMAGE_HEALTH_PENDING",
+  "outputs": [
+    {
+      "path": "dist/frontend/_worker.js",
+      "bytes": 3349,
+      "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/backend/worker.js",
+      "bytes": 422116,
+      "sha256": "896f502739aff3d6879279f7cf93685e78a12d364b9dfbf61fb3b1d7ec70df4e",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/_routes.json",
+      "bytes": 133,
+      "sha256": "c589b22cd100b77043e1ccdc94eb1a36be6cd76f59112a04b78229cafd7fb694",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/_headers",
+      "bytes": 181,
+      "sha256": "5277e7f7d51173b09a153d64f355b1723992ec622152519c5dc51780e33cfc10",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/deployment.txt",
+      "bytes": 34,
+      "sha256": "30c445f45cb2876c2289fdd42ac64eed59dd4a01362f2b7a4d19f849d632ed6c",
+      "matchesCandidate": true
+    },
+    {
+      "path": "dist/frontend/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+      "bytes": 1954605,
+      "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
+      "matchesCandidate": true
+    }
+  ],
+  "manifestMatchesCandidateExceptBuildTimestamp": true,
+  "frozenManifestRestored": true,
+  "coverageThresholds": {
+    "lines": 80,
+    "functions": 80,
+    "branches": 80
+  },
+  "existingDependencyJunction": true,
+  "installs": 0,
+  "newDependencies": 0,
+  "networkActions": 0,
+  "deploymentByThisTask": false,
+  "adoptionClaimed": true,
+  "generatedRawCssRemovedFromOverlay": true,
+  "tests": 163,
+  "passed": 163,
+  "failed": 0,
+  "helperTests": 19,
+  "helperPassed": 19,
+  "helperFailed": 0,
+  "coverage": {
+    "branches": 89.01,
+    "lines": 99.68,
+    "functions": 94.7
+  },
+  "dependencyJunctionRemoved": true,
+  "release": "pll-initial-render-20261105-v1",
+  "productionAccepted": true,
+  "backendVersion": "cf48c90c-24d6-420d-bc93-0cecad7cdc46",
+  "runtimeReceipt": "activation-receipt.json",
+  "activationReceiptSha256": "68c7126c36c0834be1a1ef33dd51193759b71f2b791ebc20c8d8c4bdee0cc11f",
+  "localValidationNetworkActions": 0,
+  "publicGetAcceptance": {
+    "views": 8,
+    "accepted": 8,
+    "state": "PASS",
+    "retries": 0,
+    "receiptSha256": "d2e9ba1eb7e562df1c1703eefbb5861b92c1767a050dacf46cc2fde89105f7eb"
+  },
+  "retainedPortabilityGuardTests": 2,
+  "sourceCodeAndBuildArtifactsUnchangedSince163TestPass": true,
+  "existingLockPreserved": true,
+  "newAuditByThisPackager": false,
+  "auditReceiptSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8",
+  "limits": [
+    "Local build and test evidence; public acceptance belongs to the operator receipt.",
+    "Small finite lab sample; no field CWV or global performance claim."
+  ],
+  "publicationReady": false,
+  "finalHealthVerification": {
+    "state": "PENDING",
+    "reason": "Public PageSpeed observed Google image403s; operator is investigating cache versus bypass.",
+    "publicGetScope": "Eight successful document GETs do not establish final image health."
+  }
+}

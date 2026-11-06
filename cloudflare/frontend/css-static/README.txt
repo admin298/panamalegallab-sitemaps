@@ -1,54 +1,56 @@
-Panama Legal Lab - accepted logger-only source
+Panama Legal Lab - cache-off image recovery verified; mobile speed open
 
-Accepted logger backend7ffb8661-8eeb-459f-8264-89288caf15fb,410590bytes,
-SHAdace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8.
-PLL_NATIVE_IMPRESSIONS=all. See activation-receipt.json for finite live evidence
-and activation-f550-receipt.json for the exact previous accepted receipt.
-The accepted logger version was restored after rejecting the optional hero candidate.
+Active version: f62aeb5b-7e37-4bf1-9633-0985f1f4060e.
+Backend 422116 bytes, SHA256
+620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521.
+activation-receipt.json records public recovery: 5 views in 4 languages,
+97 image HTTP200 transfers, zero broken images and zero retries. Late ES at
+234.604 seconds received new image URLs with preserved photo/logo/overlay
+hashes. Mobile speed remains open; the optimization is not finished.
+The previous cf48 receipt is preserved byte-identically under
+activation-cf48-cache-all-receipt.json, with the 7ff/f550 receipts also exact.
 
-The policy changes only recognized native field357/index356, with exact locale,
-versioned view-script URL, nonce and configuration-shape gates. Unknown/ambiguous
-shapes keep the original document. No fabricated endpoint success, relay or timer.
-The native client, docs-liap, GA4/config/dataLayer and consent remain preserved.
-Observed absence of native impression calls in finite16-second windows is not an
-infinite-time, quota or billing guarantee. GA4 delivery itself was not measured.
+HTML cache reuse was withdrawn after valid image tokens at about 2 seconds and
+broken tokens at about 159 seconds. Build explicitly with PLL_HTML_CACHE_MODE=off.
+The supported off branch renders fresh on every HTML visit, with one Pages
+execution, one DO call and one Google-origin fetch. It does not read/write or
+certify/capture HTML templates, initialize cache SQLite or enqueue refresh work.
+Maximum 8 in-flight, no queue, and existing Free resources remain, with finite shared
+account quotas. No jobs, new dependencies, resources or latency guarantee.
+The previous 300s/32-entry/8MiB/32-SQLite budgets are dormant history, not active reuse.
 
-The added policy variable is an API environment/configuration binding.
-newResourceBindings=0 refers ONLY to resource bindings. Existing Worker, DO
-namespace/export, SQLite and Pages service binding remain. No new paid resources.
+All four policy variables remain all: PLL_IMAGE_FORMAT, PLL_CSS_STATIC,
+PLL_NATIVE_IMPRESSIONS and PLL_INITIAL_RENDER. backend.cache-off.wrangler.json
+has the same vars body as initial-render-all; cache mode is compiled in the
+artifact. Source is exact; only the emitted backend cache literal changes.
+All five frontend artifacts, photos, source URLs, CSS and renderer stay exact.
 
-26 frozen renderer files, Pages3349B, CSS1954605B and previously accepted image
-profiles stay exact for this logger release. Up to252preferred routes share the
-policy; offline route replay is not252fresh public performance measurements.
-Each ordinary HTML visit still invokes Pages+DO. Existing quotas remain finite.
-Cache revisions isolate policy modes without migration, purge, cron or keepalive.
+The three initial-render edits remain: exact invalid-font link removal, native
+lazy loading on the recognized Apps Script iframe, and missing homepage logo
+ratio reservation with intrinsic fallback. Unknown shapes remain unchanged.
+Historical 252-page replay: 252 fonts, 20 lazy frames, 3 new ratios and 1 Spanish
+ratio preserved.
+Earlier 12 preview views/six pairs and 8 GETs belong to cf48 cache-all, not final off
+recovery proof. PageSpeed 543kcq01on scored 56 mobile/78 desktop without image
+403s. This single external run does not establish causal gains or field CWV;
+mobile speed remains open.
+The responsive-image experiment was rejected: four corrected early views showed
+short-window savings, but one separate rotation at 160.013 seconds selected nine
+previously unfetched 1280 URLs and all nine returned 403/broken images. No trial
+code is adopted; f62/photo delivery remains unchanged. Critical CSS is plan only,
+not implemented. Mobile speed stays open.
+Form delivery, Analytics conversions/attribution and GSC remain deferred.
+No head hreflang observed; protected sitemap alternates remain unchanged.
 
-Portable preparation: node tooling/prepare-native-css.mjs explicitly restores only
-two exact CSS paths from canonical gzip/base64, checking hashes and limits. No redownload,
-postinstall or automatic runtime preparation. Use package.json/package-lock.json.
-Set PLL_HTML_CACHE_MODE=all before npm run build; default compiled mode is off.
-Run npm test and npm run coverage for meaningful source verification. No deploy
-happens through these commands. portable-validation.json records146/146PASS,
-including two preserved portability guards; all six artifacts match the accepted
-candidate. The operator's fresh official npm audit reported0 vulnerabilities,
-83dependencies, with no install/update; receipt and lock hashes are recorded.
+Explicit preparation: node tooling/prepare-native-css.mjs, then build with
+PLL_HTML_CACHE_MODE=off and run npm test using the locked existing dependencies.
+The helper restores two exact CSS paths from one canonical gzip/base64 source,
+with bounds/hash checks and no network/postinstall. The portable off build
+matched all six artifacts and passed 163/163 tests. npm run coverage is available.
+Previous source coverage is 99.68% lines / 94.70% functions / 89.01% branches with identical
+source, not a new recovery coverage run. The unchanged CSS helper previously
+passed 19/19 tests. No raw CSS, node_modules, archives or captures are packaged.
 
-Existing eight portable configs and CSS portability tests stay byte-exact. Three
-new logger configs omit only top-level editor $schema. Runtime fields and nested
-metadata remain exact. packaging-provenance.json documents those transformations.
-Mode configs add PLL_NATIVE_IMPRESSIONS to the existing resource configuration.
-
-The root operator accepted16preview primary views,4public primary views and four
-functional languages. The original Italian collector FAIL remains preserved;
-its separate hover smoke supplies acceptance. Search RPC completeness and GA4
-event receipt are outside this proof. No form was submitted or photos changed.
-
-Direct rollback is the existing accepted f550851a-2013-4772-8263-f39abd3d03f6
-version, SHAb418914671ad90e2e53ee4bd190bbfde2ed0636600bff7142f113933ccd793ff,
-on the same Worker/SQLite. Preserve Pages, photos, CSS, namespace and recovery
-rules. The optional bank hero candidate failed its fixed acceptance guards and is
-not included in this logger-only release.
-
-After the rejected hero preview, four bounded public GETs (one per language)
-confirmed restored logger version7ff, HTTP200/canonical/native flag, absent hero
-policy and original photo/loader. Four attempts, no retries; no raw capture is included.
+Keep the active cache-off artifact for recovery; do not routinely restore a
+historical cache-all version. Preserve Worker/DO/SQLite, Pages, CSS, photos and
+rules. CACHE-OFF-RECEIPT.json is local source/build proof. See ../../DEPLOYMENT.md.

@@ -1,0 +1,93 @@
+{
+  "state": "PUBLIC_INITIAL_RENDER_ADOPTED",
+  "dateUtc": "2026-11-05T17:14:18.884652+00:00",
+  "backendVersion": "cf48c90c-24d6-420d-bc93-0cecad7cdc46",
+  "backendSha256": "896f502739aff3d6879279f7cf93685e78a12d364b9dfbf61fb3b1d7ec70df4e",
+  "backendBytes": 422116,
+  "previewVersion": "543659d0-3836-4ccc-ae3a-cfbb2a690686",
+  "mode": "all",
+  "eligiblePreferredUrls": 252,
+  "ownHomeAliases": 4,
+  "frontendSha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
+  "rendererSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "changes": [
+    "Remove exact invalid font request",
+    "Native lazy loading for recognized Apps Script iframe",
+    "Reserve recognized homepage brand overlay ratio with auto intrinsic fallback"
+  ],
+  "localTests": 161,
+  "portableTests": 163,
+  "portableCssHelperTests": 19,
+  "coverage": {
+    "lines": 99.68,
+    "branches": 89.01,
+    "functions": 94.7
+  },
+  "historicalReplay": {
+    "date": "2026-11-04",
+    "pages": 252,
+    "fonts": 252,
+    "lazyFrames": 20,
+    "newRatioHints": 3,
+    "existingSpanishRatioPreserved": 1,
+    "otherAcceptedBytesAndCspExact": true,
+    "externalRequests": 0,
+    "nativeParserPasses": 1
+  },
+  "previewAcceptance": {
+    "views": 12,
+    "pairs": 6,
+    "state": "GO",
+    "retries": 0,
+    "allImageHashesGeometryFontsLinksAndNormalizedCspMatch": true,
+    "noInitialInvalidFontOrFormRequestsInCandidates": true,
+    "sixFormsLoadedAfterScrollWithoutSubmission": true,
+    "browsersClosed": true,
+    "analysisSha256": "d7ee18bba5aa02fa16d33d910a17513dca653299a226ea071868f690aa650f4f",
+    "esMobileLcpMedianMs": {
+      "control": 8178,
+      "candidate": 7936
+    },
+    "secondEsPairRegressionMsRetained": 324,
+    "itDesktopCls": {
+      "control": 0.136316,
+      "candidate": 0.001681
+    }
+  },
+  "publicHttp": {
+    "views": 8,
+    "accepted": 8,
+    "state": "PASS",
+    "retries": 0,
+    "receiptSha256": "d2e9ba1eb7e562df1c1703eefbb5861b92c1767a050dacf46cc2fde89105f7eb"
+  },
+  "npmAudit": {
+    "vulnerabilities": 0,
+    "dependencies": 83,
+    "receiptSha256": "e4a15b1954adfc77b4620c74e9a7e5947654a987963ab1859140297a458f91b8",
+    "newDependencies": 0
+  },
+  "samePhotosSourceUrlsAndFinalAppearance": true,
+  "freePlanPreserved": true,
+  "newResourceBindings": 0,
+  "newPolicyVariables": [
+    "PLL_INITIAL_RENDER"
+  ],
+  "newPaidResources": 0,
+  "recurringJobs": 0,
+  "formSubmissions": 0,
+  "recoveryRules": "Both remain disabled; no triggers or rules changed by this release",
+  "cache": "Existing32 entries/8MiB/32SQLite slots/300s absolute TTL,8 in-flight, one capture. Shared preview mode also changes cache revision; no warm-vs-cold timing attribution.",
+  "rollback": {
+    "version": "7ffb8661-8eeb-459f-8264-89288caf15fb",
+    "sha256": "dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8"
+  },
+  "limits": [
+    "Small finite lab sample, not field CWV or global speed guarantee.",
+    "252 historical replays are not252 fresh browser inspections.",
+    "No hreflang head tags were observed; existing protected sitemap hreflang alternates are retained.",
+    "Form delivery, Analytics conversion receipt/campaign attribution and GSC remain deferred.",
+    "New PageSpeed score not yet recorded."
+  ],
+  "github": "Local validated packet pending explicit approval for GitHub publication; main still5f0b48ef7138415542c745108e1bd582e0e5cba0."
+}

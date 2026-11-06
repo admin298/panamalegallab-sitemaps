@@ -1,0 +1,61 @@
+{
+  "state": "PASS_CONFIG_ONLY_CACHE_OFF_BUILD",
+  "sourceFilesCompared": 99,
+  "sourceByteEquality": true,
+  "acceptedAllArtifact": {
+    "bytes": 422116,
+    "sha256": "896f502739aff3d6879279f7cf93685e78a12d364b9dfbf61fb3b1d7ec70df4e"
+  },
+  "cacheOffArtifact": {
+    "bytes": 422116,
+    "sha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521"
+  },
+  "soleBackendDiff": {
+    "before": "var cacheMode = true ? \"all\" : \"off\";",
+    "after": "var cacheMode = true ? \"off\" : \"off\";"
+  },
+  "cacheMode": "off",
+  "frontend": [
+    {
+      "file": "dist/frontend/_worker.js",
+      "bytes": 3349,
+      "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
+    },
+    {
+      "file": "dist/frontend/_routes.json",
+      "bytes": 133,
+      "sha256": "c589b22cd100b77043e1ccdc94eb1a36be6cd76f59112a04b78229cafd7fb694"
+    },
+    {
+      "file": "dist/frontend/_headers",
+      "bytes": 181,
+      "sha256": "5277e7f7d51173b09a153d64f355b1723992ec622152519c5dc51780e33cfc10"
+    },
+    {
+      "file": "dist/frontend/deployment.txt",
+      "bytes": 34,
+      "sha256": "30c445f45cb2876c2289fdd42ac64eed59dd4a01362f2b7a4d19f849d632ed6c"
+    },
+    {
+      "file": "dist/frontend/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+      "bytes": 1954605,
+      "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61"
+    }
+  ],
+  "config": {
+    "file": "config/backend.cache-off.wrangler.json",
+    "sha256": "f3e7cdc513b0d8aeb0bdc6eead52b48e90d7113d92f4c26a8310d16ad1d76d80",
+    "vars": {
+      "PLL_IMAGE_FORMAT": "all",
+      "PLL_CSS_STATIC": "all",
+      "PLL_NATIVE_IMPRESSIONS": "all",
+      "PLL_INITIAL_RENDER": "all"
+    }
+  },
+  "newResources": 0,
+  "newJobs": 0,
+  "newRuntimeCode": false,
+  "photosChanged": false,
+  "networkRequests": 0,
+  "deployed": false
+}

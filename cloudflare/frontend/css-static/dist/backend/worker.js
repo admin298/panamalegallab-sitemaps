@@ -3156,203 +3156,6 @@ function impressionDocumentEdit(html, site, nonce, spans) {
   return viewCount === 1 && configCount === 1 ? result : null;
 }
 
-// src/css-static.js
-var CSS_NATIVE_URL = "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA";
-var CSS_ASSET_PATH = "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css";
-var CSS_BODY_LIMIT = 1310720;
-var CSS_DEADLINE_MS = 1e3;
-var PREVIEW2 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
-var utf8Html2 = /^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
-var noncePattern3 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
-var encoder4 = new TextEncoder();
-function eligiblePolicies(request, environment) {
-  const mode = environment?.PLL_CSS_STATIC, impressionMode = environment?.PLL_NATIVE_IMPRESSIONS;
-  if (request.method !== "GET" || ![mode, impressionMode].some((value) => ["preview", "all"].includes(value))) return null;
-  const plan = planDeliveryRequest(request.url, request.method);
-  if (plan.kind !== "page" || plan.searchPage) return null;
-  const css = plan.mode === "production" ? mode === "all" : plan.previewOrigin === PREVIEW2 && ["preview", "all"].includes(mode) && new URL(request.url).searchParams.get("_pll_speed") !== "control";
-  const impressions = impressionPolicyEnabled(request, impressionMode, plan);
-  return css || impressions ? { site: plan.site, css, impressions } : null;
-}
-function stylePolicyAbsent(csp) {
-  return typeof csp === "string" && csp.length > 0 && !csp.split(",").some((policy) => policy.split(";").some((raw) => /^(?:default-src|style-src(?:-elem|-attr)?)$/iu.test(raw.trim().split(/\s+/u)[0])));
-}
-function approvedLink(get) {
-  return get("href") === CSS_NATIVE_URL && get("data-id") === "_cl" && get("rel")?.toLowerCase() === "stylesheet" && noncePattern3.test(get("nonce") ?? "") && get("integrity") === null;
-}
-function createCssInspector(site) {
-  let state = { html: 0, head: 0, body: 0, marker: 0, charset: 0, links: 0, selected: 0, safe: true, cssSafe: true, nonces: [] };
-  const count = (name) => ({ element() {
-    state = { ...state, [name]: state[name] + 1 };
-  } });
-  const context = () => {
-    const valid = state.safe && ["html", "head", "body", "marker", "charset"].every((name) => state[name] === 1);
-    return { nonces: valid ? state.nonces : null, cssValid: valid && state.cssSafe && ["links", "selected"].every((name) => state[name] === 1) };
-  };
-  return {
-    ...Object.fromEntries(["html", "head", "body"].map((name) => [name, count(name)])),
-    base: { element() {
-      state = { ...state, safe: false };
-    } },
-    marker: { element(element) {
-      state = { ...state, marker: state.marker + 1, safe: state.safe && element.getAttribute("data-domain") === "panamalegallab.com" && element.getAttribute("data-sitename") === site.upstreamPrefix.split("/").at(-1) };
-    } },
-    charset: { element(element) {
-      state = { ...state, charset: state.charset + 1, safe: state.safe && /^utf-?8$/iu.test(element.getAttribute("charset") ?? "") };
-    } },
-    meta: { element(element) {
-      if (/^content-security-policy(?:-report-only)?$/iu.test(element.getAttribute("http-equiv")?.trim() ?? "")) state = { ...state, safe: false };
-    } },
-    script: { element(element) {
-      const nonce = element.getAttribute("nonce");
-      const dataOnly = ["application/json", "application/ld+json"].includes(element.getAttribute("type")?.trim().toLowerCase());
-      state = { ...state, safe: state.safe && (nonce !== null || element.getAttribute("src") !== null || dataOnly) };
-      if (nonce !== null) state = { ...state, nonces: [...state.nonces, nonce], safe: state.safe && state.nonces.length < 256 };
-    } },
-    link: { element(element) {
-      if (element.getAttribute("data-id") === "_cl") state = { ...state, links: state.links + 1 };
-    } },
-    headLink: { element(element) {
-      if (element.getAttribute("data-id") === "_cl") state = {
-        ...state,
-        selected: state.selected + 1,
-        cssSafe: state.cssSafe && approvedLink((name) => element.getAttribute(name))
-      };
-    } },
-    context,
-    result() {
-      const result = context();
-      return result.cssValid ? result.nonces : null;
-    }
-  };
-}
-function attach2(rewriter, inspector2) {
-  return rewriter.on("html", inspector2.html).on("head", inspector2.head).on("body", inspector2.body).on("base", inspector2.base).on("[data-domain][data-sitename]", inspector2.marker).on("head meta[charset]", inspector2.charset).on("meta[http-equiv]", inspector2.meta).on("script", inspector2.script).on("link", inspector2.link).on("head link", inspector2.headLink);
-}
-function cssFallbackScript() {
-  return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
-}
-function cssLinkEdits(html, nonce, inert) {
-  if (!noncePattern3.test(nonce)) return null;
-  const heads = [...html.matchAll(/<head(?:\s[^<>]*)?>/giu)], ends = [...html.matchAll(/<\/head\s*>/giu)];
-  if (heads.length !== 1 || ends.length !== 1 || /["']/u.test(heads[0][0])) return null;
-  const begin = heads[0].index + heads[0][0].length, end = ends[0].index;
-  if (begin >= end) return null;
-  if (!inert) return null;
-  const candidates = [];
-  for (const match of html.matchAll(/<link\b[^<>]*>/giu)) {
-    const attrs = elementAttributes(match[0], "link");
-    if (!attrs) return null;
-    if (attrs.get("data-id")?.value !== "_cl") continue;
-    if (match.index < begin || match.index >= end || inert.some((span2) => match.index >= span2.start && match.index < span2.end) || !approvedLink((name) => attrs.get(name)?.value ?? null)) return null;
-    const href = attrs.get("href");
-    candidates.push({ start: match.index + href.start, end: match.index + href.start + href.length });
-  }
-  if (candidates.length !== 1) return null;
-  const span = candidates[0];
-  return [
-    { start: span.start, end: span.end, replacement: CSS_ASSET_PATH },
-    { start: begin, end: begin, replacement: `<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}<\/script>` }
-  ];
-}
-function cancelQuietly2(reader) {
-  try {
-    reader?.cancel().catch(() => {
-    });
-  } catch {
-  }
-}
-async function readBounded2(reader) {
-  let size = 0;
-  const chunks = [];
-  while (true) {
-    const chunk = await reader.read();
-    if (chunk.done) break;
-    size += chunk.value.byteLength;
-    if (size > CSS_BODY_LIMIT) return null;
-    chunks.push(chunk.value);
-  }
-  const bytes = new Uint8Array(size);
-  let offset = 0;
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-  return bytes;
-}
-async function inspect(response, policies, Rewriter, timing) {
-  let sourceReader, parserReader, timer, aborted = false;
-  const deadline = new Promise((resolve) => {
-    timer = timing.setTimeout(() => {
-      aborted = true;
-      resolve(null);
-    }, CSS_DEADLINE_MS);
-    timer?.unref?.();
-  });
-  try {
-    sourceReader = response.clone().body.getReader();
-    const inspection = (async () => {
-      const bytes = await readBounded2(sourceReader);
-      if (!bytes || aborted) return null;
-      const html = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
-      const roundtrip = encoder4.encode(html);
-      if (roundtrip.length !== bytes.length || !roundtrip.every((value, index) => value === bytes[index])) return null;
-      const inspector2 = createCssInspector(policies.site);
-      parserReader = attach2(new Rewriter(), inspector2).transform(new Response(bytes)).body.getReader();
-      while (!(await parserReader.read()).done) {
-        if (aborted) return null;
-      }
-      if (aborted) return null;
-      const context = inspector2.context();
-      if (!context.nonces) return null;
-      const nonce = authorizedNonce(response.headers.get("Content-Security-Policy"), context.nonces);
-      if (!nonce) return null;
-      const spans = collectRawTextSpans(html);
-      if (!spans) return null;
-      const css = policies.css && context.cssValid ? cssLinkEdits(html, nonce, spans) : null;
-      const impressions = policies.impressions ? impressionDocumentEdit(html, policies.site, nonce, spans) : null;
-      if (!css && !impressions) return null;
-      const edits = [...css ?? [], ...impressions ? [impressions] : []];
-      const result = applyTextEdits(html, edits);
-      return result ? { bytes: encoder4.encode(result), css: Boolean(css), impressions: Boolean(impressions) } : null;
-    })();
-    return await Promise.race([inspection, deadline]);
-  } catch {
-    return null;
-  } finally {
-    aborted = true;
-    timing.clearTimeout(timer);
-    cancelQuietly2(parserReader);
-    cancelQuietly2(sourceReader);
-  }
-}
-async function withCssStatic(response, request, environment, options = {}) {
-  try {
-    if (response.status !== 200 || !response.body || response.headers.has("Content-Encoding") || !utf8Html2.test(response.headers.get("Content-Type") ?? "")) return response;
-    const selected = eligiblePolicies(request, environment);
-    if (!selected) return response;
-    const policies = { ...selected, css: selected.css && stylePolicyAbsent(response.headers.get("Content-Security-Policy")) };
-    if (!policies.css && !policies.impressions) return response;
-    const Rewriter = options.Rewriter ?? globalThis.HTMLRewriter;
-    if (typeof Rewriter !== "function") return response;
-    const result = await inspect(response, policies, Rewriter, options.timing ?? globalThis);
-    if (!result) return response;
-    const headers3 = new Headers(response.headers);
-    for (const name of ["Content-Length", "ETag", "Content-MD5", "Digest", "Content-Digest", "Repr-Digest"]) headers3.delete(name);
-    if (result.css) headers3.set("X-PLL-CSS-Policy", `static-exact-v1-${policies.site.language}`);
-    if (result.impressions) headers3.set("X-PLL-Impression-Policy", `native-noop-v1-${policies.site.language}`);
-    const delivered = new Response(result.bytes, { status: response.status, statusText: response.statusText, headers: headers3 });
-    try {
-      response.body.cancel().catch(() => {
-      });
-    } catch {
-    }
-    return delivered;
-  } catch {
-    return response;
-  }
-}
-
 // src/cache-routes.js
 var CACHE_PATHS = Object.freeze(Object.fromEntries(Object.entries({
   "es": [
@@ -3617,7 +3420,7 @@ var CACHE_PATHS = Object.freeze(Object.fromEntries(Object.entries({
   ]
 }).map(([language, paths]) => [language, Object.freeze(paths)])));
 var pathSets = Object.fromEntries(Object.entries(CACHE_PATHS).map(([language, paths]) => [language, new Set(paths)]));
-var PREVIEW3 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var PREVIEW2 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
 var HOST_LANGUAGES = Object.freeze(Object.fromEntries(["es", "en", "fr", "it"].map((language) => [
   (language === "es" ? "www" : language) + ".panamalegallab.com",
   language
@@ -3640,7 +3443,7 @@ function targetForCache(request, mode = "off", revision = "pll-html-template-v2"
   if (sensitiveHeaders.some((name) => request.headers.has(name))) return null;
   const control = request.headers.get("Cache-Control") ?? "";
   if (/\b(?:no-cache|no-store)\b|(?:^|,)\s*max-age\s*=\s*"?0"?(?:\s*,|\s*$)/iu.test(control) || /\bno-cache\b/iu.test(request.headers.get("Pragma") ?? "")) return null;
-  const preview = url.origin === PREVIEW3;
+  const preview = url.origin === PREVIEW2;
   if (!preview && mode !== "all") return null;
   const match = preview ? /^\/(es|en|fr|it)(\/.*)$/u.exec(url.pathname) : null;
   const language = preview ? match?.[1] : HOST_LANGUAGES[url.hostname];
@@ -3660,6 +3463,382 @@ function cacheKeyFor(request, identity) {
   return new Request(url.origin + "/_pll-internal-cache/" + identity.revision + "/" + identity.language + "/" + encodeURIComponent(url.pathname), { method: "GET" });
 }
 
+// src/initial-render.js
+var INVALID_FONT_URL = "https://fonts.googleapis.com/css?family=Century%20Gothic%3Ai%2Cbi%2C700%2C400&display=swap";
+var PREVIEW3 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var normalizedMode2 = (mode) => ["preview", "all"].includes(mode) ? mode : "off";
+var noncePattern3 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
+var APP_SCRIPT_BASE = "https://script.google.com/macros/s/AKfycbwpm6hhxmlmZkN3a2QAQWyXn1hnLE9mvbm9lLr8c_YvYapHjY59vIREKmxs2mMK94Vq/exec?lang=";
+var APP_SCRIPT_SANDBOX = "allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads allow-modals allow-storage-access-by-user-activation";
+function initialRenderPolicyEnabled(request, mode, plan) {
+  if (request.method !== "GET" || normalizedMode2(mode) === "off" || plan?.kind !== "page" || plan.searchPage) return false;
+  if (!CACHE_PATHS[plan.site?.language]?.some((path) => plan.canonical === plan.site.productionOrigin + path)) return false;
+  if (plan.mode === "production") return mode === "all";
+  if (plan.mode !== "preview" || plan.previewOrigin !== PREVIEW3) return false;
+  const values = new URL(request.url).searchParams.getAll("_pll_initial_render");
+  return values.length === 0 || values.length === 1 && values[0] === "candidate";
+}
+function initialRenderCacheRevision(base, mode) {
+  const selected = normalizedMode2(mode);
+  return selected === "off" ? base : base + "-initial-v1-" + selected;
+}
+function fontDocumentEdit(html, spans, nativeValid) {
+  if (!nativeValid || !Array.isArray(spans)) return null;
+  const heads = [...html.matchAll(/<head(?:\s[^<>]*)?>/giu)], ends = [...html.matchAll(/<\/head\s*>/giu)];
+  if (heads.length !== 1 || ends.length !== 1 || /["']/u.test(heads[0][0])) return null;
+  const begin = heads[0].index + heads[0][0].length, end = ends[0].index;
+  if (begin >= end) return null;
+  const candidates = [];
+  for (const match of html.matchAll(/<link\b[^<>]*>/giu)) {
+    const attrs = elementAttributes(match[0], "link");
+    if (!attrs) return null;
+    if (attrs.get("href")?.value !== INVALID_FONT_URL) continue;
+    if (match.index < begin || match.index >= end || spans.some((span) => match.index >= span.start && match.index < span.end) || attrs.size !== 3 || ![...attrs.keys()].every((name) => ["href", "rel", "nonce"].includes(name)) || attrs.get("rel")?.value.toLowerCase() !== "stylesheet" || !noncePattern3.test(attrs.get("nonce")?.value ?? "")) return null;
+    candidates.push({ start: match.index, end: match.index + match[0].length, replacement: "" });
+  }
+  return candidates.length === 1 ? candidates[0] : null;
+}
+function approvedFrame(get, language) {
+  return ["es", "en", "fr", "it"].includes(language) && get("src") === APP_SCRIPT_BASE + language && get("jsname") === "L5Fo6c" && get("class") === "YMEQtf" && get("sandbox") === APP_SCRIPT_SANDBOX && get("frameborder") === "0" && get("aria-label") === "Apps Script" && get("allowfullscreen") === "";
+}
+function frameDocumentEdit(html, language, spans, nativeValid) {
+  if (!nativeValid || !Array.isArray(spans)) return null;
+  const bodies = [...html.matchAll(/<body(?:\s[^<>]*)?>/giu)], ends = [...html.matchAll(/<\/body\s*>/giu)];
+  if (bodies.length !== 1 || ends.length !== 1) return null;
+  const begin = bodies[0].index + bodies[0][0].length, end = ends[0].index, candidates = [];
+  for (const match of html.matchAll(/<iframe\b[^<>]*>/giu)) {
+    const attrs = elementAttributes(match[0], "iframe");
+    if (!attrs) return null;
+    if (!attrs.get("src")?.value.startsWith("https://script.google.com/")) continue;
+    const raw = spans.find((span) => span.start === match.index && span.kind === "iframe");
+    if (match.index < begin || match.index >= end || !raw || raw.contentEnd !== raw.openEnd || spans.some((span) => span !== raw && match.index >= span.start && match.index < span.end) || attrs.size !== 7 || !approvedFrame((name) => attrs.get(name)?.value ?? null, language)) return null;
+    candidates.push({ start: match.index + match[0].length - 1, end: match.index + match[0].length - 1, replacement: ' loading="lazy"' });
+  }
+  return candidates.length === 1 ? candidates[0] : null;
+}
+
+// src/home-overlay.js
+var HOME_SECTION_ID = "h.INITIAL_GRID.85u6di9ec7a5";
+var HOME_OVERLAY_PROFILES = Object.freeze(Object.fromEntries(Object.entries({
+  es: { widgetId: "h.4a7e47a7ec29bfb_69", alt: "Logo de Panam\xE1 Legal Lab con s\xEDmbolo gr\xE1fico y nombre de la marca en naranja y blanco." },
+  en: { widgetId: "h.11e95cabf7fb90b9_4", alt: "Panam\xE1 Legal Lab logo with a graphic symbol and the brand name in orange and white." },
+  fr: { widgetId: "h.7c6fe75593748597_4", alt: "Logo de Panam\xE1 Legal Lab avec un symbole graphique et le nom de la marque en orange et blanc." },
+  it: { widgetId: "h.2563f0efc2ea0320_4", alt: "Logo di Panam\xE1 Legal Lab con un simbolo grafico e il nome del marchio in arancione e bianco." }
+}).map(([language, profile]) => [language, Object.freeze(profile)])));
+var imageUrl = /^https:\/\/lh7-us\.googleusercontent\.com\/sitesv-images-rt\/[A-Za-z0-9_-]+=w1280(?:-rw)?$/u;
+var knownRatio = /^\s*aspect-ratio\s*:\s*auto\s+1168\s*\/\s*854\s*;?\s*$/u;
+function approvedImage(get, profile) {
+  const style = get("style");
+  return imageUrl.test(get("src") ?? "") && get("class") === "CENy8b" && get("role") === "img" && get("alt") === profile.alt && (style === null || knownRatio.test(style));
+}
+function createOverlayInspector(profile) {
+  let state = { roots: 0, sections: 0, selected: 0, widgets: 0, images: 0, firstMatches: false, safe: true };
+  return {
+    root: { element() {
+      state = { ...state, roots: state.roots + 1 };
+    } },
+    firstSection: { element(element) {
+      state = {
+        ...state,
+        sections: state.sections + 1,
+        firstMatches: state.sections === 0 ? element.getAttribute("id") === HOME_SECTION_ID : state.firstMatches
+      };
+    } },
+    section: { element() {
+      state = { ...state, selected: state.selected + 1 };
+    } },
+    widget: { element() {
+      state = { ...state, widgets: state.widgets + 1 };
+    } },
+    image: { element(element) {
+      state = { ...state, images: state.images + 1, safe: state.safe && approvedImage((name) => element.getAttribute(name), profile) };
+    } },
+    nested: { element() {
+      state = { ...state, safe: false };
+    } },
+    valid() {
+      return Boolean(profile) && state.safe && state.firstMatches && ["roots", "selected", "widgets", "images"].every((name) => state[name] === 1);
+    }
+  };
+}
+function widgetBounds(html, section, profile, spans) {
+  const tags = [...section[0].matchAll(/<div\b[^<>]*>|<\/div\s*>/giu)];
+  let depth = 0, begin = null;
+  for (const tag of tags) {
+    const offset = section.index + tag.index;
+    if (spans.some((span) => offset >= span.start && offset < span.end)) continue;
+    if (/^<\//u.test(tag[0])) {
+      if (begin !== null && --depth === 0) return { begin, end: offset };
+      continue;
+    }
+    const attrs = elementAttributes(tag[0], "div");
+    if (!attrs) return null;
+    if (begin === null && attrs.get("id")?.value === profile.widgetId) {
+      begin = offset + tag[0].length;
+      depth = 1;
+    } else if (begin !== null) depth++;
+  }
+  return null;
+}
+function overlayDocumentEdit(html, language, spans, nativeValid) {
+  const profile = HOME_OVERLAY_PROFILES[language];
+  if (!nativeValid || !profile || !Array.isArray(spans)) return null;
+  const section = /<section\b[^<>]*>[\s\S]*?<\/section\s*>/iu.exec(html);
+  if (!section || spans.some((span) => section.index >= span.start && section.index < span.end)) return null;
+  const tag = section[0].slice(0, section[0].indexOf(">") + 1);
+  if (elementAttributes(tag, "section")?.get("id")?.value !== HOME_SECTION_ID || /<section\b/iu.test(section[0].slice(tag.length))) return null;
+  const bounds = widgetBounds(html, section, profile, spans);
+  if (!bounds) return null;
+  const candidates = [];
+  for (const match2 of html.matchAll(/<img\b[^<>]*>/giu)) {
+    const attrs = elementAttributes(match2[0], "img");
+    if (!attrs) return null;
+    if (attrs.get("alt")?.value !== profile.alt) continue;
+    if (match2.index < bounds.begin || match2.index >= bounds.end || spans.some((span) => match2.index >= span.start && match2.index < span.end) || ![4, 5].includes(attrs.size) || ![...attrs.keys()].every((name) => ["src", "class", "role", "alt", "style"].includes(name)) || !approvedImage((name) => attrs.get(name)?.value ?? null, profile)) return null;
+    candidates.push({ match: match2, attrs });
+  }
+  if (candidates.length !== 1 || candidates[0].attrs.has("style")) return null;
+  const match = candidates[0].match, offset = match.index + match[0].length - 1;
+  return { start: offset, end: offset, replacement: ' style="aspect-ratio:auto 1168 / 854"' };
+}
+
+// src/css-static.js
+var CSS_NATIVE_URL = "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA";
+var CSS_ASSET_PATH = "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css";
+var CSS_BODY_LIMIT = 1310720;
+var CSS_DEADLINE_MS = 1e3;
+var PREVIEW4 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
+var utf8Html2 = /^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
+var noncePattern4 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
+var encoder4 = new TextEncoder();
+function eligiblePolicies(request, environment) {
+  const mode = environment?.PLL_CSS_STATIC, impressionMode = environment?.PLL_NATIVE_IMPRESSIONS, initialMode = environment?.PLL_INITIAL_RENDER;
+  if (request.method !== "GET" || ![mode, impressionMode, initialMode].some((value) => ["preview", "all"].includes(value))) return null;
+  const plan = planDeliveryRequest(request.url, request.method);
+  if (plan.kind !== "page" || plan.searchPage) return null;
+  const css = plan.mode === "production" ? mode === "all" : plan.previewOrigin === PREVIEW4 && ["preview", "all"].includes(mode) && new URL(request.url).searchParams.get("_pll_speed") !== "control";
+  const impressions = impressionPolicyEnabled(request, impressionMode, plan);
+  const initial = initialRenderPolicyEnabled(request, initialMode, plan);
+  return css || impressions || initial ? {
+    site: plan.site,
+    css,
+    impressions,
+    initial,
+    overlayProfile: initial && plan.canonical === plan.site.productionOrigin + "/" ? HOME_OVERLAY_PROFILES[plan.site.language] : null
+  } : null;
+}
+function stylePolicyAbsent(csp) {
+  return typeof csp === "string" && csp.length > 0 && !csp.split(",").some((policy) => policy.split(";").some((raw) => /^(?:default-src|style-src(?:-elem|-attr)?)$/iu.test(raw.trim().split(/\s+/u)[0])));
+}
+function approvedLink(get) {
+  return get("href") === CSS_NATIVE_URL && get("data-id") === "_cl" && get("rel")?.toLowerCase() === "stylesheet" && noncePattern4.test(get("nonce") ?? "") && get("integrity") === null;
+}
+function createCssInspector(site, overlayProfile = null) {
+  let state = { html: 0, head: 0, body: 0, marker: 0, charset: 0, links: 0, selected: 0, fonts: 0, headFonts: 0, frames: 0, frameSafe: true, safe: true, cssSafe: true, nonces: [] };
+  const overlay = createOverlayInspector(overlayProfile);
+  const count = (name) => ({ element() {
+    state = { ...state, [name]: state[name] + 1 };
+  } });
+  const context = () => {
+    const valid = state.safe && ["html", "head", "body", "marker", "charset"].every((name) => state[name] === 1);
+    return {
+      nonces: valid ? state.nonces : null,
+      cssValid: valid && state.cssSafe && ["links", "selected"].every((name) => state[name] === 1),
+      fontValid: valid && state.fonts === 1 && state.headFonts === 1,
+      frameValid: valid && state.frames === 1 && state.frameSafe,
+      overlayValid: valid && overlay.valid()
+    };
+  };
+  return {
+    ...Object.fromEntries(["html", "head", "body"].map((name) => [name, count(name)])),
+    base: { element() {
+      state = { ...state, safe: false };
+    } },
+    marker: { element(element) {
+      state = { ...state, marker: state.marker + 1, safe: state.safe && element.getAttribute("data-domain") === "panamalegallab.com" && element.getAttribute("data-sitename") === site.upstreamPrefix.split("/").at(-1) };
+    } },
+    charset: { element(element) {
+      state = { ...state, charset: state.charset + 1, safe: state.safe && /^utf-?8$/iu.test(element.getAttribute("charset") ?? "") };
+    } },
+    meta: { element(element) {
+      if (/^content-security-policy(?:-report-only)?$/iu.test(element.getAttribute("http-equiv")?.trim() ?? "")) state = { ...state, safe: false };
+    } },
+    script: { element(element) {
+      const nonce = element.getAttribute("nonce");
+      const dataOnly = ["application/json", "application/ld+json"].includes(element.getAttribute("type")?.trim().toLowerCase());
+      state = { ...state, safe: state.safe && (nonce !== null || element.getAttribute("src") !== null || dataOnly) };
+      if (nonce !== null) state = { ...state, nonces: [...state.nonces, nonce], safe: state.safe && state.nonces.length < 256 };
+    } },
+    link: { element(element) {
+      if (element.getAttribute("data-id") === "_cl") state = { ...state, links: state.links + 1 };
+      if (element.getAttribute("href") === INVALID_FONT_URL) state = { ...state, fonts: state.fonts + 1 };
+    } },
+    headLink: { element(element) {
+      if (element.getAttribute("data-id") === "_cl") state = {
+        ...state,
+        selected: state.selected + 1,
+        cssSafe: state.cssSafe && approvedLink((name) => element.getAttribute(name))
+      };
+      if (element.getAttribute("href") === INVALID_FONT_URL) state = { ...state, headFonts: state.headFonts + 1 };
+    } },
+    frame: { element(element) {
+      if (element.getAttribute("src")?.startsWith("https://script.google.com/")) state = {
+        ...state,
+        frames: state.frames + 1,
+        frameSafe: state.frameSafe && approvedFrame((name) => element.getAttribute(name), site.language)
+      };
+    } },
+    overlay,
+    context,
+    result() {
+      const result = context();
+      return result.cssValid ? result.nonces : null;
+    }
+  };
+}
+function attach2(rewriter, inspector2, overlayProfile) {
+  const result = rewriter.on("html", inspector2.html).on("head", inspector2.head).on("body", inspector2.body).on("base", inspector2.base).on("[data-domain][data-sitename]", inspector2.marker).on("head meta[charset]", inspector2.charset).on("meta[http-equiv]", inspector2.meta).on("script", inspector2.script).on("link", inspector2.link).on("head link", inspector2.headLink).on("iframe", inspector2.frame);
+  if (!overlayProfile) return result;
+  const section = `div.UtePc > section[id="${HOME_SECTION_ID}"]`, widget = `${section} [id="${overlayProfile.widgetId}"]`;
+  return result.on("div.UtePc", inspector2.overlay.root).on("div.UtePc > section", inspector2.overlay.firstSection).on(section, inspector2.overlay.section).on(widget, inspector2.overlay.widget).on(`${widget} img`, inspector2.overlay.image).on(`${section} section`, inspector2.overlay.nested);
+}
+function cssFallbackScript() {
+  return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
+}
+function cssLinkEdits(html, nonce, inert) {
+  if (!noncePattern4.test(nonce)) return null;
+  const heads = [...html.matchAll(/<head(?:\s[^<>]*)?>/giu)], ends = [...html.matchAll(/<\/head\s*>/giu)];
+  if (heads.length !== 1 || ends.length !== 1 || /["']/u.test(heads[0][0])) return null;
+  const begin = heads[0].index + heads[0][0].length, end = ends[0].index;
+  if (begin >= end) return null;
+  if (!inert) return null;
+  const candidates = [];
+  for (const match of html.matchAll(/<link\b[^<>]*>/giu)) {
+    const attrs = elementAttributes(match[0], "link");
+    if (!attrs) return null;
+    if (attrs.get("data-id")?.value !== "_cl") continue;
+    if (match.index < begin || match.index >= end || inert.some((span2) => match.index >= span2.start && match.index < span2.end) || !approvedLink((name) => attrs.get(name)?.value ?? null)) return null;
+    const href = attrs.get("href");
+    candidates.push({ start: match.index + href.start, end: match.index + href.start + href.length });
+  }
+  if (candidates.length !== 1) return null;
+  const span = candidates[0];
+  return [
+    { start: span.start, end: span.end, replacement: CSS_ASSET_PATH },
+    { start: begin, end: begin, replacement: `<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}<\/script>` }
+  ];
+}
+function cancelQuietly2(reader) {
+  try {
+    reader?.cancel().catch(() => {
+    });
+  } catch {
+  }
+}
+async function readBounded2(reader) {
+  let size = 0;
+  const chunks = [];
+  while (true) {
+    const chunk = await reader.read();
+    if (chunk.done) break;
+    size += chunk.value.byteLength;
+    if (size > CSS_BODY_LIMIT) return null;
+    chunks.push(chunk.value);
+  }
+  const bytes = new Uint8Array(size);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+}
+async function inspect(response, policies, Rewriter, timing) {
+  let sourceReader, parserReader, timer, aborted = false;
+  const deadline = new Promise((resolve) => {
+    timer = timing.setTimeout(() => {
+      aborted = true;
+      resolve(null);
+    }, CSS_DEADLINE_MS);
+    timer?.unref?.();
+  });
+  try {
+    sourceReader = response.clone().body.getReader();
+    const inspection = (async () => {
+      const bytes = await readBounded2(sourceReader);
+      if (!bytes || aborted) return null;
+      const html = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
+      const roundtrip = encoder4.encode(html);
+      if (roundtrip.length !== bytes.length || !roundtrip.every((value, index) => value === bytes[index])) return null;
+      const inspector2 = createCssInspector(policies.site, policies.overlayProfile);
+      parserReader = attach2(new Rewriter(), inspector2, policies.overlayProfile).transform(new Response(bytes)).body.getReader();
+      while (!(await parserReader.read()).done) {
+        if (aborted) return null;
+      }
+      if (aborted) return null;
+      const context = inspector2.context();
+      if (!context.nonces) return null;
+      const nonce = authorizedNonce(response.headers.get("Content-Security-Policy"), context.nonces);
+      if (!nonce) return null;
+      const spans = collectRawTextSpans(html);
+      if (!spans) return null;
+      const css = policies.css && context.cssValid ? cssLinkEdits(html, nonce, spans) : null;
+      const impressions = policies.impressions ? impressionDocumentEdit(html, policies.site, nonce, spans) : null;
+      const font = policies.initial ? fontDocumentEdit(html, spans, context.fontValid) : null;
+      const frame = policies.initial ? frameDocumentEdit(html, policies.site.language, spans, context.frameValid) : null;
+      const overlay = policies.overlayProfile ? overlayDocumentEdit(html, policies.site.language, spans, context.overlayValid) : null;
+      if (!css && !impressions && !font && !frame && !overlay) return null;
+      const edits = [...css ?? [], ...impressions ? [impressions] : [], ...font ? [font] : [], ...frame ? [frame] : [], ...overlay ? [overlay] : []];
+      const result = applyTextEdits(html, edits);
+      return result ? {
+        bytes: encoder4.encode(result),
+        css: Boolean(css),
+        impressions: Boolean(impressions),
+        initial: [font ? "font" : null, frame ? "lazy-frame" : null, overlay ? "home-ratio" : null].filter(Boolean)
+      } : null;
+    })();
+    return await Promise.race([inspection, deadline]);
+  } catch {
+    return null;
+  } finally {
+    aborted = true;
+    timing.clearTimeout(timer);
+    cancelQuietly2(parserReader);
+    cancelQuietly2(sourceReader);
+  }
+}
+async function withCssStatic(response, request, environment, options = {}) {
+  try {
+    if (response.status !== 200 || !response.body || response.headers.has("Content-Encoding") || !utf8Html2.test(response.headers.get("Content-Type") ?? "")) return response;
+    const selected = eligiblePolicies(request, environment);
+    if (!selected) return response;
+    const stylesAbsent = stylePolicyAbsent(response.headers.get("Content-Security-Policy"));
+    const policies = { ...selected, css: selected.css && stylesAbsent, overlayProfile: stylesAbsent ? selected.overlayProfile : null };
+    if (!policies.css && !policies.impressions && !policies.initial) return response;
+    const Rewriter = options.Rewriter ?? globalThis.HTMLRewriter;
+    if (typeof Rewriter !== "function") return response;
+    const result = await inspect(response, policies, Rewriter, options.timing ?? globalThis);
+    if (!result) return response;
+    const headers3 = new Headers(response.headers);
+    for (const name of ["Content-Length", "ETag", "Content-MD5", "Digest", "Content-Digest", "Repr-Digest"]) headers3.delete(name);
+    if (result.css) headers3.set("X-PLL-CSS-Policy", `static-exact-v1-${policies.site.language}`);
+    if (result.impressions) headers3.set("X-PLL-Impression-Policy", `native-noop-v1-${policies.site.language}`);
+    if (result.initial.length) {
+      headers3.set("X-PLL-Initial-Render-Policy", `initial-render-v1-${policies.site.language}`);
+      headers3.set("X-PLL-Initial-Render-Edits", result.initial.join(","));
+    }
+    const delivered = new Response(result.bytes, { status: response.status, statusText: response.statusText, headers: headers3 });
+    try {
+      response.body.cancel().catch(() => {
+      });
+    } catch {
+    }
+    return delivered;
+  } catch {
+    return response;
+  }
+}
+
 // src/html-template.js
 var TEMPLATE_HEADER = "X-PLL-HTML-Template";
 var TEMPLATE_TTL_MS = 3e5;
@@ -3668,7 +3847,7 @@ var HEADER_LIMIT = 16384;
 var DEADLINE_MS = 1e3;
 var MAX_NONCES = 256;
 var encoder5 = new TextEncoder();
-var noncePattern4 = /^[A-Za-z0-9+/_-]{16,256}={0,2}$/u;
+var noncePattern5 = /^[A-Za-z0-9+/_-]{16,256}={0,2}$/u;
 var htmlType = /^text\/html\s*;\s*charset\s*=\s*(?:"utf-8"|utf-8)\s*$/iu;
 var identityKeys = ["origin", "path", "language", "siteName", "revision"];
 var languages = Object.freeze({ es: "www", en: "en", fr: "fr", it: "it" });
@@ -3713,7 +3892,7 @@ function policyNonce(csp) {
   }
   if (["default-src", "style-src", "style-src-elem", "style-src-attr", "script-src-elem", "script-src-attr"].some((name) => directives.has(name))) return null;
   const sources = [...csp.matchAll(/'nonce-([^']+)'/gu)];
-  if (sources.length !== 1 || !noncePattern4.test(sources[0][1]) || !directives.get("script-src")?.includes(sources[0][0])) return null;
+  if (sources.length !== 1 || !noncePattern5.test(sources[0][1]) || !directives.get("script-src")?.includes(sources[0][0])) return null;
   return sources[0][1];
 }
 function supportedResponse(response, internal = false) {
@@ -3762,7 +3941,7 @@ function inspector(identity) {
       const tag = el.tagName.toLowerCase(), value = el.getAttribute("nonce");
       state = {
         ...state,
-        safe: state.safe && ["script", "style", "link"].includes(tag) && noncePattern4.test(value ?? "") && state.records.length < MAX_NONCES,
+        safe: state.safe && ["script", "style", "link"].includes(tag) && noncePattern5.test(value ?? "") && state.records.length < MAX_NONCES,
         records: state.records.length < MAX_NONCES ? [...state.records, { tag, value }] : state.records
       };
     } }
@@ -3848,7 +4027,7 @@ function nonceSpans(html, records, scriptNonce) {
   const spans = attributeSpans(html);
   if (!spans || spans.length !== records.length || !spans.every((row, i) => row.tag === records[i].tag && row.value === records[i].value)) return null;
   const styles = [...new Set(records.filter((row) => row.tag !== "script").map((row) => row.value))];
-  if (styles.length !== 1 || styles[0] === scriptNonce || !noncePattern4.test(styles[0]) || !records.some((row) => row.tag === "script") || records.some((row) => row.tag === "script" && row.value !== scriptNonce)) return null;
+  if (styles.length !== 1 || styles[0] === scriptNonce || !noncePattern5.test(styles[0]) || !records.some((row) => row.tag === "script") || records.some((row) => row.tag === "script" && row.value !== scriptNonce)) return null;
   const nonces = [scriptNonce, styles[0]];
   for (const nonce of nonces) {
     const expected = spans.filter((row) => row.value === nonce).map((row) => row.start);
@@ -3930,7 +4109,7 @@ function readTemplateCertificate(response, identity, now = Date.now()) {
     const decoded = atob(header);
     if (btoa(decoded) !== header) return null;
     const cert = JSON.parse(decoded);
-    if (!cert || Object.keys(cert).sort().join(",") !== "bytes,createdAt,csp,expiresAt,identity,nonces,reportOnly,sha256,spans,v,vary" || cert.v !== 2 || !sameIdentity(cert.identity, identity) || !Number.isSafeInteger(cert.createdAt) || cert.createdAt < 0 || cert.expiresAt !== cert.createdAt + TEMPLATE_TTL_MS || now < cert.createdAt || now >= cert.expiresAt || !/^[a-f0-9]{64}$/u.test(cert.sha256) || !Number.isSafeInteger(cert.bytes) || cert.bytes < 1 || cert.bytes > TEMPLATE_BODY_LIMIT || !validVary(cert.vary) || cert.csp !== response.headers.get("Content-Security-Policy") || cert.reportOnly !== response.headers.get("Content-Security-Policy-Report-Only") || !Array.isArray(cert.nonces) || cert.nonces.length !== 2 || !cert.nonces.every((value) => noncePattern4.test(value)) || cert.nonces[0] === cert.nonces[1] || policyNonce(cert.csp) !== cert.nonces[0] || !Array.isArray(cert.spans) || !cert.spans.length || cert.spans.length > MAX_NONCES) return null;
+    if (!cert || Object.keys(cert).sort().join(",") !== "bytes,createdAt,csp,expiresAt,identity,nonces,reportOnly,sha256,spans,v,vary" || cert.v !== 2 || !sameIdentity(cert.identity, identity) || !Number.isSafeInteger(cert.createdAt) || cert.createdAt < 0 || cert.expiresAt !== cert.createdAt + TEMPLATE_TTL_MS || now < cert.createdAt || now >= cert.expiresAt || !/^[a-f0-9]{64}$/u.test(cert.sha256) || !Number.isSafeInteger(cert.bytes) || cert.bytes < 1 || cert.bytes > TEMPLATE_BODY_LIMIT || !validVary(cert.vary) || cert.csp !== response.headers.get("Content-Security-Policy") || cert.reportOnly !== response.headers.get("Content-Security-Policy-Report-Only") || !Array.isArray(cert.nonces) || cert.nonces.length !== 2 || !cert.nonces.every((value) => noncePattern5.test(value)) || cert.nonces[0] === cert.nonces[1] || policyNonce(cert.csp) !== cert.nonces[0] || !Array.isArray(cert.spans) || !cert.spans.length || cert.spans.length > MAX_NONCES) return null;
     let end = -1;
     for (const span of cert.spans) {
       if (!span || Object.keys(span).sort().join(",") !== "end,family,start" || ![0, 1].includes(span.family) || !Number.isSafeInteger(span.start) || !Number.isSafeInteger(span.end) || span.start <= end || span.start < 0 || span.end > cert.bytes || span.end - span.start !== cert.nonces[span.family].length) return null;
@@ -4466,7 +4645,7 @@ function createRendererClass(Base, makeHandler, { cacheMode: cacheMode2 = "off",
         ...cacheOptions,
         mode: cacheMode2,
         store,
-        revision: cacheOptions.revision ?? impressionCacheRevision(env?.PLL_NATIVE_IMPRESSIONS)
+        revision: cacheOptions.revision ?? initialRenderCacheRevision(impressionCacheRevision(env?.PLL_NATIVE_IMPRESSIONS), env?.PLL_INITIAL_RENDER)
       });
     }
     async fetch(request) {
@@ -4495,7 +4674,7 @@ function createRendererClass(Base, makeHandler, { cacheMode: cacheMode2 = "off",
 }
 
 // src/backend.js
-var cacheMode = true ? "all" : "off";
+var cacheMode = true ? "off" : "off";
 var PllRenderer = class extends createRendererClass(DurableObject, createDeliveryHandler, { cacheMode }) {
 };
 var backend_default = { fetch: (request) => backendNotFound(request.method) };

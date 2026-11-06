@@ -1,51 +1,57 @@
-# Cloudflare: versiones y código aceptados
+# Cloudflare: recuperación con HTML cache desactivado
 
-El [recibo](frontend/css-static/activation-receipt.json) registra la aceptación pública de la corrección del registro nativo: backend `7ffb8661-8eeb-459f-8264-89288caf15fb`,410590bytes, SHA256 `dace42d4bd9f382132a4e152b802457ba7b530f90d8f0b4db87d1505b5b77ae8`, con `PLL_NATIVE_IMPRESSIONS=all`. La propuesta adicional para las imágenes de banca no se incorpora. Tras ese ensayo se restauró la versión logger aceptada y se mantienen las fotografías actuales.
+El [recibo de recuperación](frontend/css-static/activation-receipt.json) identifica la versión activa `f62aeb5b-7e37-4bf1-9633-0985f1f4060e`, 422116 bytes, SHA-256 `620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521`. Su aceptación de imágenes procede de cinco vistas públicas en cuatro idiomas; la optimización de velocidad móvil sigue abierta.
 
-Pages conserva el frontend SHA256 `3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9`; sus cinco archivos desplegables siguen exactos. El renderer conserva26 archivos congelados y referencia `58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509`.
+## Retirada de la caché HTML
 
-## Política de registro
+Una comprobación acotada encontró imágenes válidas con HTML de unos 2 segundos y tokens de imagen rotos con el mismo HTML envejecido unos 159 segundos. Se retiró la reutilización de HTML compilando el modo existente `PLL_HTML_CACHE_MODE=off`. El código fuente no cambia; el backend emitido difiere del cf48 anterior solo en el literal compilado del modo de caché.
 
-`PLL_NATIVE_IMPRESSIONS` admite `off`, `preview` y `all`. Solo cambia el token reconocido del campo357/índice356 en una configuración con forma, locale, script versionado y nonce admitidos. Desconocidos o ambigüedades conservan el documento original. No se falsifica una respuesta de telemetría ni se añade un relay. Cliente nativo, docs-liap, scripts GA4, consentimiento y demás bytes mantienen sus condiciones verificadas.
+Cada visita HTML ejecuta Pages y el DO y solicita una respuesta fresca al origen Google. No lee ni escribe plantillas, inicializa SQLite para la caché, certifica capturas ni encola renovaciones. Se mantienen máximo ocho peticiones en vuelo, sin cola y sin trabajos periódicos. El plan gratuito y los recursos existentes permanecen; las cuotas compartidas son finitas y la latencia del origen no queda garantizada.
 
-La variable sí es un nuevo binding de configuración del entorno en la API. `newResourceBindings:0` significa que no se añade ningún binding de recurso. Namespace/export del DO, SQLite, binding de servicio Pages→DO, Worker, Pages, DNS y reglas siguen siendo los existentes. Las variables añadidas se enumeran separadamente en el recibo. No hay nuevos recursos de pago, migraciones, cron, calentadores ni tareas periódicas.
+Los límites anteriores de 300 segundos, 32 entradas, 8 MiB y 32 posiciones SQLite quedan como historial y capacidad dormida del código, sin reutilización activa. No reactivar `all` durante una restauración rutinaria: el envejecimiento de tokens motivó su retirada.
 
-La revisión de caché incluye el modo de política y no reutiliza cuerpos de la revisión anterior. No se añaden purgas ni migraciones de almacenamiento.
+## Políticas y recursos conservados
+
+Las cuatro variables `PLL_IMAGE_FORMAT`, `PLL_CSS_STATIC`, `PLL_NATIVE_IMPRESSIONS` y `PLL_INITIAL_RENDER` permanecen en `all`. `config/backend.cache-off.wrangler.json` conserva el mismo cuerpo que la configuración inicial `all`; no controla el modo de caché, que se compila en el artefacto.
+
+El render inicial retira el enlace exacto a una fuente inválida, añade `loading="lazy"` solo al iframe reconocido de Apps Script y reserva `aspect-ratio:auto 1168 / 854` en el logotipo reconocido de portada cuando falta. Cubre 252 URL preferidas y cuatro aliases propios de portada. Se conservan fuentes válidas, fotografías, URL del formulario, sandbox, permisos y dimensiones. Las formas desconocidas mantienen el documento original; se reutiliza el parser nativo sin otra pasada ni petición al origen.
+
+La política de registro nativo sigue limitada al token reconocido del campo 357/índice 356, con controles de forma, locale, script y nonce. Cliente nativo, docs-liap, GA4, dataLayer y consentimiento permanecen. Esto no prueba entrega de eventos ni conversiones Analytics.
+
+Pages conserva 3349 bytes y SHA-256 `3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9`. Los cinco artefactos frontend y los 26 archivos congelados del renderer permanecen exactos. No hay nuevas dependencias, bindings de recursos, namespaces, migraciones ni servicios de pago. Las dos reglas de recuperación permanecen desactivadas.
 
 ## Evidencia y límites
 
-La aceptación contabiliza39 documentos:16 vistas primarias de preview observaron61 solicitudes nativas en controles y0 en candidatas;4 primarias públicas observaron0. Las ventanas sin interacción fueron finitas, de16segundos. No se extrapola a tiempo indefinido, cuota o facturación.
+El [recibo del build](frontend/css-static/CACHE-OFF-RECEIPT.json) compara 99 archivos de fuente/configuración/pruebas/recursos con el candidato anterior, todos exactos. Su declaración `deployed:false` corresponde a esa preparación local; la publicación y aceptación pública se documentan por separado en el recibo de recuperación del operador.
 
-Las funciones de idioma y búsqueda se aceptaron en cuatro idiomas. La primera captura funcional italiana falló por la interacción del colector y se conserva; su aceptación procede de un smoke separado con hover. No se reescribió el FAIL original. Las comprobaciones de búsqueda no demuestran la integridad de todos los resultados RPC. Preservar scripts/configuración/dataLayer y consentimiento no demuestra recepción de eventos GA4.
+El replay histórico del 4 de noviembre cubre 252 páginas: 252 enlaces inválidos retirados, 20 iframes diferidos y tres reservas de proporción nuevas; la española ya existía. Los demás bytes aceptados y CSP permanecieron exactos, con una pasada nativa y cero peticiones externas. No son 252 inspecciones públicas nuevas.
 
-El paquete portable logger pasa146/146 tests incluyendo dos guardas de portabilidad; cobertura99,94% líneas,89,80% ramas y97,42% funciones. Los seis archivos generados coinciden con el candidato aceptado. El audit npm oficial del operador informó0 vulnerabilidades y83 dependencias, sin instalación ni actualización. Logger y hero tienen el mismo lockfile. No se incluye la caché npm.
+Las 12 vistas/seis parejas de preview y ocho GET anteriores corresponden al cf48 con caché y quedan como evidencia histórica. Los seis formularios cargaron al hacer scroll, sin enviar datos. El LCP móvil español de 8178/7936 ms y CLS italiano de 0,136316/0,001681 no miden esta recuperación `off`; se conserva también la pareja con regresión de 324 ms. No se atribuye una mejora global o de CWV de campo a esas muestras históricas. Entrega de formularios, conversiones/atribución Analytics y GSC quedan pendientes.
 
-Las252 rutas preferidas tienen evidencia contractual offline separada; estas muestras no equivalen a252 mediciones públicas. No se afirma una puntuación PageSpeed, mejora global de LCP, capacidad ilimitada o entrega de Analytics.
+La recuperación `off` pasó cinco vistas públicas sin consultas, en cuatro idiomas: 97 transferencias de imágenes HTTP 200, cero imágenes rotas y cero reintentos. La revisión española a los 234,604 segundos recibió URL nuevas con los mismos hashes de fotografías, logotipo y overlay. Todas mostraron BYPASS.
 
-## HTML y recursos gratuitos
+La [ejecución PageSpeed 543kcq01on](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on) registró 56 móvil (LCP 14,7 s) y 78 escritorio (LCP 2,4 s), sin 403 de imágenes en las auditorías de consola ampliadas. Es una medición externa aislada, sin comparación causal ni prueba de CWV de campo. El rendimiento móvil sigue abierto; no se declara finalizada la optimización.
 
-El DO puede reutilizar una respuesta pública válida hasta300segundos absolutos; las visitas no prolongan su vida. Google Sites sigue siendo el origen. Un HIT evita consultar el origen y ejecutar el render completo, pero cada visita HTML mantiene una ejecución Pages y una llamada al DO.
+Se descartó el experimento de imágenes adaptables: cuatro vistas tempranas sugerían ahorros limitados, pero una prueba separada de giro a los 160,013 segundos eligió nueve URL de 1280 px no solicitadas antes y las nueve fallaron con 403. No se adoptó código experimental. Una posible separación de CSS crítico sigue siendo solo un plan, sin implementar. La versión f62 y la entrega actual de fotografías permanecen sin cambios.
 
-Se conservan32entradas,8MiB de datos contabilizados,32posiciones SQLite, una captura concurrente y límites previos de captura/entrega. No se afirma un límite medido del heap completo. Un error del respaldo pierde ese beneficio y sigue el flujo normal. Las cuotas de cuenta, solicitudes, duración y SQLite siguen siendo finitas y compartidas.
+No se observaron etiquetas `hreflang` en el head público ni de preview. Los alternates de los sitemaps protegidos se conservan.
 
-HEAD, POST, búsquedas/RPC, consultas y formas no admitidas siguen su flujo original. El certificado privado v2 comprueba identidad, SHA, CSP y nonces. Cada HIT renueva nonces sin volver a analizar todo el HTML. No salen cabeceras internas. HTML conserva `no-store`.
+## Compilación portable
 
-## CSS, fotografías y portabilidad
+Ejecutar `node tooling/prepare-native-css.mjs` antes de build/tests. Reconstruye dos CSS exactos desde una representación gzip/base64 tras verificar límites y hashes; no usa red ni postinstall. El CSS conserva SHA-256 `7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61` y 1954605 bytes, caché immutable y [procedencia](frontend/css-static/assets/provenance.json).
 
-CSS permanece exacto: SHA256 `7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61`,1954605bytes. El asset tiene caché immutable y exclusión exacta del Worker; se conserva [su procedencia](frontend/css-static/assets/provenance.json). La corrección de registro no cambia fotografías ni perfiles.
+Usar el lockfile y compilar explícitamente con `PLL_HTML_CACHE_MODE=off`. En PowerShell:
 
-Se guarda el CSS como295904bytes base64 canónico de un gzip determinista de221926bytes. Ejecutar explícitamente `node tooling/prepare-native-css.mjs` antes de build/tests. No hay postinstall ni red. Los dos destinos se publican separadamente tras validación; un fallo parcial se informa y conserva archivos aprobados.
+```powershell
+$env:PLL_HTML_CACHE_MODE = 'off'
+npm run build
+npm test
+```
 
-Los ocho JSON portables existentes y `config/css-config.test.mjs` permanecen exactos. Las tres configuraciones logger nuevas omiten solo `$schema` superficial del editor. Se conservan las pruebas que rechazan cambios de ejecución o metadatos anidados. [packaging-provenance.json](frontend/css-static/packaging-provenance.json) relaciona hashes desplegados y portables.
+El build portable con modo `off` coincidió en los seis artefactos y pasó 163/163 pruebas, sin instalación ni red. Comparar hashes de salida; la fecha del manifiesto cambia. Las configuraciones portables históricas, el helper CSS y sus guardas permanecen exactos. La cobertura anterior de fuente fue 99,68 % líneas, 94,70 % funciones y 89,01 % ramas; se refiere a fuente idéntica, sin una nueva ejecución de cobertura.
 
-Usar lockfile y `PLL_HTML_CACHE_MODE=all` al compilar. La fecha de build-manifest cambia al reconstruir; comparar modos y hashes de salidas. Compilar no activa por sí solo una variable remota. Los modos CSS, imágenes y registro son independientes.
+## Historial y restauración
 
-## Publicación y reversión
+El [recibo cf48 con caché](frontend/css-static/activation-cf48-cache-all-receipt.json) permanece exacto, igual que [7ff](frontend/css-static/activation-7ff-receipt.json) y [f550](frontend/css-static/activation-f550-receipt.json). Las versiones históricas con HTML cache `all` no son la restauración recomendada tras esta incidencia.
 
-Se conserva Worker `pll-renderer-free-20261103`, clase `PllRenderer`, namespace `585ce224e0634c4bb0f61402e313787a`, binding de servicio `PLL_RENDERER` y objeto fijo `pll-renderer-v1`. Preview y público comparten backend y cuotas. Cambiar variables aparece en la API sin crear otro namespace o binding de recurso.
-
-Para revertir esta corrección, restaurar la versión aceptada `f550851a-2013-4772-8263-f39abd3d03f6`, SHA256 `b418914671ad90e2e53ee4bd190bbfde2ed0636600bff7142f113933ccd793ff`, en el mismo Worker/SQLite. Su [recibo anterior](frontend/css-static/activation-f550-receipt.json) permanece exacto. Conservar Pages, CSS, fotografías, namespace, tabla y reglas. Confirmar ID/modos efectivos; una nueva compilación no equivale al artefacto histórico.
-
-La opción de imágenes de banca no superó las guardas fijadas y se descartó; su código y configuraciones no forman parte de esta entrega. No se automatizan sitemaps, GitHub, publicaciones ni envíos de formulario.
-
-La restauración posterior al ensayo se comprobó con cuatro GET públicos, uno por idioma: HTTP 200, versión logger aceptada, canonical y flag nativo correctos, sin política hero y con fondo y loader originales. Fueron cuatro intentos, sin reintentos; sus cuerpos y capturas no forman parte del paquete.
+Conservar Worker `pll-renderer-free-20261103`, clase `PllRenderer`, namespace `585ce224e0634c4bb0f61402e313787a`, binding `PLL_RENDERER`, objeto `pll-renderer-v1`, Pages, SQLite, CSS, fotografías y reglas. Confirmar versión y modo compilado efectivos. No se automatizan publicaciones, sitemaps, GitHub ni envíos de formulario.

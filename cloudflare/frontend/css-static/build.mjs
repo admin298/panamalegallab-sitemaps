@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { CSS_ASSET_PATH, CSS_NATIVE_URL } from './src/css-static.js';
 import { IMPRESSION_VIEW_SCRIPTS, impressionCacheRevision } from './src/native-impressions.js';
+import { INVALID_FONT_URL, initialRenderCacheRevision } from './src/initial-render.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const cacheMode = process.env.PLL_HTML_CACHE_MODE ?? 'off';
@@ -45,14 +46,23 @@ await mkdir(path.dirname(path.join(root,cssRelative)),{recursive:true});
 await writeFile(path.join(root,cssRelative),cssBytes);
 files[cssRelative]={bytes:cssBytes.length,sha256:cssHash};
 if(files['dist/frontend/_worker.js'].sha256!=='3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9')throw new Error('Thin frontend identity changed.');
-const report = { release: 'pll-native-impressions-20261105-v1', rendererWorkerSha256: provenance.rendererWorkerSha256,
+const report = { release: 'pll-initial-render-20261105-v1', rendererWorkerSha256: provenance.rendererWorkerSha256,
   htmlCache: { placement: 'durable-object', mode: cacheMode, certificateVersion: 2,
     revision: impressionCacheRevision('off'),
     revisionsByImpressionMode:Object.fromEntries(['off','preview','all'].map(mode=>[mode,impressionCacheRevision(mode)])),
+    revisionsByPolicyMode:Object.fromEntries(['off','preview','all'].map(impressions=>[impressions,
+      Object.fromEntries(['off','preview','all'].map(font=>[font,initialRenderCacheRevision(impressionCacheRevision(impressions),font)]))])),
     maximumAgeSeconds: 300, maximumEntries: 32,
     maximumMemoryBytes: 8_388_608, persistentSlots: 32, maximumConcurrentFills: 1,
     perVisitPagesExecutions: 1, perVisitDurableObjectCalls: 1, perHitOriginCalls: 0,
     recurringJobs: 0, addedBindings: 0, newPaidResources: 0 },
+  initialRender:{modeVariable:'PLL_INITIAL_RENDER',modes:['off','preview','all'],removedUrl:INVALID_FONT_URL,
+    previewControlParameter:'_pll_initial_render',previewControlValue:'control',previewCandidateValue:'candidate',
+    shape:'Exact invalid-font link removal; recognized Apps Script iframe loading lazy; recognized four-home overlay auto-ratio hint. Unsupported shapes preserved.',
+    frame:'Same URL, sandbox, permissions and dimensions; native loading lazy only.',
+    overlay:'Only recognized four homepage widgets and localized alt; aspect-ratio auto 1168 / 854 when no inline style; intrinsic ratio retained.',
+    parser:'Reuses the existing native inspector and raw-text spans; no extra parse or upstream fetch.',
+    styling:'Font-family, fallback stacks and all valid font stylesheets remain byte-identical.'},
   impressions:{modeVariable:'PLL_NATIVE_IMPRESSIONS',modes:['off','preview','all'],
     previewOrigin:'https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev',
     previewControlParameter:'_pll_native_impressions',previewControlValue:'control',previewCandidateValue:'candidate',

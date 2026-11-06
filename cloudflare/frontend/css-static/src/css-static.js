@@ -2,6 +2,8 @@ import { planDeliveryRequest } from '../renderer/src/plan.js';
 import { authorizedNonce } from './image-helpers.js';
 import { collectRawTextSpans, elementAttributes, applyTextEdits } from './html-spans.js';
 import { impressionPolicyEnabled, impressionDocumentEdit } from './native-impressions.js';
+import { initialRenderPolicyEnabled, fontDocumentEdit, frameDocumentEdit, approvedFrame, INVALID_FONT_URL } from './initial-render.js';
+import { HOME_OVERLAY_PROFILES, HOME_SECTION_ID, createOverlayInspector, overlayDocumentEdit } from './home-overlay.js';
 
 export const CSS_NATIVE_URL='https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA';
 export const CSS_ASSET_PATH='/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css';
@@ -13,14 +15,16 @@ const noncePattern=/^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
 const encoder=new TextEncoder();
 
 function eligiblePolicies(request, environment) {
-  const mode=environment?.PLL_CSS_STATIC, impressionMode=environment?.PLL_NATIVE_IMPRESSIONS;
-  if(request.method!=='GET'||![mode,impressionMode].some(value=>['preview','all'].includes(value)))return null;
+  const mode=environment?.PLL_CSS_STATIC, impressionMode=environment?.PLL_NATIVE_IMPRESSIONS,initialMode=environment?.PLL_INITIAL_RENDER;
+  if(request.method!=='GET'||![mode,impressionMode,initialMode].some(value=>['preview','all'].includes(value)))return null;
   const plan=planDeliveryRequest(request.url,request.method);
   if(plan.kind!=='page'||plan.searchPage)return null;
   const css=plan.mode==='production'?mode==='all':plan.previewOrigin===PREVIEW
     &&['preview','all'].includes(mode)&&new URL(request.url).searchParams.get('_pll_speed')!=='control';
   const impressions=impressionPolicyEnabled(request,impressionMode,plan);
-  return css||impressions?{site:plan.site,css,impressions}:null;
+  const initial=initialRenderPolicyEnabled(request,initialMode,plan);
+  return css||impressions||initial?{site:plan.site,css,impressions,initial,
+    overlayProfile:initial&&plan.canonical===plan.site.productionOrigin+'/'?HOME_OVERLAY_PROFILES[plan.site.language]:null}:null;
 }
 
 export function stylePolicyAbsent(csp) {
@@ -36,12 +40,15 @@ function approvedLink(get) {
     &&get('integrity')===null;
 }
 
-export function createCssInspector(site) {
-  let state={html:0,head:0,body:0,marker:0,charset:0,links:0,selected:0,safe:true,cssSafe:true,nonces:[]};
+export function createCssInspector(site,overlayProfile=null) {
+  let state={html:0,head:0,body:0,marker:0,charset:0,links:0,selected:0,fonts:0,headFonts:0,frames:0,frameSafe:true,safe:true,cssSafe:true,nonces:[]};
+  const overlay=createOverlayInspector(overlayProfile);
   const count=name=>({element(){state={...state,[name]:state[name]+1};}});
   const context=()=>{
     const valid=state.safe&&['html','head','body','marker','charset'].every(name=>state[name]===1);
-    return {nonces:valid?state.nonces:null,cssValid:valid&&state.cssSafe&&['links','selected'].every(name=>state[name]===1)};
+    return {nonces:valid?state.nonces:null,cssValid:valid&&state.cssSafe&&['links','selected'].every(name=>state[name]===1),
+      fontValid:valid&&state.fonts===1&&state.headFonts===1,
+      frameValid:valid&&state.frames===1&&state.frameSafe,overlayValid:valid&&overlay.valid()};
   };
   return {
     ...Object.fromEntries(['html','head','body'].map(name=>[name,count(name)])),
@@ -55,19 +62,29 @@ export function createCssInspector(site) {
       const dataOnly=['application/json','application/ld+json'].includes(element.getAttribute('type')?.trim().toLowerCase());
       state={...state,safe:state.safe&&(nonce!==null||element.getAttribute('src')!==null||dataOnly)};
       if(nonce!==null)state={...state,nonces:[...state.nonces,nonce],safe:state.safe&&state.nonces.length<256};}},
-    link:{element(element){if(element.getAttribute('data-id')==='_cl')state={...state,links:state.links+1};}},
+    link:{element(element){if(element.getAttribute('data-id')==='_cl')state={...state,links:state.links+1};
+      if(element.getAttribute('href')===INVALID_FONT_URL)state={...state,fonts:state.fonts+1};}},
     headLink:{element(element){if(element.getAttribute('data-id')==='_cl')state={...state,selected:state.selected+1,
-      cssSafe:state.cssSafe&&approvedLink(name=>element.getAttribute(name))};}},
+      cssSafe:state.cssSafe&&approvedLink(name=>element.getAttribute(name))};
+      if(element.getAttribute('href')===INVALID_FONT_URL)state={...state,headFonts:state.headFonts+1};}},
+    frame:{element(element){if(element.getAttribute('src')?.startsWith('https://script.google.com/'))state={...state,
+      frames:state.frames+1,frameSafe:state.frameSafe&&approvedFrame(name=>element.getAttribute(name),site.language)};}},
+    overlay,
     context,
     result(){const result=context();return result.cssValid?result.nonces:null;},
   };
 }
 
-function attach(rewriter,inspector) {
-  return rewriter.on('html',inspector.html).on('head',inspector.head).on('body',inspector.body)
+function attach(rewriter,inspector,overlayProfile) {
+  const result=rewriter.on('html',inspector.html).on('head',inspector.head).on('body',inspector.body)
     .on('base',inspector.base).on('[data-domain][data-sitename]',inspector.marker)
     .on('head meta[charset]',inspector.charset).on('meta[http-equiv]',inspector.meta)
-    .on('script',inspector.script).on('link',inspector.link).on('head link',inspector.headLink);
+    .on('script',inspector.script).on('link',inspector.link).on('head link',inspector.headLink).on('iframe',inspector.frame);
+  if(!overlayProfile)return result;
+  const section=`div.UtePc > section[id="${HOME_SECTION_ID}"]`,widget=`${section} [id="${overlayProfile.widgetId}"]`;
+  return result.on('div.UtePc',inspector.overlay.root).on('div.UtePc > section',inspector.overlay.firstSection)
+    .on(section,inspector.overlay.section).on(widget,inspector.overlay.widget)
+    .on(`${widget} img`,inspector.overlay.image).on(`${section} section`,inspector.overlay.nested);
 }
 
 export function cssFallbackScript() {
@@ -128,8 +145,8 @@ async function inspect(response,policies,Rewriter,timing) {
       const html=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);
       const roundtrip=encoder.encode(html);
       if(roundtrip.length!==bytes.length||!roundtrip.every((value,index)=>value===bytes[index]))return null;
-      const inspector=createCssInspector(policies.site);
-      parserReader=attach(new Rewriter(),inspector).transform(new Response(bytes)).body.getReader();
+      const inspector=createCssInspector(policies.site,policies.overlayProfile);
+      parserReader=attach(new Rewriter(),inspector,policies.overlayProfile).transform(new Response(bytes)).body.getReader();
       while(!(await parserReader.read()).done){if(aborted)return null;}
       if(aborted)return null;
       const context=inspector.context();if(!context.nonces)return null;
@@ -137,10 +154,14 @@ async function inspect(response,policies,Rewriter,timing) {
       const spans=collectRawTextSpans(html);if(!spans)return null;
       const css=policies.css&&context.cssValid?cssLinkEdits(html,nonce,spans):null;
       const impressions=policies.impressions?impressionDocumentEdit(html,policies.site,nonce,spans):null;
-      if(!css&&!impressions)return null;
-      const edits=[...(css??[]),...(impressions?[impressions]:[])];
+      const font=policies.initial?fontDocumentEdit(html,spans,context.fontValid):null;
+      const frame=policies.initial?frameDocumentEdit(html,policies.site.language,spans,context.frameValid):null;
+      const overlay=policies.overlayProfile?overlayDocumentEdit(html,policies.site.language,spans,context.overlayValid):null;
+      if(!css&&!impressions&&!font&&!frame&&!overlay)return null;
+      const edits=[...(css??[]),...(impressions?[impressions]:[]),...(font?[font]:[]),...(frame?[frame]:[]),...(overlay?[overlay]:[])];
       const result=applyTextEdits(html,edits);
-      return result?{bytes:encoder.encode(result),css:Boolean(css),impressions:Boolean(impressions)}:null;
+      return result?{bytes:encoder.encode(result),css:Boolean(css),impressions:Boolean(impressions),
+        initial:[font?'font':null,frame?'lazy-frame':null,overlay?'home-ratio':null].filter(Boolean)}:null;
     })();
     return await Promise.race([inspection,deadline]);
   }catch{return null;}
@@ -152,14 +173,17 @@ export async function withCssStatic(response,request,environment,options={}) {
     if(response.status!==200||!response.body||response.headers.has('Content-Encoding')
       ||!utf8Html.test(response.headers.get('Content-Type')??''))return response;
     const selected=eligiblePolicies(request,environment);if(!selected)return response;
-    const policies={...selected,css:selected.css&&stylePolicyAbsent(response.headers.get('Content-Security-Policy'))};
-    if(!policies.css&&!policies.impressions)return response;
+    const stylesAbsent=stylePolicyAbsent(response.headers.get('Content-Security-Policy'));
+    const policies={...selected,css:selected.css&&stylesAbsent,overlayProfile:stylesAbsent?selected.overlayProfile:null};
+    if(!policies.css&&!policies.impressions&&!policies.initial)return response;
     const Rewriter=options.Rewriter??globalThis.HTMLRewriter;if(typeof Rewriter!=='function')return response;
     const result=await inspect(response,policies,Rewriter,options.timing??globalThis);if(!result)return response;
     const headers=new Headers(response.headers);
     for(const name of ['Content-Length','ETag','Content-MD5','Digest','Content-Digest','Repr-Digest'])headers.delete(name);
     if(result.css)headers.set('X-PLL-CSS-Policy',`static-exact-v1-${policies.site.language}`);
     if(result.impressions)headers.set('X-PLL-Impression-Policy',`native-noop-v1-${policies.site.language}`);
+    if(result.initial.length){headers.set('X-PLL-Initial-Render-Policy',`initial-render-v1-${policies.site.language}`);
+      headers.set('X-PLL-Initial-Render-Edits',result.initial.join(','));}
     const delivered=new Response(result.bytes,{status:response.status,statusText:response.statusText,headers});
     try{response.body.cancel().catch(()=>{});}catch{/* Already closed. */}
     return delivered;
