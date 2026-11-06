@@ -1,0 +1,244 @@
+{
+  "state": "PUBLIC_RECOVERY_ACCEPTED_252",
+  "verifiedAtUtc": "2026-11-06T11:26:31.101025+00:00",
+  "userAuthorization": "dale: repair the diagnosed fallback, test and publish; keep Free plan, same photos and bounded execution.",
+  "incident": "Google native bootstrap extended from518to519elements; strict old compatibility validation returned302toGoogleSites.",
+  "change": "Accept only the reviewed519shape with appendedzero, expectedsource/query, exact locale viewer bundle and matching nonce; retain518history and unknown-shape fallback. Update exact CSS and native impression script contracts.",
+  "backendVersion": "0507d52a-a3c9-4d18-b8be-f0a6f6703b80",
+  "backend": {
+    "bytes": 426995,
+    "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340"
+  },
+  "rendererSha256": "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07",
+  "pagesDeployment": "06533eae-ba22-4602-8920-631f871dfff1",
+  "priorBackendVersion": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+  "priorPagesDeployment": "bc2cd6ed-c1ed-448e-9873-df07ee3e7a53",
+  "trafficPercent": 100,
+  "frontendWorkerUnchanged": true,
+  "htmlCacheMode": "off",
+  "maximumInFlight": 8,
+  "perHtmlVisit": {
+    "pages": 1,
+    "durableObject": 1,
+    "googleOrigin": 1
+  },
+  "newPaidResources": 0,
+  "newResources": 0,
+  "newRecurringJobs": 0,
+  "dnsRulesBindingsMigrationsChanged": false,
+  "phone": "+507 6992-1967",
+  "samePhotos": true,
+  "tests": {
+    "pass": 179,
+    "fail": 0,
+    "coverageScope": "Node delivery src modules; native renderer guards have separate integration tests",
+    "lines": 99.68,
+    "branches": 89.19,
+    "functions": 94.76,
+    "npmVulnerabilities": 0
+  },
+  "review": "review/RENDERER-REVIEW.json",
+  "sourceBuildProof": "candidate/evidence/RELEASE-DELTA-PROOF.json",
+  "preBrowser": {
+    "acceptedCombinations": 8,
+    "actualViews": 12,
+    "originalMobileOracleFailurePreserved": true,
+    "amendment": "Wait for native500ms drawer animation;4boundedmobileviews, candidate unchanged.",
+    "receipt": "operator/PREPUBLICATION-ACCEPTED.json"
+  },
+  "httpAudit": {
+    "pages": 252,
+    "byLanguage": {
+      "es": 63,
+      "en": 63,
+      "fr": 63,
+      "it": 63
+    },
+    "allStatus200": true,
+    "fallbacks": 0,
+    "canonicalCorrect": 252,
+    "expectedDescriptionsVerified": 148,
+    "retries": 0,
+    "concurrency": 2,
+    "receipt": "validation/public-252/SUMMARY.json",
+    "scope": "Finite HTTP document audit only; no252browser, image decoding, performance, form delivery or Google indexing claim."
+  },
+  "postBrowser": {
+    "views": 8,
+    "combinations": "4languages x2devices",
+    "passed": 8,
+    "photoChecks": 24,
+    "photoHashes": [
+      {
+        "case": "es-mobile",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "es-mobile",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "es-mobile",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "es-desktop",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "es-desktop",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "es-desktop",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "en-mobile",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "en-mobile",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "en-mobile",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "en-desktop",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "en-desktop",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "en-desktop",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "fr-mobile",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "fr-mobile",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "fr-mobile",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "fr-desktop",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "fr-desktop",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "fr-desktop",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "it-mobile",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "it-mobile",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "it-mobile",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      },
+      {
+        "case": "it-desktop",
+        "name": "photo",
+        "sha256": "b01afb8378c07324d6d8ff7ae05ee5d0bf2b8fef08975acdaa5a996691b82dd0"
+      },
+      {
+        "case": "it-desktop",
+        "name": "overlay",
+        "sha256": "f7ad3d98231e5271084cff936d51903c322bbf5ec7733909261960dbd52728b3"
+      },
+      {
+        "case": "it-desktop",
+        "name": "logo",
+        "sha256": "485d0a6d2f846f88f051ff042ba1f2481948e6c0adbe2564fc3c766020c3541d"
+      }
+    ],
+    "brokenInlineImages": 0,
+    "nativeImpressionRequests": 0,
+    "menuAndSearchVerified": true,
+    "formsSubmitted": 0,
+    "contextsClosed": true,
+    "browserClosed": true,
+    "receipt": "validation/browser/results-post/SUMMARY.json"
+  },
+  "staticCss": "operator/STATIC-PUBLIC.json",
+  "pageSpeed": {
+    "url": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj",
+    "reportAtLocal": "2026-11-06 12:21:36 CET",
+    "mobile": {
+      "performance": 61,
+      "fcpSeconds": 2.9,
+      "lcpSeconds": 9.2,
+      "tbtMs": 240,
+      "cls": 0.005,
+      "speedIndexSeconds": 5.9
+    },
+    "desktop": {
+      "performance": 82,
+      "fcpSeconds": 0.9,
+      "lcpSeconds": 2.6,
+      "tbtMs": 50,
+      "cls": 0.001,
+      "speedIndexSeconds": 1.9
+    },
+    "bothDevices": {
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "agentic": "2/2"
+    },
+    "image403InExpandedConsoleAudits": false,
+    "remainingConsoleError": "Google play.google.com/log CORS preflight and ERR_FAILED",
+    "scope": "One external homepage lab report, not a controlled comparison, field CWV,252performance scores or Google indexing proof."
+  },
+  "performanceComplete": false,
+  "github": {
+    "latestMergedPr": 9,
+    "mergeSha": "ea5dcf42b706c6d06953774caf6a4c2fb185414a",
+    "scope": "Backs up5Novf62;6Novrecovery is local and Cloudflare only, GitHub source update not published this turn."
+  },
+  "remaining": [
+    "Improve initial rendering/mobile speed; latestLCP9.2s remains poor.",
+    "Google last-saved139indexed/52notindexed/61unchecked from3and5Nov; not refreshed by this work.",
+    "User-deferred form delivery, receipt, conversion and campaign attribution tests.",
+    "Archive this6Novrecovery in GitHub under a specifically authorized PR."
+  ],
+  "browserCleanup": "OwnedCloudflareandPageSpeedtabsclosed; isolatedheadlesscontextsandbrowserclosed; no watcher/job left running."
+}

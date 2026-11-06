@@ -1,7 +1,7 @@
 {
-  "state": "TWO_EXACT_CSS_VERSIONS_PORTABLE_SOURCE",
-  "baseCommit": "ea5dcf42b706c6d06953774caf6a4c2fb185414a",
-  "preservedExistingConfigFiles": 8,
+  "state": "HERO_WIDTH_SOURCE_WITH_UNCHANGED_TWO_CSS_TRANSPORTS",
+  "baseCommit": "be1574baf7a90814df6dea73dc63746ab65aa85f",
+  "preservedExistingConfigFiles": 15,
   "allExistingJsonConfigsPreservedFromMain": true,
   "preservedExistingPortabilityTestFile": true,
   "retainedPortabilityGuardTests": 2,
@@ -45,6 +45,21 @@
   },
   "nativeCssRawFilesExcluded": 4,
   "preparation": "Explicit offline helper reconstructs four hash-checked fixed paths. No postinstall, network, runtime preparation or raw third-party viewer scripts.",
-  "adoptionSource": "ADOPTION.json copied byte-exact as activation-receipt.json.",
-  "adoptionSourceSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff"
+  "adoptionSource": "Root canonical ADOPTION.json copied byte-exact as activation-receipt.json.",
+  "adoptionSourceSha256": "16d7834a27e03b711933b723fc9db9e0bba8e53ed48465009439f29649763a11",
+  "baseTree": "15f68c85845185007f5a6713df4d06919cf64de9",
+  "newBackendConfigFiles": [
+    "backend.hero-width-preview.wrangler.json",
+    "backend.hero-width-all.wrangler.json"
+  ],
+  "frontendByteExactToPublishedCandidate": true,
+  "previous0507ActivationReceiptSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+  "historical0507Metadata": [
+    "activation-0507-receipt.json",
+    "receipts/0507-verification.json",
+    "receipts/0507-portable-validation.json",
+    "receipts/0507-source-build-proof.json",
+    "receipts/0507-packaging-provenance.json"
+  ],
+  "rawCapturesSignedPhotoUrlsAndViewerBodiesIncluded": false
 }

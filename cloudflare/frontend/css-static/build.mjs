@@ -74,12 +74,26 @@ for (const { contract, bytes } of cssAssets) {
   await writeFile(path.join(root, relative), bytes);
   files[relative] = { bytes: bytes.length, sha256: contract.sha256 };
 }
-if (files['dist/frontend/_worker.js'].sha256 !== '3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9')
+if (files['dist/frontend/_worker.js'].sha256 !== '72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953')
   throw new Error('Thin frontend identity changed.');
 const legacyCss = CSS_CONTRACTS.find(row => row.assetPath === CSS_ASSET_PATH);
 const report = { release: RELEASE_ID, rendererWorkerSha256: RENDERER_SHA256,
   legacyRendererWorkerSha256: legacyRenderer, rendererSourceFiles: Object.keys(provenance.files).length,
   rendererReferenceBytes: reference.outputFiles[0].contents.length,
+  frontend: { mobileSignal: { header: 'X-PLL-Mobile', values: ['0', '1'],
+    clientHint: 'Sec-CH-UA-Mobile ?0/?1 preferred; otherwise bounded User-Agent phone token',
+    maximumUserAgentCharacters: 512, forwardsRawUserAgent: false, forwardsRawClientHint: false,
+    overwritesIncomingSignal: true } },
+  heroWidth: { modeVariable: 'PLL_HERO_WIDTH', defaultMode: 'off', modes: ['off','preview','all'],
+    width: 1280, mobileOnly: true, matchingUrlSpans: 2, addedClientScripts: 0, extraFetches: 0,
+    previewOrigin: 'https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev',
+    previewControlParameter: '_pll_hero_width', previewControlValue: 'control', previewCandidateValue: 'candidate',
+    publicQueryOverride: false, eligibleMethods: ['GET'], knownPreferredPages: 252,
+    mutation: 'Only matching raw CSS and native escaped const imageUrl widths change from16383 to1280; same signed image base, native script logic, crop and other bytes.',
+    mobileSignal: 'Normalized X-PLL-Mobile=1 required; desktop is unchanged by this policy.',
+    parser: 'Existing native inspector and raw-text spans; no additional HTML parser or serialization.',
+    unsupportedShape: 'Original document unchanged by this policy; no-photo headers are valid noops.',
+    storage: 'None; HTML reuse remains compiled OFF.' },
   htmlCache: { placement: 'durable-object', mode: cacheMode, activeReuse: false, certificateVersion: 2,
     revision: impressionCacheRevision('off'),
     revisionsByImpressionMode: Object.fromEntries(['off','preview','all'].map(mode => [mode, impressionCacheRevision(mode)])),
