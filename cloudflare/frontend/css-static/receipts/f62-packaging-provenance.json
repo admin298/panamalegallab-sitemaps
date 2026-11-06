@@ -1,0 +1,31 @@
+{
+  "state": "EDITORIAL_ONLY_PUBLIC_SOURCE_PORTABILITY",
+  "preservedExistingConfigFiles": 8,
+  "preservedExistingPortabilityTestFile": true,
+  "retainedPortabilityGuardTests": 2,
+  "configurationChanges": [
+    {
+      "variant": "logger-only",
+      "path": "config/backend.impressions-all.wrangler.json",
+      "originalSha256": "9916ca1f261c3aaf4ffa1b2f03037c94bd1419202b5fd43d7f612c32148f9f4e",
+      "packagedSha256": "9582c1d568561a81e97e87aaec06a9393fdc966e2cc24c6a4fdc3eb18179240f",
+      "change": "omit only top-level editorial $schema; runtime fields exact"
+    },
+    {
+      "variant": "logger-only",
+      "path": "config/backend.impressions-off.wrangler.json",
+      "originalSha256": "cd5e317ed30edb9544c2ccadb0a552a07810f67d086bbac97747a7a16a5c53ca",
+      "packagedSha256": "62349528332417809039e9bd3d2f859c5ab58f23ee4bbd07a59ed44aef0bb983",
+      "change": "omit only top-level editorial $schema; runtime fields exact"
+    },
+    {
+      "variant": "logger-only",
+      "path": "config/backend.impressions-preview.wrangler.json",
+      "originalSha256": "9c69ba1763020d72f5a96b007fb8bef7f5ac44f1a7dae64515e39868dc6eb1ef",
+      "packagedSha256": "28b9d31829c5cc3e06ac562cbd5e3e4b831878199df6a238dc8c57177d2763fb",
+      "change": "omit only top-level editorial $schema; runtime fields exact"
+    }
+  ],
+  "runtimeBytesChanged": false,
+  "description": "Only top-level editor $schema omitted in three new policy configs. API policy variables are real environment bindings; they are not resource bindings."
+}

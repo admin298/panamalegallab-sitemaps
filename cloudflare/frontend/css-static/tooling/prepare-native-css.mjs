@@ -11,28 +11,43 @@ export const GZIP_SHA = 'a929e1a80e2a0a876fafbffcddf45fcc1873db166fa0ade583c405a
 export const GZIP_BYTES = 221926;
 export const BASE64_BYTES = 295904;
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const cssName = `sites-${CSS_SHA}.css`;
-const outputs = [`assets/${cssName}`, `dist/frontend/_pll-assets/${cssName}`];
+const legacyId = 'native-20261104';
+const versions = Object.freeze([
+  Object.freeze({ id: legacyId, input: 'assets/native-styles-gzip-base64.txt',
+    sha256: CSS_SHA, bytes: CSS_BYTES, gzipSha256: GZIP_SHA, gzipBytes: GZIP_BYTES, base64Bytes: BASE64_BYTES }),
+  Object.freeze({ id: 'native-20261106', input: 'assets/native-styles-20261106-gzip-base64.txt',
+    sha256: '790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d', bytes: 1955718,
+    gzipSha256: '6fb9bf35955b2c902b49f13fab453f1898e7db90f0084fa0df46d3069c1e4057',
+    gzipBytes: 221930, base64Bytes: 295908 }),
+]);
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const require = (valid, message) => { if (!valid) throw new Error(message); };
 
-export function decodeNativeCss(compressed) {
-  require(Buffer.isBuffer(compressed) && compressed.length === GZIP_BYTES && compressed.length < 250000,
+function versionFor(id) {
+  const version = versions.find(row => row.id === id);
+  require(Boolean(version), 'Unsupported CSS version');
+  return version;
+}
+
+export function decodeNativeCss(compressed, id = legacyId) {
+  const version = versionFor(id);
+  require(Buffer.isBuffer(compressed) && compressed.length === version.gzipBytes && compressed.length < 250000,
     'Unexpected compressed CSS size/type');
-  require(digest(compressed) === GZIP_SHA, 'Unexpected compressed CSS hash');
-  const decoded = zlib.gunzipSync(compressed, { maxOutputLength: CSS_BYTES });
-  require(decoded.length === CSS_BYTES, 'Unexpected decoded CSS size');
-  require(digest(decoded) === CSS_SHA, 'Unexpected decoded CSS hash');
+  require(digest(compressed) === version.gzipSha256, 'Unexpected compressed CSS hash');
+  const decoded = zlib.gunzipSync(compressed, { maxOutputLength: version.bytes });
+  require(decoded.length === version.bytes, 'Unexpected decoded CSS size');
+  require(digest(decoded) === version.sha256, 'Unexpected decoded CSS hash');
   return decoded;
 }
 
-export function decodeStoredCss(encoded) {
-  require(Buffer.isBuffer(encoded) && encoded.length === BASE64_BYTES, 'Unexpected base64 CSS size/type');
+export function decodeStoredCss(encoded, id = legacyId) {
+  const version = versionFor(id);
+  require(Buffer.isBuffer(encoded) && encoded.length === version.base64Bytes, 'Unexpected base64 CSS size/type');
   const text = encoded.toString('latin1');
   require(/^[A-Za-z0-9+/]+={0,2}$/.test(text), 'Unexpected base64 CSS alphabet/padding');
   const compressed = Buffer.from(text, 'base64');
   require(compressed.toString('base64') === text, 'Noncanonical base64 CSS encoding');
-  return decodeNativeCss(compressed);
+  return decodeNativeCss(compressed, id);
 }
 
 function fixedPath(relative) {
@@ -55,20 +70,20 @@ async function checkedDirectory(name, allowCreate = false) {
   require(path.relative(name, await fs.realpath(name)) === '', 'Directory resolves through a symlink/junction');
 }
 
-async function existingOutput(target) {
+async function existingOutput(target, version) {
   const info = await optionalStat(target);
   if (!info) return false;
   require(info.isFile() && !info.isSymbolicLink(), 'Existing CSS destination must be a regular non-symlink file');
-  require(info.size === CSS_BYTES && digest(await fs.readFile(target)) === CSS_SHA,
+  require(info.size === version.bytes && digest(await fs.readFile(target)) === version.sha256,
     'Existing CSS differs from the approved original; refusing replacement');
   return true;
 }
 
-async function inputCss() {
-  const input = fixedPath('assets/native-styles-gzip-base64.txt');
+async function inputCss(version) {
+  const input = fixedPath(version.input);
   const info = await fs.lstat(input);
-  require(info.isFile() && !info.isSymbolicLink() && info.size === BASE64_BYTES, 'Base64 CSS must be the exact regular input file');
-  return decodeStoredCss(await fs.readFile(input));
+  require(info.isFile() && !info.isSymbolicLink() && info.size === version.base64Bytes, 'Base64 CSS must be the exact regular input file');
+  return decodeStoredCss(await fs.readFile(input), version.id);
 }
 
 async function removeOwnStage(stage) {
@@ -80,7 +95,8 @@ async function removeOwnStage(stage) {
   await fs.unlink(stage.temp);
 }
 
-async function stageOutput(row, css) {
+async function stageOutput(row) {
+  const cssName = `sites-${row.version.sha256}.css`;
   const temp = path.join(path.dirname(row.target), `.${cssName}.${randomUUID()}.prepare-tmp`);
   const handle = await fs.open(temp, 'wx', 0o600);
   const identity = await handle.stat().catch(async error => {
@@ -90,7 +106,7 @@ async function stageOutput(row, css) {
   });
   const stage = { ...row, temp, identity };
   const write = await (async () => {
-    try { await handle.writeFile(css); await handle.sync(); return {}; }
+    try { await handle.writeFile(row.css); await handle.sync(); return {}; }
     catch (error) { return { error }; }
   })();
   const close = await handle.close().then(() => ({}), error => ({ error }));
@@ -111,7 +127,7 @@ async function publishStage(stage) {
   await checkedDirectory(path.dirname(stage.target));
   try { await fs.link(stage.temp, stage.target); return true; }
   catch (error) {
-    if (error.code === 'EEXIST' && await existingOutput(stage.target)) return false;
+    if (error.code === 'EEXIST' && await existingOutput(stage.target, stage.version)) return false;
     throw error;
   }
 }
@@ -119,36 +135,40 @@ async function publishStage(stage) {
 export async function prepareNativeCss() {
   await checkedDirectory(root);
   for (const relative of ['assets', 'dist', 'dist/frontend']) await checkedDirectory(fixedPath(relative));
-  const css = await inputCss();
+  const decoded = await Promise.all(versions.map(async version => ({ version, css: await inputCss(version) })));
   await checkedDirectory(fixedPath('dist/frontend/_pll-assets'), true);
-  const rows = await Promise.all(outputs.map(async relative => {
-    const target = fixedPath(relative);
-    return { relative, target, existing: await existingOutput(target) };
+  const rows = await Promise.all(decoded.flatMap(({ version, css }) => {
+    const name = `sites-${version.sha256}.css`;
+    return [`assets/${name}`, `dist/frontend/_pll-assets/${name}`].map(async relative => {
+      const target = fixedPath(relative);
+      return { relative, target, version, css, existing: await existingOutput(target, version) };
+    });
   }));
   let stages = [];
   let written = [];
   let unchanged = rows.filter(row => row.existing).map(row => row.relative);
   try {
-    for (const row of rows.filter(item => !item.existing)) stages = [...stages, await stageOutput(row, css)];
+    for (const row of rows.filter(item => !item.existing)) stages = [...stages, await stageOutput(row)];
     for (const stage of stages) {
       const created = await publishStage(stage);
       written = created ? [...written, stage.relative] : written;
       unchanged = created ? unchanged : [...unchanged, stage.relative];
     }
-    for (const row of rows) require(await existingOutput(row.target), 'Prepared CSS output missing');
+    for (const row of rows) require(await existingOutput(row.target, row.version), 'Prepared CSS output missing');
   } catch (error) {
     await cleanup(stages);
-    throw new Error(`CSS publication incomplete: ${written.length} of 2 outputs created. ${error.message}. Resolve the error and rerun; existing approved files are preserved.`, { cause: error });
+    throw new Error(`CSS publication incomplete: ${written.length} of 4 outputs created. ${error.message}. Resolve the error and rerun; existing approved files are preserved.`, { cause: error });
   }
   await cleanup(stages);
-  return { written, unchanged, decodedSha256: CSS_SHA, decodedBytes: CSS_BYTES };
+  return { written, unchanged, decodedSha256: CSS_SHA, decodedBytes: CSS_BYTES,
+    decodedVersions: versions.map(({ id, sha256, bytes }) => ({ id, sha256, bytes })) };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   try {
     require(process.argv.length === 2, 'No destination arguments are accepted; paths are fixed within this package');
     const result = await prepareNativeCss();
-    console.log(`Native CSS verified: ${result.written.length} created, ${result.unchanged.length} already exact. Two fixed paths only.`);
+    console.log(`Native CSS verified: ${result.written.length} created, ${result.unchanged.length} already exact. Four fixed paths only.`);
   } catch (error) {
     console.error(`Native CSS preparation failed: ${error.message}`);
     process.exitCode = 1;

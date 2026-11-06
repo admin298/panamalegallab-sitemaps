@@ -13,10 +13,10 @@ test('feature modes differ only by bounded opt-in variable with unchanged free a
   assert.equal('limits' in config,false);assert.equal('routes' in config,false);
  }
 });
-test('thin frontend and all twenty-six frozen rendering files remain exact',async()=>{
+test('thin frontend and all twenty-seven reviewed rendering files match provenance',async()=>{
  const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
  const provenance=JSON.parse(await readFile(new URL('../renderer-source-provenance.json',import.meta.url),'utf8'));
- assert.equal(Object.keys(provenance.files).length,26);
+ assert.equal(Object.keys(provenance.files).length,27);
  for(const [file,hash]of Object.entries(provenance.files))assert.equal(sha(await readFile(new URL('../renderer/'+file,import.meta.url))),hash,file);
  assert.equal(sha(await readFile(new URL('../dist/frontend/_worker.js',import.meta.url))),'3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9');
 });

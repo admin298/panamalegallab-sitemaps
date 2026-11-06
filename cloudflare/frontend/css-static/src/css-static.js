@@ -7,6 +7,13 @@ import { HOME_OVERLAY_PROFILES, HOME_SECTION_ID, createOverlayInspector, overlay
 
 export const CSS_NATIVE_URL='https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA';
 export const CSS_ASSET_PATH='/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css';
+export const CSS_CONTRACTS=Object.freeze([
+  Object.freeze({id:'native-20261104',nativeUrl:CSS_NATIVE_URL,assetPath:CSS_ASSET_PATH,
+    sha256:'7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61',bytes:1_954_605}),
+  Object.freeze({id:'native-20261106',nativeUrl:'https://www.gstatic.com/_/atari/_/ss/k=atari.vw.FdCCmLj_-18.L.X.O/am=AAAAYAAI/d=1/rs=AGEqA5n0xDEdNb8kZN9KvVeGKVosSfnN8Q',
+    assetPath:'/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css',
+    sha256:'790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d',bytes:1_955_718}),
+]);
 export const CSS_BODY_LIMIT=1_310_720;
 export const CSS_DEADLINE_MS=1_000;
 const PREVIEW='https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev';
@@ -35,7 +42,7 @@ export function stylePolicyAbsent(csp) {
 }
 
 function approvedLink(get) {
-  return get('href')===CSS_NATIVE_URL&&get('data-id')==='_cl'
+  return CSS_CONTRACTS.some(contract=>get('href')===contract.nativeUrl)&&get('data-id')==='_cl'
     &&get('rel')?.toLowerCase()==='stylesheet'&&noncePattern.test(get('nonce')??'')
     &&get('integrity')===null;
 }
@@ -90,7 +97,8 @@ function attach(rewriter,inspector,overlayProfile) {
 export function cssFallbackScript() {
   // Fixed public ASCII constants only. Capture load errors before the native link;
   // a WeakSet permits each failed mapped LINK to recover once, including clones.
-  return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
+  const originals=Object.fromEntries(CSS_CONTRACTS.map(contract=>[contract.assetPath,contract.nativeUrl]));
+  return `(()=>{const originals=${JSON.stringify(originals)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl')return;const href=n.getAttribute('href'),key=Object.keys(originals).find(v=>href===v||n.href===document.location.origin+v);if(!key)return;seen.add(n);n.setAttribute('href',originals[key])},true)})();`;
 }
 
 function cssLinkEdits(html,nonce,inert) {
@@ -108,11 +116,12 @@ function cssLinkEdits(html,nonce,inert) {
     if(attrs.get('data-id')?.value!=='_cl')continue;
     if(match.index<begin||match.index>=end||inert.some(span=>match.index>=span.start&&match.index<span.end)
       ||!approvedLink(name=>attrs.get(name)?.value??null))return null;
-    const href=attrs.get('href');candidates.push({start:match.index+href.start,end:match.index+href.start+href.length});
+    const href=attrs.get('href'),contract=CSS_CONTRACTS.find(value=>value.nativeUrl===href.value);
+    candidates.push({start:match.index+href.start,end:match.index+href.start+href.length,contract});
   }
   if(candidates.length!==1)return null;
   const span=candidates[0];
-  return [{start:span.start,end:span.end,replacement:CSS_ASSET_PATH},
+  return [{start:span.start,end:span.end,replacement:span.contract.assetPath},
     {start:begin,end:begin,replacement:`<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}</script>`}];
 }
 

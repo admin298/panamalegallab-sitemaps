@@ -1,9 +1,11 @@
 {
-  "state": "EDITORIAL_ONLY_PUBLIC_SOURCE_PORTABILITY",
+  "state": "TWO_EXACT_CSS_VERSIONS_PORTABLE_SOURCE",
+  "baseCommit": "ea5dcf42b706c6d06953774caf6a4c2fb185414a",
   "preservedExistingConfigFiles": 8,
+  "allExistingJsonConfigsPreservedFromMain": true,
   "preservedExistingPortabilityTestFile": true,
   "retainedPortabilityGuardTests": 2,
-  "configurationChanges": [
+  "historicalSchemaOmissions": [
     {
       "variant": "logger-only",
       "path": "config/backend.impressions-all.wrangler.json",
@@ -26,6 +28,23 @@
       "change": "omit only top-level editorial $schema; runtime fields exact"
     }
   ],
-  "runtimeBytesChanged": false,
-  "description": "Only top-level editor $schema omitted in three new policy configs. API policy variables are real environment bindings; they are not resource bindings."
+  "newConfigTransformations": 0,
+  "runtimeSourceTransformsByPackager": 0,
+  "backendByteExactToPublishedCandidate": true,
+  "currentCssTransport": {
+    "id": "native-20261106",
+    "file": "assets/native-styles-20261106-gzip-base64.txt",
+    "cssSha256": "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d",
+    "cssBytes": 1955718,
+    "gzipSha256": "6fb9bf35955b2c902b49f13fab453f1898e7db90f0084fa0df46d3069c1e4057",
+    "gzipBytes": 221930,
+    "base64Sha256": "ab5a65605332c46484806f6de1e1338cd4a1bc1de1833ea121c8ae063534c4bd",
+    "base64Bytes": 295908,
+    "gzipMtime": 0,
+    "transformations": "none; lossless gzip/base64 transport only"
+  },
+  "nativeCssRawFilesExcluded": 4,
+  "preparation": "Explicit offline helper reconstructs four hash-checked fixed paths. No postinstall, network, runtime preparation or raw third-party viewer scripts.",
+  "adoptionSource": "ADOPTION.json copied byte-exact as activation-receipt.json.",
+  "adoptionSourceSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff"
 }

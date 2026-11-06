@@ -1,0 +1,138 @@
+{
+  "state": "CURRENT_F62_PACKET_READY_FOR_USER_APPROVAL_MOBILE_SPEED_OPEN",
+  "backendVersionReportedByOperator": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+  "backend": {
+    "bytes": 422116,
+    "sha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521"
+  },
+  "htmlCacheMode": "off",
+  "policyVars": {
+    "PLL_IMAGE_FORMAT": "all",
+    "PLL_CSS_STATIC": "all",
+    "PLL_NATIVE_IMPRESSIONS": "all",
+    "PLL_INITIAL_RENDER": "all"
+  },
+  "tests": 163,
+  "passed": 163,
+  "failed": 0,
+  "newTests": 0,
+  "sourceCoverage": {
+    "lines": 99.68,
+    "functions": 94.7,
+    "branches": 89.01
+  },
+  "coverageBasis": "Previous coverage run; source/test files remain byte-identical. No repeat coverage run.",
+  "helperTestsBasis": "Previous helper suite passed 19/19; helper source unchanged; not rerun.",
+  "sourceProof": "CACHE-OFF-RECEIPT.json",
+  "sourceProofSha256": "30bc112afbbb1f590f49e8632075566129f44174660b917cd4b737610deb0e37",
+  "sourceFilesComparedByRecoveryProof": 99,
+  "newRuntimeCode": false,
+  "soleBackendChange": "Compiled existing HTML cache mode from all to off; source unchanged.",
+  "fiveFrontendArtifactsUnchanged": true,
+  "perHtmlVisit": {
+    "pagesExecutions": 1,
+    "durableObjectCalls": 1,
+    "googleOriginFetches": 1,
+    "freshHtml": true
+  },
+  "runtimeBounds": {
+    "maximumInFlight": 8,
+    "queue": false,
+    "recurringJobs": 0
+  },
+  "historicalCacheBudgetsDormant": {
+    "maximumAgeSeconds": 300,
+    "maximumEntries": 32,
+    "maximumMemoryBytes": 8388608,
+    "persistentSlots": 32
+  },
+  "newDependencies": 0,
+  "newResourceBindings": 0,
+  "newPaidResources": 0,
+  "networkActionsByPackager": 0,
+  "runtimeReceipt": "activation-receipt.json",
+  "historicalReceipts": [
+    "activation-cf48-cache-all-receipt.json",
+    "activation-7ff-receipt.json",
+    "activation-f550-receipt.json"
+  ],
+  "productionAccepted": true,
+  "publicationReady": true,
+  "finalHealthVerification": {
+    "state": "PASS",
+    "scope": "Five public views in four languages; 97 image transfers returned HTTP 200, zero broken images; late Spanish check at 234.604 seconds had fresh URLs and preserved hashes.",
+    "mobileSpeed": "OPEN",
+    "proof": "activation-receipt.json"
+  },
+  "limits": [
+    "Do not routinely restore HTML cache all after aged image tokens failed.",
+    "PageSpeed report 543kcq01on records a single external run (56 mobile / 78 desktop); no causal, global speed or field CWV improvement claimed. Mobile speed remains open.",
+    "Form delivery, Analytics conversions/attribution and GSC remain deferred."
+  ],
+  "backendVersion": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+  "activationReceiptSha256": "e7ec7683262924c0c2916245aebb483e580e2c8145f6b68396a3df6fe3e0b7a5",
+  "performanceComplete": false,
+  "publicImageHealth": {
+    "state": "PASS",
+    "views": 5,
+    "languages": 4,
+    "queryFree": true,
+    "version": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+    "allCacheBypass": true,
+    "imageTransfers200": 97,
+    "brokenImages": 0,
+    "laterEsSeconds": 234.604,
+    "laterEsImageUrlsNew": true,
+    "photoLogoOverlayHashesPreserved": true,
+    "retries": 0,
+    "allBrowsersClosed": true,
+    "verdict": "diagnostic/image-403/cache-off-validation/results/FINAL-VERDICT.json",
+    "verdictSha256": "152d543d85a5d11b6632df17b31d8d6beb0a4c1cb0d9d7a0c722a88a202573a6"
+  },
+  "pageSpeed": {
+    "report": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on",
+    "atLocal": "2026-11-05 18:42:26 CET",
+    "mobile": {
+      "performance": 56,
+      "fcpSeconds": 2.9,
+      "lcpSeconds": 14.7,
+      "tbtMs": 370,
+      "cls": 0.005
+    },
+    "desktop": {
+      "performance": 78,
+      "fcpSeconds": 0.7,
+      "lcpSeconds": 2.4,
+      "tbtMs": 210,
+      "cls": 0.001
+    },
+    "accessibility": 100,
+    "seo": 100,
+    "bestPractices": 96,
+    "agenticBrowsing": "2/2",
+    "image403ObservedInExpandedConsoleAudits": false,
+    "remainingConsoleError": "Google play.log cross-origin telemetry error",
+    "limits": "Single external run, not causal comparison or field-CWV. Mobile performance remains open."
+  },
+  "sourceCodeAndBuildArtifactsUnchangedSince163OffModeTestPass": true,
+  "readyForUserApproval": true,
+  "githubApprovalStatus": "PENDING_EXPLICIT_USER_APPROVAL",
+  "remoteActionsAuthorized": false,
+  "proposedBranch": "codex/initial-render-free-20261105",
+  "rejectedResponsiveStudy": {
+    "state": "RESPONSIVE_IMAGE_SRCSET_REJECTED_NOT_PUBLISHED",
+    "correctedEarlyViews": 4,
+    "earlySavings": "Short observation windows only; not adopted.",
+    "lateSafetyCase": {
+      "views": 1,
+      "rotationSecondsAfterFreshResponse": 160.013,
+      "previouslyUnfetchedSelectedWidth": 1280,
+      "imageResponses403": 9,
+      "brokenImages": 9
+    },
+    "activeExperimentalCode": false,
+    "activeBackendUnchanged": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+    "decision": "Keep current photo delivery; no responsive experiment code adopted.",
+    "criticalCssNextDirection": "Plan only; not implemented."
+  }
+}

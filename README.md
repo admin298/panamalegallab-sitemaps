@@ -2,24 +2,25 @@
 
 Este repositorio conserva los cinco sitemaps y el código de entrega en español, inglés, francés e italiano. Google Sites sigue siendo el origen del contenido.
 
-El [recibo de recuperación](cloudflare/frontend/css-static/activation-receipt.json) identifica la versión activa `f62aeb5b-7e37-4bf1-9633-0985f1f4060e`, con HTML cache compilado en `off`. Cinco vistas públicas en cuatro idiomas registraron 97 transferencias de imágenes HTTP 200, sin imágenes rotas. La revisión española a los 234,604 segundos recibió URL nuevas y mantuvo los mismos hashes de fotografías y logotipo. La reutilización de HTML se retiró después de comprobar imágenes válidas a los 2 segundos y tokens rotos a los 159 segundos. Cada visita HTML vuelve a solicitar contenido fresco: una ejecución Pages, una llamada al DO y una petición al origen Google. Las cuotas gratuitas siguen siendo finitas; se mantienen máximo ocho peticiones en vuelo, sin cola ni trabajos periódicos.
+El [recibo de activación](cloudflare/frontend/css-static/activation-receipt.json) registra la recuperación del 6 de noviembre: backend `0507d52a-a3c9-4d18-b8be-f0a6f6703b80` y Pages `06533eae-ba22-4602-8920-631f871dfff1`. La validación anterior rechazaba la configuración nativa de Google de 519 elementos y redirigía a Google Sites. Ahora se admite solo la forma revisada, con controles de URL, idioma, script y nonce; se conservan la compatibilidad histórica de 518 elementos y el fallback ante formas desconocidas.
 
-Las cuatro políticas de imágenes, CSS, registro nativo y render inicial permanecen en `all`. Se conservan fotografías, frontend Pages y recursos existentes. El render inicial retira un enlace exacto a una fuente inválida, añade carga diferida nativa al iframe reconocido de Apps Script y reserva la proporción del logotipo de portada cuando falta.
+La auditoría pública comprobó 252 documentos HTTP 200, 63 por idioma, sin fallback, con 252 canonical correctos y 148 descripciones esperadas verificadas. Ocho vistas de portada —cuatro idiomas y dos dispositivos— pasaron los controles, con 24 hashes de fotografía, overlay y logotipo iguales a los baselines del 5 de noviembre. El menú móvil y la apertura/cierre del buscador funcionaron; no se enviaron búsquedas ni formularios.
 
-Consulta [DEPLOYMENT.md](cloudflare/DEPLOYMENT.md) para evidencia, límites y preparación. Se conservan exactos los recibos históricos [cf48 con caché](cloudflare/frontend/css-static/activation-cf48-cache-all-receipt.json), [7ff](cloudflare/frontend/css-static/activation-7ff-receipt.json) y [f550](cloudflare/frontend/css-static/activation-f550-receipt.json). La [medición PageSpeed](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on) registró 56 móvil y 78 escritorio, sin los errores 403 de imágenes anteriores. Es una ejecución externa aislada; el rendimiento móvil sigue abierto y no se declara terminada la optimización. Entrega de formularios, conversiones/atribución Analytics y GSC quedan pendientes.
+La [medición PageSpeed de la portada](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj) registró 61 móvil y 82 escritorio, SEO y accesibilidad 100, prácticas 96 y navegación agéntica 2/2 en ambos. El LCP móvil sigue en 9,2 s: la velocidad no se considera terminada. Es una ejecución de laboratorio aislada, sin prueba causal ni CWV de campo. Se mantiene un error CORS de telemetría de Google; las auditorías de consola guardadas no mostraron 403 de imágenes.
 
-Se descartó el experimento de imágenes adaptables: cuatro vistas tempranas sugerían ahorros limitados, pero una prueba separada de giro a los 160,013 segundos eligió nueve URL de 1280 px no solicitadas antes y las nueve fallaron con 403. No se adoptó código experimental. Una posible separación de CSS crítico sigue siendo solo un plan, sin implementar.
+La caché de HTML permanece compilada en `off`. Cada visita HTML solicita de nuevo el origen Google mediante Pages y el DO; máximo ocho peticiones en vuelo, sin cola ni trabajos periódicos. Se conserva el plan gratuito, con cuotas finitas, fotografías, teléfono y recursos existentes. Entrega de formularios, conversiones/atribución Analytics y GSC siguen pendientes. Consulta [DEPLOYMENT.md](cloudflare/DEPLOYMENT.md) y el [respaldo anterior f62](cloudflare/frontend/css-static/activation-f62-receipt.json).
 
-Sitemaps: [índice](sitemap-index.xml), [español](sitemap-es.xml), [inglés](sitemap-en.xml), [francés](sitemap-fr.xml) e [italiano](sitemap-it.xml). Sus alternates `hreflang` se conservan. No se observaron etiquetas `hreflang` en el head HTML público ni de preview.
+Sitemaps conservados: [índice](sitemap-index.xml), [español](sitemap-es.xml), [inglés](sitemap-en.xml), [francés](sitemap-fr.xml) e [italiano](sitemap-it.xml), con sus alternates. No se añade automatización de GitHub ni de sitemaps.
 
 ## Preparar el código
 
-Desde `cloudflare/frontend/css-static`, ejecutar `node tooling/prepare-native-css.mjs` antes de build/tests. Reconstruye dos copias CSS exactas desde gzip/base64, comprobando límites y hashes, sin red. Usar el lockfile. En PowerShell:
+Desde `cloudflare/frontend/css-static`, ejecutar `node tooling/prepare-native-css.mjs`. Reconstruye cuatro destinos exactos para los dos CSS desde sus representaciones gzip/base64, sin red ni postinstall. Usar el lockfile existente. En PowerShell:
 
 ```powershell
 $env:PLL_HTML_CACHE_MODE = 'off'
 npm run build
 npm test
+node --test tooling/*.test.mjs
 ```
 
-La configuración `config/backend.cache-off.wrangler.json` conserva las cuatro políticas en `all`; el modo de HTML cache lo fija la compilación. Los comandos no publican cambios ni envían formularios.
+El build rechaza modos de caché distintos de `off`. Los comandos no despliegan ni envían formularios. Los recibos históricos y los archivos raíz y sitemaps se conservan.

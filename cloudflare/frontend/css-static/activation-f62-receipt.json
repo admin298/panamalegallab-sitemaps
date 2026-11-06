@@ -1,0 +1,76 @@
+{
+  "state": "FRESH_HTML_RECOVERY_PUBLIC_VERIFIED",
+  "version": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+  "backendSha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521",
+  "bytes": 422116,
+  "compiledHtmlCacheMode": "off",
+  "policyVars": {
+    "PLL_INITIAL_RENDER": "all",
+    "PLL_IMAGE_FORMAT": "all",
+    "PLL_CSS_STATIC": "all",
+    "PLL_NATIVE_IMPRESSIONS": "all"
+  },
+  "userApproval": "Sí, activar la recuperación con HTML fresco",
+  "activated": true,
+  "sourceFilesByteEqualToInitialCandidate": 99,
+  "soleCompiledChange": "cacheMode all→off",
+  "frontendUnchanged": true,
+  "photosUnchanged": true,
+  "newResources": 0,
+  "newPaidResources": 0,
+  "recurringJobs": 0,
+  "maximumInFlight": 8,
+  "perHtmlVisit": {
+    "pages": 1,
+    "durableObject": 1,
+    "googleOrigin": 1
+  },
+  "impact": "Fresh source per visit; may increase latency and origin requests compared to a HIT. No image proxy or recurring reloads.",
+  "reason": "Same cached image URLs worked at2s, failed at159s; freshBYPASS restored20images. One sampled reused token later403 atbothGooglehosts; exact invalidation mechanism unknown.",
+  "diagnosis": "diagnostic/image-403/DIAGNOSIS.json",
+  "preparedReceipt": "cache-off/CACHE-OFF-RECEIPT.json",
+  "publicValidation": {
+    "state": "PASS",
+    "views": 5,
+    "languages": 4,
+    "queryFree": true,
+    "version": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+    "allCacheBypass": true,
+    "imageTransfers200": 97,
+    "brokenImages": 0,
+    "laterEsSeconds": 234.604,
+    "laterEsImageUrlsNew": true,
+    "photoLogoOverlayHashesPreserved": true,
+    "retries": 0,
+    "allBrowsersClosed": true,
+    "verdict": "diagnostic/image-403/cache-off-validation/results/FINAL-VERDICT.json",
+    "verdictSha256": "152d543d85a5d11b6632df17b31d8d6beb0a4c1cb0d9d7a0c722a88a202573a6"
+  },
+  "createdUtc": "2026-11-05T17:41:28.974177+00:00",
+  "pageSpeed": {
+    "report": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on",
+    "atLocal": "2026-11-05 18:42:26 CET",
+    "mobile": {
+      "performance": 56,
+      "fcpSeconds": 2.9,
+      "lcpSeconds": 14.7,
+      "tbtMs": 370,
+      "cls": 0.005
+    },
+    "desktop": {
+      "performance": 78,
+      "fcpSeconds": 0.7,
+      "lcpSeconds": 2.4,
+      "tbtMs": 210,
+      "cls": 0.001
+    },
+    "accessibility": 100,
+    "seo": 100,
+    "bestPractices": 96,
+    "agenticBrowsing": "2/2",
+    "image403ObservedInExpandedConsoleAudits": false,
+    "remainingConsoleError": "Google play.log cross-origin telemetry error",
+    "limits": "Single external run, not causal comparison or field-CWV. Mobile performance remains open."
+  },
+  "performanceComplete": false
+}

@@ -1,0 +1,226 @@
+{
+  "state": "FINAL_LOCAL_ADOPTION_REVIEW_GO",
+  "reviewedAtUtc": "2026-11-06T11:33:57.280041+00:00",
+  "adoptionSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+  "checksCount": 19,
+  "passed": 19,
+  "failed": [],
+  "checks": [
+    {
+      "id": "artifact_identity",
+      "pass": true,
+      "evidence": [
+        "ADOPTION.json",
+        "operator/ARTIFACTS.json"
+      ],
+      "detail": "Backend426995B/c809b29d…9bf340; historical preparation receipt is not treated as deployment evidence."
+    },
+    {
+      "id": "worker_100_percent",
+      "pass": true,
+      "evidence": [
+        "operator/WORKER-DEPLOY.txt",
+        "ADOPTION.json"
+      ],
+      "detail": "Deployment log records the approved new version at100%; oldf62 appears only as the preceding deployment."
+    },
+    {
+      "id": "pages_current_production",
+      "pass": true,
+      "evidence": [
+        "operator/PAGES-PUBLISHED-UI.txt",
+        "ADOPTION.json"
+      ],
+      "detail": "The current production card precedes the historical deployment list and identifies06533eae."
+    },
+    {
+      "id": "two_static_css",
+      "pass": true,
+      "evidence": [
+        "operator/STATIC-PUBLIC.json",
+        "operator/ARTIFACTS.json"
+      ],
+      "detail": "Both exact CSS byte identities, MIME and immutable headers pass; absence of backend header is not a Worker-invocation measurement."
+    },
+    {
+      "id": "prepublication_composition",
+      "pass": true,
+      "evidence": [
+        "operator/PREPUBLICATION-ACCEPTED.json",
+        "ADOPTION.json"
+      ],
+      "detail": "Eight accepted device/language combinations from twelve bounded views; original four mobile oracle failures remain recorded."
+    },
+    {
+      "id": "http252_count_and_languages",
+      "pass": true,
+      "evidence": [
+        "validation/public-252/SUMMARY.json",
+        "ADOPTION.json"
+      ],
+      "detail": "252 unique documents HTTP200,63per language,zero row errors."
+    },
+    {
+      "id": "http252_version_cache_fallback",
+      "pass": true,
+      "evidence": [
+        "validation/public-252/SUMMARY.json",
+        "validation/http-audit.mjs"
+      ],
+      "detail": "All252 pin0507/ab239/BYPASS; collector rejects Location and google-source-fallback explicitly."
+    },
+    {
+      "id": "canonical_and148_descriptions",
+      "pass": true,
+      "evidence": [
+        "validation/public-252/SUMMARY.json",
+        "validation/http-audit.mjs"
+      ],
+      "detail": "Collector checks canonical target and exact escaped description when expected;148verified descriptions, not a claim about252 descriptions."
+    },
+    {
+      "id": "finite_http_budget",
+      "pass": true,
+      "evidence": [
+        "validation/public-252/SUMMARY.json"
+      ],
+      "detail": "Finite HTTP audit only; no252-browser/image/performance/indexing claim."
+    },
+    {
+      "id": "eight_real_public_post_views",
+      "pass": true,
+      "evidence": [
+        "validation/browser/results-post/SUMMARY.json",
+        "validation/browser/results-post/*-mobile.json",
+        "validation/browser/results-post/*-desktop.json"
+      ],
+      "detail": "Eight public home views: four languages by two devices, with no intercepted main response."
+    },
+    {
+      "id": "24_primary_asset_hashes",
+      "pass": true,
+      "evidence": [
+        "validation/browser/results-post/*-mobile.json",
+        "validation/browser/results-post/*-desktop.json",
+        "ADOPTION.json"
+      ],
+      "detail": "Photo,overlay,logo hashes match the recorded5Nov baselines in all8views; this is24primary checks, not every image on252pages."
+    },
+    {
+      "id": "zero_broken_inline_images",
+      "pass": true,
+      "evidence": [
+        "validation/browser/results-post/*-mobile.json",
+        "validation/browser/results-post/*-desktop.json"
+      ],
+      "detail": "All104 recorded inline-image decodes pass across the eight views."
+    },
+    {
+      "id": "native_impressions_and_functional_errors",
+      "pass": true,
+      "evidence": [
+        "validation/browser/results-post/*-mobile.json",
+        "validation/browser/results-post/*-desktop.json",
+        "validation/browser/dom.mjs"
+      ],
+      "detail": "No recognized native impression requests or functional/page errors in finite windows; no form submissions occurred."
+    },
+    {
+      "id": "menu_search_controls_scope",
+      "pass": true,
+      "evidence": [
+        "validation/browser/results-post/*-mobile.json",
+        "validation/browser/results-post/*-desktop.json"
+      ],
+      "detail": "Mobile menus and search open/close verified; no search query or results/RPC completeness tested."
+    },
+    {
+      "id": "headless_cleanup",
+      "pass": true,
+      "evidence": [
+        "validation/browser/results-post/CLEANUP.json",
+        "validation/browser/results-post/SUMMARY.json",
+        "validation/browser/results-post/*-mobile.json",
+        "validation/browser/results-post/*-desktop.json"
+      ],
+      "detail": "All eight headless contexts and browser closed. Separate owned UI-tab closure is the root operator observation, not independently replayed here."
+    },
+    {
+      "id": "psi_scores_and_categories",
+      "pass": true,
+      "evidence": [
+        "operator/PSI-MOBILE.txt",
+        "operator/PSI-DESKTOP.txt",
+        "operator/PSI-POST.json",
+        "ADOPTION.json"
+      ],
+      "detail": "One saved homepage report: performance61/82; botha11y100/SEO100/best96/agentic2of2."
+    },
+    {
+      "id": "psi_error_scope",
+      "pass": true,
+      "evidence": [
+        "operator/PSI-MOBILE-ERRORS.txt",
+        "operator/PSI-DESKTOP-ERRORS.txt",
+        "ADOPTION.json"
+      ],
+      "detail": "Expanded console audits retain Google play.log CORS/preflight error; no403 in these saved audits, not a universal guarantee."
+    },
+    {
+      "id": "mobile_performance_remains_open",
+      "pass": true,
+      "evidence": [
+        "ADOPTION.json",
+        "operator/PSI-MOBILE.txt"
+      ],
+      "detail": "MobileLCP9.2s remains unresolved; no causal comparison, fieldCWV,252performance scores or indexing claim."
+    },
+    {
+      "id": "github_scope_is_previous_backup_only",
+      "pass": true,
+      "evidence": [
+        "ADOPTION.json"
+      ],
+      "detail": "Documentary scope is explicit: PR9 backs up5Novf62; this6Nov recovery is Cloudflare/local only. No remote GitHub verification performed."
+    }
+  ],
+  "inputSha256": {
+    "ADOPTION.json": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+    "operator/ARTIFACTS.json": "dc9bb9b9c7344560a2e6c66dfbb78ad682d51e1e56ffc7e7c22da9f5f8003e0a",
+    "operator/PREPUBLICATION-ACCEPTED.json": "8c4ed1ba67ad386ff00699698de3d3eb94a7320b7285b05ede9a20e3ad6b2a80",
+    "operator/STATIC-PUBLIC.json": "d49d3457165c47ee81d281f033b3c3a02bf5da288d36816b6899c1b2b7e95f3a",
+    "validation/public-252/SUMMARY.json": "3498669f75f6995682d9e568acbfe66d47e0e5a5256172cac833908f83515936",
+    "validation/browser/results-post/SUMMARY.json": "c6e7765e4d569526e63a2c513e06af04a7b19b27d01161f3ce5270f0cac5d3f1",
+    "validation/browser/results-post/CLEANUP.json": "f3248d318ce4567440655c8487806bd1a7a716120a3d67dc51fd97c2b767d021",
+    "validation/browser/results-post/es-mobile.json": "2084aaf74a0df814b3ec6b0ec8ac5558d90832590bfb024ddb3e29744ec1b010",
+    "validation/browser/results-post/es-desktop.json": "48927c97335beaf5576f74ec7ebca17efdff935ef5c1e5b6790df0e80e604547",
+    "validation/browser/results-post/en-mobile.json": "1099930dc1702d2e698f0ca2657465cb7d7a7a6ca83cae2c0c2726db5add91a8",
+    "validation/browser/results-post/en-desktop.json": "c2c587a9bc093dd5dd155cf4bd0e0124bb9ae5789b34763be0d69f27e125d14a",
+    "validation/browser/results-post/fr-mobile.json": "75b9b1c7f3c4c42515d83896e90a125d7fa26f2ab70dfad09b963d27abfa3b86",
+    "validation/browser/results-post/fr-desktop.json": "7b1d9ba04e3dff59b016d645764d0919c15a8deff435c583730e2a78cd01f5f0",
+    "validation/browser/results-post/it-mobile.json": "dbb45568f077b7f7310e1e033988f1ce611ac9f00290cb4489514d12d4b0a0cb",
+    "validation/browser/results-post/it-desktop.json": "771f67974f3bffd449136a8fecd33d398a397a04349c3a701fd601a461c68178",
+    "operator/WORKER-DEPLOY.txt": "90675401408c0b1e72c17cd3ac8007799446727506ef51f70a3abec955fc00e9",
+    "operator/PAGES-PUBLISHED-UI.txt": "83e1e84b9e383572f81898ca883ecd38b9a21c06e089f3e2798e36fde419c783",
+    "operator/PSI-MOBILE.txt": "46e59cbcbed5b1aefb9212cda30dc114eff969e9b66a780ecb90bb78f15fbf9f",
+    "operator/PSI-DESKTOP.txt": "4d8b228dd0547eea2a76975c4159e64fa7f94cad92de8fe86f043caae70caf03",
+    "operator/PSI-MOBILE-ERRORS.txt": "66f57590405e4b78dbf4b5e7b98998bcec19189b5d297c3d7b203761d947a85b",
+    "operator/PSI-DESKTOP-ERRORS.txt": "305fa5855afe7d812dc819a3480e7f1215e4e199e352ae5859481f78003b324d",
+    "operator/PSI-POST.json": "27404673ad4e1a93b7ef5e2d6206de8d2d98974aa882d40b54b5de583d094b10"
+  },
+  "scope": "Independent local consistency review of saved evidence only; no live availability or global performance assertion.",
+  "reviewActions": {
+    "networkRequests": 0,
+    "browserActions": 0,
+    "runtimeTests": 0,
+    "candidateEdits": 0,
+    "sourceChanges": 0,
+    "remoteWrites": 0,
+    "outputFiles": 1
+  },
+  "notes": [
+    "ARTIFACTS.json and the prepublication receipt are historical preparation evidence; live adoption is supported separately by deployment/public receipts.",
+    "Search verification is limited to opening/closing its UI; forms and attribution remain deferred.",
+    "PSI and browser observations are finite homepage samples;252is an HTTP document audit."
+  ]
+}

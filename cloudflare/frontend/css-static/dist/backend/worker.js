@@ -1346,6 +1346,17 @@ function createHandler({
 }
 var handler = createHandler();
 
+// renderer/src/current-config-contract.js
+var CURRENT_VIEW_SCRIPTS = Object.freeze({
+  es: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.es.evEG0HtR8Ps.O/am=AAAAYAAI/d=1/rs=AGEqA5nxAfWapthEHOE4K2A-y6LqYKA8AA/m=view",
+  en: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.en_US.7K42jXwKoL8.O/am=AAAAYAAI/d=1/rs=AGEqA5l1O939Wm7Yi7tplrOF29wrpok45A/m=view",
+  fr: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.fr.5qz8a--RjDU.O/am=AAAAYAAI/d=1/rs=AGEqA5llG6Cne3QLlFoEVcnf1RCjwmSVdg/m=view",
+  it: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.it.2UqSqMAe3kM.O/am=AAAAYAAI/d=1/rs=AGEqA5nhH4ZaXhd3lLBzlKY1Ku-eZ2svUA/m=view"
+});
+function isCurrentConfigShape(config, redirectUrl) {
+  return Array.isArray(config) && config.length === 519 && config[212] === 0 && config[316] === redirectUrl && config[518] === 0;
+}
+
 // renderer/src/config-query.js
 var invalidText = (value) => /[\u0000-\u001f\u007f-\u009f\ud800-\udfff]/u.test(value);
 function fixedSourceBase(base, site) {
@@ -1390,7 +1401,19 @@ function equivalentSourceQuery(actual, expected, site) {
     return false;
   }
 }
-function clearEquivalentQueryConfig(text, plan) {
+function reviewedExtendedRedirectSpan(remainder, actual) {
+  try {
+    const last = arrayElementSpan(remainder, 518);
+    const json = remainder.slice(0, last.end + 1), suffix = remainder.slice(last.end + 1);
+    if (!/^\s*;/.test(suffix) || /\b_at_config\s*=/.test(suffix)) return null;
+    const config = JSON.parse(json);
+    if (!isCurrentConfigShape(config, actual)) return null;
+    return arrayElementSpan(json, 316);
+  } catch {
+    return null;
+  }
+}
+function clearEquivalentQueryConfig(text, plan, { onExtendedValidated } = {}) {
   const assignment = /^\s*_at_config\s*=\s*/.exec(text);
   if (!assignment) throw new PreviewCompatibilityError();
   const remainder = text.slice(assignment[0].length);
@@ -1403,6 +1426,13 @@ function clearEquivalentQueryConfig(text, plan) {
     throw error2;
   }
   if (!equivalentSourceQuery(actual, plan.upstream, plan.site)) throw new PreviewCompatibilityError();
+  const extended = reviewedExtendedRedirectSpan(remainder, actual);
+  if (extended) {
+    const token = remainder.slice(extended.start, extended.end);
+    const leading = /^\s*/.exec(token)[0], trailing = /\s*$/.exec(token)[0];
+    onExtendedValidated?.();
+    return assignment[0] + remainder.slice(0, extended.start) + leading + "null" + trailing + remainder.slice(extended.end);
+  }
   return clearGoogleRedirectConfig(text, actual);
 }
 
@@ -1971,6 +2001,28 @@ function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
   let compatibilityFailure = false;
   let scriptBuffer = "";
   let deferredError = null;
+  let nativeContract = {
+    extended: false,
+    views: 0,
+    matchingView: false,
+    viewNonce: null,
+    configNonce: null,
+    inlineNonce: null,
+    inlineTypeValid: false,
+    configTypeValid: false
+  };
+  const validScriptType = (element) => element.getAttribute("type") === null || element.getAttribute("type")?.toLowerCase() === "text/javascript";
+  const validNonce = (value) => typeof value === "string" && /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u.test(value);
+  const nativeView = { element(element) {
+    const src = element.getAttribute("src") ?? "";
+    if (!src.startsWith("https://www.gstatic.com/_/atari/_/js/") || !src.includes("/m=view")) return;
+    nativeContract = {
+      ...nativeContract,
+      views: nativeContract.views + 1,
+      matchingView: src === CURRENT_VIEW_SCRIPTS[plan.site.language] && validScriptType(element),
+      viewNonce: element.getAttribute("nonce")
+    };
+  } };
   const protect = (handler3) => options.deferErrors ? Object.fromEntries(Object.entries(handler3).map(([name, callback]) => [name, (...args) => {
     if (deferredError) return;
     try {
@@ -1982,7 +2034,13 @@ function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
   const scripts = makeScriptHandler(plan, { bootstrapMode: "clear-google-redirect", onConfigValidated() {
     configurations += 1;
   } });
-  const guardedScripts = { text(chunk) {
+  const guardedScripts = { element(element) {
+    nativeContract = {
+      ...nativeContract,
+      inlineNonce: element.getAttribute("nonce"),
+      inlineTypeValid: validScriptType(element)
+    };
+  }, text(chunk) {
     const original = scriptBuffer + chunk.text;
     if (original.length > 512e3) throw new Error("Inline source exceeds delivery limit");
     scriptBuffer = chunk.lastInTextNode ? "" : original;
@@ -1991,7 +2049,14 @@ function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
     } catch (error2) {
       if (!(error2 instanceof PreviewCompatibilityError)) throw error2;
       try {
-        chunk.replace(clearEquivalentQueryConfig(original, plan), { html: true });
+        chunk.replace(clearEquivalentQueryConfig(original, plan, { onExtendedValidated() {
+          nativeContract = {
+            ...nativeContract,
+            extended: true,
+            configNonce: nativeContract.inlineNonce,
+            configTypeValid: nativeContract.inlineTypeValid
+          };
+        } }), { html: true });
         configurations += 1;
       } catch (retryError) {
         if (!(retryError instanceof PreviewCompatibilityError)) throw retryError;
@@ -2011,7 +2076,7 @@ function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
     element.remove();
   } }).on('meta[property="og:url"], meta[itemprop="url"]', { element(element) {
     element.setAttribute("content", plan.canonical);
-  } }).on("script:not([src])", protect(guardedScripts)).on("style", protect(makeImageStyleHandler())).on('meta[property="og:image"], meta[itemprop="image"], meta[itemprop="imageUrl"], meta[itemprop="thumbnailUrl"]', makeDeliveryAttributeHandler("content", plan, rewriteValue));
+  } }).on("script:not([src])", protect(guardedScripts)).on("script[src]", protect(nativeView)).on("style", protect(makeImageStyleHandler())).on('meta[property="og:image"], meta[itemprop="image"], meta[itemprop="imageUrl"], meta[itemprop="thumbnailUrl"]', makeDeliveryAttributeHandler("content", plan, rewriteValue));
   if (metadata) rewriter.on("head meta[name]", options.descriptionHandler ?? { element(element) {
     if (element.getAttribute("name")?.toLowerCase() === "description") element.remove();
   } });
@@ -2026,7 +2091,8 @@ function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
   } });
   return { rewriter, validate() {
     if (deferredError) throw deferredError;
-    if (compatibilityFailure) throw new PreviewCompatibilityError();
+    const unsupportedExtended = nativeContract.extended && (nativeContract.views !== 1 || !nativeContract.matchingView || !nativeContract.configTypeValid || !validNonce(nativeContract.configNonce) || nativeContract.configNonce !== nativeContract.viewNonce);
+    if (compatibilityFailure || unsupportedExtended) throw new PreviewCompatibilityError();
   } };
 }
 async function rewritePageDocument(html, plan, Rewriter) {
@@ -2547,8 +2613,8 @@ function createDeliveryHandler({
 var handler2 = createDeliveryHandler();
 
 // src/boundary.js
-var RENDERER_SHA256 = "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509";
-var RELEASE_ID = "pll-durable-free-20261103-v1";
+var RENDERER_SHA256 = "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07";
+var RELEASE_ID = "pll-compatibility-recovery-20261106-v1";
 var PREVIEW_DOMAIN2 = "pll-seo-preview-20261102.pages.dev";
 var PRODUCTION_HOSTS = new Set(["www", "en", "fr", "it"].map((label) => `${label}.panamalegallab.com`));
 var encoder2 = new TextEncoder();
@@ -3092,6 +3158,7 @@ var IMPRESSION_VIEW_SCRIPTS = Object.freeze({
   fr: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.fr.n7p6j6I-UBA.O/am=AAAAGAAE/d=1/rs=AGEqA5mTu1u34PhOtTHK1HLqd4to_aHlsQ/m=view",
   it: "https://www.gstatic.com/_/atari/_/js/k=atari.vw.it.L62eI84RIxw.O/am=AAAAGAAE/d=1/rs=AGEqA5lO7vpeB4msuV03jy7XAwfq28rwfA/m=view"
 });
+var CURRENT_IMPRESSION_VIEW_SCRIPTS = CURRENT_VIEW_SCRIPTS;
 var PREVIEW = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
 var noncePattern2 = /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
 var normalizedMode = (mode) => ["preview", "all"].includes(mode) ? mode : "off";
@@ -3105,18 +3172,21 @@ function impressionPolicyEnabled(request, mode, plan) {
   const values = new URL(request.url).searchParams.getAll("_pll_native_impressions");
   return values.length === 0 || values.length === 1 && values[0] === "candidate";
 }
-function impressionConfigEdit(script) {
+function impressionConfigEdit(script, version = "legacy518") {
   if (typeof script !== "string" || script.length > 512e3) return null;
+  const length = version === "legacy518" ? 518 : version === "current519" ? 519 : 0;
+  if (!length) return null;
   const assignment = /^(\s*_at_config\s*=\s*)/u.exec(script);
   if (!assignment) return null;
   try {
     const remainder = script.slice(assignment[1].length);
     if (remainder[0] !== "[") return null;
-    const last = arrayElementSpan(remainder, 517), json = remainder.slice(0, last.end + 1);
+    const last = arrayElementSpan(remainder, length - 1), json = remainder.slice(0, last.end + 1);
     const suffix = remainder.slice(last.end + 1);
     if (!/^\s*;/u.test(suffix) || /\b_at_config\s*=/u.test(suffix)) return null;
     const config = JSON.parse(json);
-    if (!Array.isArray(config) || config.length !== 518 || config[212] !== 0 || config[316] !== null || ![null, false, true].includes(config[356])) return null;
+    const shape = version === "current519" ? isCurrentConfigShape(config, null) : Array.isArray(config) && config.length === 518 && config[212] === 0 && config[316] === null;
+    if (!shape || ![null, false, true].includes(config[356])) return null;
     const span = arrayElementSpan(json, 356), token = json.slice(span.start, span.end);
     const leading = /^\s*/u.exec(token)[0].length, trailing = /\s*$/u.exec(token)[0].length;
     return Object.freeze({
@@ -3132,7 +3202,7 @@ function impressionConfigEdit(script) {
 function impressionDocumentEdit(html, site, nonce, spans) {
   const expected = SITES[site?.language];
   if (!expected || site.upstreamPrefix !== expected.upstreamPrefix || site.productionHost !== expected.productionHost || !noncePattern2.test(nonce) || !Array.isArray(spans)) return null;
-  let viewCount = 0, configCount = 0, result = null;
+  let viewCount = 0, configCount = 0, selectedVersion = null, configuration = null;
   for (const span of spans) {
     if (span.kind !== "script") continue;
     const attrs = elementAttributes(html.slice(span.start, span.openEnd), "script");
@@ -3140,7 +3210,10 @@ function impressionDocumentEdit(html, site, nonce, spans) {
     const src = attrs.get("src")?.value;
     if (src !== void 0) {
       if (src.startsWith("https://www.gstatic.com/_/atari/_/js/") && src.includes("/m=view")) {
-        if (src !== IMPRESSION_VIEW_SCRIPTS[site.language] || attrs.get("nonce")?.value !== nonce) return null;
+        if (attrs.get("nonce")?.value !== nonce) return null;
+        if (src === IMPRESSION_VIEW_SCRIPTS[site.language]) selectedVersion = "legacy518";
+        else if (src === CURRENT_IMPRESSION_VIEW_SCRIPTS[site.language]) selectedVersion = "current519";
+        else return null;
         viewCount += 1;
       }
       continue;
@@ -3148,12 +3221,12 @@ function impressionDocumentEdit(html, site, nonce, spans) {
     const script = html.slice(span.openEnd, span.contentEnd);
     if (!/^\s*_at_config\s*=/u.test(script)) continue;
     if (attrs.get("nonce")?.value !== nonce || attrs.has("type") && attrs.get("type").value.toLowerCase() !== "text/javascript") return null;
-    const edit = impressionConfigEdit(script);
-    if (!edit) return null;
     configCount += 1;
-    result = Object.freeze({ ...edit, start: span.openEnd + edit.start, end: span.openEnd + edit.end });
+    configuration = Object.freeze({ script, start: span.openEnd });
   }
-  return viewCount === 1 && configCount === 1 ? result : null;
+  if (viewCount !== 1 || configCount !== 1) return null;
+  const edit = impressionConfigEdit(configuration.script, selectedVersion);
+  return edit ? Object.freeze({ ...edit, start: configuration.start + edit.start, end: configuration.start + edit.end }) : null;
 }
 
 // src/cache-routes.js
@@ -3605,6 +3678,22 @@ function overlayDocumentEdit(html, language, spans, nativeValid) {
 // src/css-static.js
 var CSS_NATIVE_URL = "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA";
 var CSS_ASSET_PATH = "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css";
+var CSS_CONTRACTS = Object.freeze([
+  Object.freeze({
+    id: "native-20261104",
+    nativeUrl: CSS_NATIVE_URL,
+    assetPath: CSS_ASSET_PATH,
+    sha256: "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
+    bytes: 1954605
+  }),
+  Object.freeze({
+    id: "native-20261106",
+    nativeUrl: "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.FdCCmLj_-18.L.X.O/am=AAAAYAAI/d=1/rs=AGEqA5n0xDEdNb8kZN9KvVeGKVosSfnN8Q",
+    assetPath: "/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css",
+    sha256: "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d",
+    bytes: 1955718
+  })
+]);
 var CSS_BODY_LIMIT = 1310720;
 var CSS_DEADLINE_MS = 1e3;
 var PREVIEW4 = "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev";
@@ -3631,7 +3720,7 @@ function stylePolicyAbsent(csp) {
   return typeof csp === "string" && csp.length > 0 && !csp.split(",").some((policy) => policy.split(";").some((raw) => /^(?:default-src|style-src(?:-elem|-attr)?)$/iu.test(raw.trim().split(/\s+/u)[0])));
 }
 function approvedLink(get) {
-  return get("href") === CSS_NATIVE_URL && get("data-id") === "_cl" && get("rel")?.toLowerCase() === "stylesheet" && noncePattern4.test(get("nonce") ?? "") && get("integrity") === null;
+  return CSS_CONTRACTS.some((contract) => get("href") === contract.nativeUrl) && get("data-id") === "_cl" && get("rel")?.toLowerCase() === "stylesheet" && noncePattern4.test(get("nonce") ?? "") && get("integrity") === null;
 }
 function createCssInspector(site, overlayProfile = null) {
   let state = { html: 0, head: 0, body: 0, marker: 0, charset: 0, links: 0, selected: 0, fonts: 0, headFonts: 0, frames: 0, frameSafe: true, safe: true, cssSafe: true, nonces: [] };
@@ -3703,7 +3792,8 @@ function attach2(rewriter, inspector2, overlayProfile) {
   return result.on("div.UtePc", inspector2.overlay.root).on("div.UtePc > section", inspector2.overlay.firstSection).on(section, inspector2.overlay.section).on(widget, inspector2.overlay.widget).on(`${widget} img`, inspector2.overlay.image).on(`${section} section`, inspector2.overlay.nested);
 }
 function cssFallbackScript() {
-  return `(()=>{const o=${JSON.stringify(CSS_NATIVE_URL)},v=${JSON.stringify(CSS_ASSET_PATH)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl'||(n.getAttribute('href')!==v&&n.href!==document.location.origin+v))return;seen.add(n);n.setAttribute('href',o)},true)})();`;
+  const originals = Object.fromEntries(CSS_CONTRACTS.map((contract) => [contract.assetPath, contract.nativeUrl]));
+  return `(()=>{const originals=${JSON.stringify(originals)},seen=new WeakSet;document.addEventListener('error',e=>{const n=e.target;if(!n||n.tagName!=='LINK'||seen.has(n)||n.getAttribute('rel')?.toLowerCase()!=='stylesheet'||n.getAttribute('data-id')!=='_cl')return;const href=n.getAttribute('href'),key=Object.keys(originals).find(v=>href===v||n.href===document.location.origin+v);if(!key)return;seen.add(n);n.setAttribute('href',originals[key])},true)})();`;
 }
 function cssLinkEdits(html, nonce, inert) {
   if (!noncePattern4.test(nonce)) return null;
@@ -3718,13 +3808,13 @@ function cssLinkEdits(html, nonce, inert) {
     if (!attrs) return null;
     if (attrs.get("data-id")?.value !== "_cl") continue;
     if (match.index < begin || match.index >= end || inert.some((span2) => match.index >= span2.start && match.index < span2.end) || !approvedLink((name) => attrs.get(name)?.value ?? null)) return null;
-    const href = attrs.get("href");
-    candidates.push({ start: match.index + href.start, end: match.index + href.start + href.length });
+    const href = attrs.get("href"), contract = CSS_CONTRACTS.find((value) => value.nativeUrl === href.value);
+    candidates.push({ start: match.index + href.start, end: match.index + href.start + href.length, contract });
   }
   if (candidates.length !== 1) return null;
   const span = candidates[0];
   return [
-    { start: span.start, end: span.end, replacement: CSS_ASSET_PATH },
+    { start: span.start, end: span.end, replacement: span.contract.assetPath },
     { start: begin, end: begin, replacement: `<script nonce="${nonce}" data-pll-css-fallback="v1">${cssFallbackScript()}<\/script>` }
   ];
 }

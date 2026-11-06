@@ -3,76 +3,109 @@ import { createHash } from 'node:crypto';
 import { build } from 'esbuild';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { CSS_ASSET_PATH, CSS_NATIVE_URL } from './src/css-static.js';
-import { IMPRESSION_VIEW_SCRIPTS, impressionCacheRevision } from './src/native-impressions.js';
+import { CSS_ASSET_PATH, CSS_NATIVE_URL, CSS_CONTRACTS } from './src/css-static.js';
+import { IMPRESSION_VIEW_SCRIPTS, CURRENT_IMPRESSION_VIEW_SCRIPTS, impressionCacheRevision } from './src/native-impressions.js';
 import { INVALID_FONT_URL, initialRenderCacheRevision } from './src/initial-render.js';
+import { RENDERER_SHA256, RELEASE_ID } from './src/boundary.js';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const cacheMode = process.env.PLL_HTML_CACHE_MODE ?? 'off';
-if (!['off', 'preview', 'all'].includes(cacheMode)) throw new Error('Unknown DO HTML cache mode.');
+if (cacheMode !== 'off') throw new Error('Recovery build requires PLL_HTML_CACHE_MODE=off.');
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-const cssName=CSS_ASSET_PATH.split('/').at(-1);
-const cssBytes=await readFile(path.join(root,'assets',cssName));
-const cssHash='7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61';
-if(cssBytes.length!==1_954_605||sha(cssBytes)!==cssHash)throw new Error('Exact captured CSS bytes changed.');
 const provenance = JSON.parse(await readFile(path.join(root, 'renderer-source-provenance.json'), 'utf8'));
-const impressionContract=JSON.parse(await readFile(path.join(root,'impression-contract-provenance.json'),'utf8'));
-if(JSON.stringify(impressionContract.viewScriptUrls)!==JSON.stringify(IMPRESSION_VIEW_SCRIPTS)
-  ||Object.values(impressionContract.viewScriptSha256).some(hash=>!/^[a-f0-9]{64}$/u.test(hash)))
-  throw new Error('Reviewed native impression script gates changed.');
+const impressionContract = JSON.parse(await readFile(path.join(root, 'impression-contract-provenance.json'), 'utf8'));
+const legacyRenderer = '58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509';
+if (provenance.legacyRendererWorkerSha256 !== legacyRenderer
+  || sha(await readFile(path.join(root, 'renderer/reference-worker-58.js'))) !== legacyRenderer)
+  throw new Error('Historical renderer reference changed.');
 for (const [file, hash] of Object.entries(provenance.files)) {
   if (sha(await readFile(path.join(root, 'renderer', file))) !== hash)
-    throw new Error(`Frozen renderer source changed: ${file}`);
+    throw new Error(`Reviewed renderer source changed: ${file}`);
+}
+for (const [file, hash] of Object.entries(provenance.legacySourceFiles)) {
+  if (!['src/config-query.js', 'src/html.js'].includes(file) && provenance.files[file] !== hash)
+    throw new Error(`Unchanged renderer source changed: ${file}`);
+}
+const reference = await build({ absWorkingDir: path.join(root, 'renderer'), entryPoints: ['src/entry.js'],
+  bundle: true, format: 'esm', platform: 'browser', target: 'es2022', legalComments: 'none', write: false,
+  define: { __PLL_HERO_PRIORITY__: 'false' } });
+if (sha(reference.outputFiles[0].contents) !== provenance.rendererWorkerSha256
+  || provenance.rendererWorkerSha256 !== RENDERER_SHA256 || RENDERER_SHA256 === legacyRenderer)
+  throw new Error('Current renderer reference/marker mismatch.');
+for (const [urls, hashes, expected] of [
+  [impressionContract.viewScriptUrls, impressionContract.viewScriptSha256, IMPRESSION_VIEW_SCRIPTS],
+  [impressionContract.currentViewScriptUrls, impressionContract.currentViewScriptSha256, CURRENT_IMPRESSION_VIEW_SCRIPTS],
+]) {
+  if (JSON.stringify(urls) !== JSON.stringify(expected) || Object.keys(hashes).length !== 4
+    || Object.values(hashes).some(hash => !/^[a-f0-9]{64}$/u.test(hash)))
+    throw new Error('Reviewed native impression script gates changed.');
+}
+const cssAssets = [];
+for (const contract of CSS_CONTRACTS) {
+  if (contract.assetPath !== `/_pll-assets/sites-${contract.sha256}.css`)
+    throw new Error('Unsupported static CSS destination.');
+  const bytes = await readFile(path.join(root, 'assets', path.basename(contract.assetPath)));
+  if (bytes.length !== contract.bytes || sha(bytes) !== contract.sha256)
+    throw new Error(`Exact captured CSS bytes changed: ${contract.id}`);
+  cssAssets.push({ contract, bytes });
 }
 const files = {};
 for (const [entry, output] of [['src/frontend-entry.js', 'dist/frontend/_worker.js'], ['src/backend.js', 'dist/backend/worker.js']]) {
   const absolute = path.join(root, output);
   await mkdir(path.dirname(absolute), { recursive: true });
-  await build({ entryPoints: [path.join(root, entry)], bundle: true, format: 'esm', platform: 'browser',
+  await build({ absWorkingDir: root, entryPoints: [entry], bundle: true, format: 'esm', platform: 'browser',
     target: 'es2022', outfile: absolute, legalComments: 'none', external: ['cloudflare:workers'],
     define: { __PLL_HERO_PRIORITY__: 'false', __PLL_HTML_CACHE_MODE__: JSON.stringify(cacheMode) } });
   const bytes = await readFile(absolute);
   files[output] = { bytes: bytes.length, sha256: sha(bytes) };
 }
-for (const [name, content] of Object.entries({ '_routes.json': JSON.stringify({ version: 1, include: ['/*'], exclude: [CSS_ASSET_PATH] }) + '\n',
-  '_headers': `${CSS_ASSET_PATH}\n  Content-Type: text/css; charset=UTF-8\n  Cache-Control: public, max-age=31536000, immutable\n`,
-  'deployment.txt': 'Panama Legal Lab delivery assets.\n' })) {
+const headers = CSS_CONTRACTS.map(row => `${row.assetPath}\n  Content-Type: text/css; charset=UTF-8\n  Cache-Control: public, max-age=31536000, immutable\n`).join('');
+for (const [name, content] of Object.entries({
+  '_routes.json': JSON.stringify({ version: 1, include: ['/*'], exclude: CSS_CONTRACTS.map(row => row.assetPath) }) + '\n',
+  '_headers': headers, 'deployment.txt': 'Panama Legal Lab delivery assets.\n',
+})) {
   const relative = `dist/frontend/${name}`;
   await writeFile(path.join(root, relative), content);
   files[relative] = { bytes: Buffer.byteLength(content), sha256: sha(content) };
 }
-const cssRelative='dist/frontend'+CSS_ASSET_PATH;
-await mkdir(path.dirname(path.join(root,cssRelative)),{recursive:true});
-await writeFile(path.join(root,cssRelative),cssBytes);
-files[cssRelative]={bytes:cssBytes.length,sha256:cssHash};
-if(files['dist/frontend/_worker.js'].sha256!=='3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9')throw new Error('Thin frontend identity changed.');
-const report = { release: 'pll-initial-render-20261105-v1', rendererWorkerSha256: provenance.rendererWorkerSha256,
-  htmlCache: { placement: 'durable-object', mode: cacheMode, certificateVersion: 2,
+for (const { contract, bytes } of cssAssets) {
+  const relative = 'dist/frontend' + contract.assetPath;
+  await mkdir(path.dirname(path.join(root, relative)), { recursive: true });
+  await writeFile(path.join(root, relative), bytes);
+  files[relative] = { bytes: bytes.length, sha256: contract.sha256 };
+}
+if (files['dist/frontend/_worker.js'].sha256 !== '3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9')
+  throw new Error('Thin frontend identity changed.');
+const legacyCss = CSS_CONTRACTS.find(row => row.assetPath === CSS_ASSET_PATH);
+const report = { release: RELEASE_ID, rendererWorkerSha256: RENDERER_SHA256,
+  legacyRendererWorkerSha256: legacyRenderer, rendererSourceFiles: Object.keys(provenance.files).length,
+  rendererReferenceBytes: reference.outputFiles[0].contents.length,
+  htmlCache: { placement: 'durable-object', mode: cacheMode, activeReuse: false, certificateVersion: 2,
     revision: impressionCacheRevision('off'),
-    revisionsByImpressionMode:Object.fromEntries(['off','preview','all'].map(mode=>[mode,impressionCacheRevision(mode)])),
-    revisionsByPolicyMode:Object.fromEntries(['off','preview','all'].map(impressions=>[impressions,
-      Object.fromEntries(['off','preview','all'].map(font=>[font,initialRenderCacheRevision(impressionCacheRevision(impressions),font)]))])),
-    maximumAgeSeconds: 300, maximumEntries: 32,
-    maximumMemoryBytes: 8_388_608, persistentSlots: 32, maximumConcurrentFills: 1,
-    perVisitPagesExecutions: 1, perVisitDurableObjectCalls: 1, perHitOriginCalls: 0,
+    revisionsByImpressionMode: Object.fromEntries(['off','preview','all'].map(mode => [mode, impressionCacheRevision(mode)])),
+    revisionsByPolicyMode: Object.fromEntries(['off','preview','all'].map(impressions => [impressions,
+      Object.fromEntries(['off','preview','all'].map(initial => [initial, initialRenderCacheRevision(impressionCacheRevision(impressions), initial)]))])),
+    maximumAgeSeconds: 300, maximumEntries: 32, maximumMemoryBytes: 8_388_608, persistentSlots: 32, maximumConcurrentFills: 1,
+    perVisitPagesExecutions: 1, perVisitDurableObjectCalls: 1, perVisitOriginCalls: 1, perHitOriginCalls: 0,
     recurringJobs: 0, addedBindings: 0, newPaidResources: 0 },
-  initialRender:{modeVariable:'PLL_INITIAL_RENDER',modes:['off','preview','all'],removedUrl:INVALID_FONT_URL,
-    previewControlParameter:'_pll_initial_render',previewControlValue:'control',previewCandidateValue:'candidate',
-    shape:'Exact invalid-font link removal; recognized Apps Script iframe loading lazy; recognized four-home overlay auto-ratio hint. Unsupported shapes preserved.',
-    frame:'Same URL, sandbox, permissions and dimensions; native loading lazy only.',
-    overlay:'Only recognized four homepage widgets and localized alt; aspect-ratio auto 1168 / 854 when no inline style; intrinsic ratio retained.',
-    parser:'Reuses the existing native inspector and raw-text spans; no extra parse or upstream fetch.',
-    styling:'Font-family, fallback stacks and all valid font stylesheets remain byte-identical.'},
-  impressions:{modeVariable:'PLL_NATIVE_IMPRESSIONS',modes:['off','preview','all'],
-    previewOrigin:'https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev',
-    previewControlParameter:'_pll_native_impressions',previewControlValue:'control',previewCandidateValue:'candidate',
-    viewScriptUrls:IMPRESSION_VIEW_SCRIPTS,viewScriptSha256:impressionContract.viewScriptSha256,
-    nativeField:357,arrayIndex:356,recognizedArrayLength:518,changedValue:true,
-    mutation:'Exact recognized native configuration token only; docs-liap, GA4 and all unrelated bytes preserved.',
-    unsupportedShape:'Original document unchanged by this policy; no endpoint acknowledgement or relay.',
-    parser:'Reuses the CSS native inspector and raw-text spans; one native parse, no extra upstream fetch.'},
-  css:{originalUri:CSS_NATIVE_URL,path:CSS_ASSET_PATH,sha256:cssHash,bytes:cssBytes.length,transformations:'none',
-    provenance:'Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted.'},
-  builtAt: new Date().toISOString(), files };
+  initialRender: { modeVariable: 'PLL_INITIAL_RENDER', modes: ['off','preview','all'], removedUrl: INVALID_FONT_URL,
+    previewControlParameter: '_pll_initial_render', previewControlValue: 'control', previewCandidateValue: 'candidate',
+    shape: 'Exact invalid-font removal; recognized Apps Script iframe native lazy loading; recognized homepage overlay ratio reservation.',
+    frame: 'Same URL, sandbox, permissions and dimensions; native loading lazy only.',
+    overlay: 'Recognized homepage widgets retain intrinsic fallback with aspect-ratio auto 1168 / 854.',
+    parser: 'Existing native inspector and raw-text spans; no extra parse or upstream fetch.',
+    styling: 'Font-family, fallback stacks and valid font stylesheets remain unchanged.' },
+  impressions: { modeVariable: 'PLL_NATIVE_IMPRESSIONS', modes: ['off','preview','all'],
+    previewOrigin: 'https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev',
+    previewControlParameter: '_pll_native_impressions', previewControlValue: 'control', previewCandidateValue: 'candidate',
+    viewScriptUrls: IMPRESSION_VIEW_SCRIPTS, viewScriptSha256: impressionContract.viewScriptSha256,
+    currentViewScriptUrls: CURRENT_IMPRESSION_VIEW_SCRIPTS, currentViewScriptSha256: impressionContract.currentViewScriptSha256,
+    nativeField: 357, arrayIndex: 356, recognizedArrayLength: 518, currentRecognizedArrayLength: 519, changedValue: true,
+    mutation: 'Exact recognized native configuration token only; docs-liap, GA4 and unrelated bytes preserved.',
+    unsupportedShape: 'Original document unchanged by this policy; no endpoint acknowledgement or relay.',
+    parser: 'Shared native inspector and raw-text spans; one native parse and no extra upstream fetch.' },
+  css: { originalUri: CSS_NATIVE_URL, path: CSS_ASSET_PATH, sha256: legacyCss.sha256, bytes: legacyCss.bytes,
+    transformations: 'none', provenance: 'Exact public version-pinned Google CSS. Original copyright and applicable terms remain with their holders; no separate license asserted.' },
+  cssVersions: CSS_CONTRACTS, builtAt: new Date().toISOString(), files };
 await writeFile(path.join(root, 'build-manifest.json'), JSON.stringify(report, null, 2) + '\n');
 console.log(JSON.stringify(report, null, 2));

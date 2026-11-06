@@ -1,4 +1,5 @@
 import { SITES, PreviewCompatibilityError, arrayElementSpan, clearGoogleRedirectConfig } from '../vendor/logic.js';
+import { isCurrentConfigShape } from './current-config-contract.js';
 
 const invalidText = value => /[\u0000-\u001f\u007f-\u009f\ud800-\udfff]/u.test(value);
 
@@ -45,7 +46,20 @@ export function equivalentSourceQuery(actual, expected, site) {
   } catch { return false; }
 }
 
-export function clearEquivalentQueryConfig(text, plan) {
+function reviewedExtendedRedirectSpan(remainder, actual) {
+  try {
+    // Four native-language captures on 2026-11-06 retain the previous field
+    // positions and append field519=0. Other extensions remain unsupported.
+    const last = arrayElementSpan(remainder, 518);
+    const json = remainder.slice(0, last.end + 1), suffix = remainder.slice(last.end + 1);
+    if (!/^\s*;/.test(suffix) || /\b_at_config\s*=/.test(suffix)) return null;
+    const config = JSON.parse(json);
+    if (!isCurrentConfigShape(config, actual)) return null;
+    return arrayElementSpan(json, 316);
+  } catch { return null; }
+}
+
+export function clearEquivalentQueryConfig(text, plan, { onExtendedValidated } = {}) {
   const assignment = /^\s*_at_config\s*=\s*/.exec(text);
   if (!assignment) throw new PreviewCompatibilityError();
   const remainder = text.slice(assignment[0].length);
@@ -58,5 +72,13 @@ export function clearEquivalentQueryConfig(text, plan) {
     throw error;
   }
   if (!equivalentSourceQuery(actual, plan.upstream, plan.site)) throw new PreviewCompatibilityError();
+  const extended = reviewedExtendedRedirectSpan(remainder, actual);
+  if (extended) {
+    const token = remainder.slice(extended.start, extended.end);
+    const leading = /^\s*/.exec(token)[0], trailing = /\s*$/.exec(token)[0];
+    onExtendedValidated?.();
+    return assignment[0] + remainder.slice(0, extended.start) + leading + 'null' + trailing
+      + remainder.slice(extended.end);
+  }
   return clearGoogleRedirectConfig(text, actual);
 }

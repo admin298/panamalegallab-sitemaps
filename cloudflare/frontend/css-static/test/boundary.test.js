@@ -43,6 +43,6 @@ test('backend stamps only public version provenance without changing body/status
     assert.equal(response.status, 201); assert.equal(await response.text(), 'kept');
     assert.equal(response.headers.get('Content-Security-Policy'), "script-src 'nonce-kept'");
     assert.equal(response.headers.get('X-PLL-RendererSha256'), RENDERER_SHA256);
-    assert.equal(response.headers.get('X-PLL-Backend-Version'), id === 'cf-version-test' ? id : 'pll-durable-free-20261103-v1');
+    assert.equal(response.headers.get('X-PLL-Backend-Version'), id === 'cf-version-test' ? id : 'pll-compatibility-recovery-20261106-v1');
   }
 });
