@@ -1,57 +1,35 @@
-# Cloudflare: recuperación con HTML cache desactivado
+# Cloudflare: recuperación de compatibilidad del 6 de noviembre
 
-El [recibo de recuperación](frontend/css-static/activation-receipt.json) identifica la versión activa `f62aeb5b-7e37-4bf1-9633-0985f1f4060e`, 422116 bytes, SHA-256 `620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521`. Su aceptación de imágenes procede de cinco vistas públicas en cuatro idiomas; la optimización de velocidad móvil sigue abierta.
+El [recibo](frontend/css-static/activation-receipt.json) identifica el backend `0507d52a-a3c9-4d18-b8be-f0a6f6703b80`, 426995 bytes, SHA-256 `c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340`, con tráfico al 100 %, y Pages `06533eae-ba22-4602-8920-631f871dfff1`. El renderer actual se identifica como `ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07`; ya no se presenta como el renderer histórico 58.
 
-## Retirada de la caché HTML
+## Corrección y límites
 
-Una comprobación acotada encontró imágenes válidas con HTML de unos 2 segundos y tokens de imagen rotos con el mismo HTML envejecido unos 159 segundos. Se retiró la reutilización de HTML compilando el modo existente `PLL_HTML_CACHE_MODE=off`. El código fuente no cambia; el backend emitido difiere del cf48 anterior solo en el literal compilado del modo de caché.
+La configuración nativa observada pasó a 519 elementos. La validación estricta anterior rechazaba esa forma y emitía `302` con `X-PLL-Delivery: google-source-fallback`. Se admite únicamente la forma revisada: cero final, campos y URL esperados, script nativo exacto por idioma y nonce válido coincidente. Se conserva el contrato histórico de 518 elementos. Las formas desconocidas mantienen el fallback de seguridad; no hay aceptación genérica de futuras revisiones.
 
-Cada visita HTML ejecuta Pages y el DO y solicita una respuesta fresca al origen Google. No lee ni escribe plantillas, inicializa SQLite para la caché, certifica capturas ni encola renovaciones. Se mantienen máximo ocho peticiones en vuelo, sin cola y sin trabajos periódicos. El plan gratuito y los recursos existentes permanecen; las cuotas compartidas son finitas y la latencia del origen no queda garantizada.
+Se actualizan los contratos exactos de los cuatro scripts nativos y el CSS actual. Los contratos anteriores permanecen. Los cuerpos de los scripts de Google no se incluyen en el repositorio. Las políticas de imágenes, CSS, registro nativo y render inicial siguen en `all`; no cambian las fotografías, el teléfono ni las funciones de formulario. La política nativa sigue limitada al campo reconocido de impresiones; conservar GA4, dataLayer y consentimiento no prueba conversiones ni atribución.
 
-Los límites anteriores de 300 segundos, 32 entradas, 8 MiB y 32 posiciones SQLite quedan como historial y capacidad dormida del código, sin reutilización activa. No reactivar `all` durante una restauración rutinaria: el envejecimiento de tokens motivó su retirada.
+La caché HTML permanece `off`. Cada visita ejecuta Pages, llama al DO y solicita el HTML al origen Google. No reutiliza plantillas ni encola renovaciones. Se mantienen máximo ocho peticiones en vuelo, sin cola, las mismas variables y bindings de recursos, SQLite y reglas. No se añaden migraciones, servicios de pago ni trabajos periódicos. Las cuotas del plan gratuito son finitas; no se garantiza la latencia del origen. Los límites antiguos de 300 segundos/32 entradas quedan como capacidad dormida del código.
 
-## Políticas y recursos conservados
+## Evidencia pública
 
-Las cuatro variables `PLL_IMAGE_FORMAT`, `PLL_CSS_STATIC`, `PLL_NATIVE_IMPRESSIONS` y `PLL_INITIAL_RENDER` permanecen en `all`. `config/backend.cache-off.wrangler.json` conserva el mismo cuerpo que la configuración inicial `all`; no controla el modo de caché, que se compila en el artefacto.
+La auditoría finita comprobó 252 URL preferidas únicas —63 por idioma— con HTTP 200, versión y renderer correctos, BYPASS y cero fallback. Se verificaron 252 canonical y las 148 descripciones esperadas por la tabla editorial. Es una auditoría HTTP de documentos; no son 252 pruebas de navegador, imágenes, velocidad, formularios ni indexación de Google.
 
-El render inicial retira el enlace exacto a una fuente inválida, añade `loading="lazy"` solo al iframe reconocido de Apps Script y reserva `aspect-ratio:auto 1168 / 854` en el logotipo reconocido de portada cuando falta. Cubre 252 URL preferidas y cuatro aliases propios de portada. Se conservan fuentes válidas, fotografías, URL del formulario, sandbox, permisos y dimensiones. Las formas desconocidas mantienen el documento original; se reutiliza el parser nativo sin otra pasada ni petición al origen.
+Ocho vistas públicas de portada, cuatro idiomas por móvil/escritorio, pasaron los controles. Sus 24 comprobaciones de fotografía, overlay y logotipo coinciden por hash con los baselines del 5 de noviembre; las imágenes inline registradas se decodificaron sin roturas. Menús móviles y apertura/cierre del buscador pasaron; no se escribieron consultas ni se enviaron formularios. Los ocho contextos y el navegador se cerraron. Antes de publicar se conservaron los cuatro fallos originales del oracle móvil y se corrigió su espera de animación en cuatro vistas adicionales: ocho combinaciones aceptadas, doce vistas acotadas, sin cambiar el candidato.
 
-La política de registro nativo sigue limitada al token reconocido del campo 357/índice 356, con controles de forma, locale, script y nonce. Cliente nativo, docs-liap, GA4, dataLayer y consentimiento permanecen. Esto no prueba entrega de eventos ni conversiones Analytics.
+La [ejecución PageSpeed oxuarv97gj](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj) de la portada registró 61 móvil/82 escritorio; SEO 100, accesibilidad 100, prácticas 96 y navegación agéntica 2/2 en ambos. LCP: 9,2 s móvil y 2,6 s escritorio. Es un reporte de laboratorio aislado; la velocidad móvil sigue pendiente, sin comparación causal ni prueba de CWV de campo. Las auditorías de consola guardadas muestran CORS de `play.google.com/log`, sin 403 de imágenes en esas capturas. Formularios, conversiones/atribución y GSC permanecen fuera de esta aceptación.
 
-Pages conserva 3349 bytes y SHA-256 `3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9`. Los cinco artefactos frontend y los 26 archivos congelados del renderer permanecen exactos. No hay nuevas dependencias, bindings de recursos, namespaces, migraciones ni servicios de pago. Las dos reglas de recuperación permanecen desactivadas.
+## Código y portabilidad
 
-## Evidencia y límites
+El [recibo de build](frontend/css-static/source-build-proof.json) conserva el delta de 26 archivos respecto de f62: 17 modificados y nueve añadidos. El backend y los seis archivos Pages se reconstruyen con sus hashes exactos. El `_worker.js` frontend permanece en 3349 bytes, SHA-256 `3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9`.
 
-El [recibo del build](frontend/css-static/CACHE-OFF-RECEIPT.json) compara 99 archivos de fuente/configuración/pruebas/recursos con el candidato anterior, todos exactos. Su declaración `deployed:false` corresponde a esa preparación local; la publicación y aceptación pública se documentan por separado en el recibo de recuperación del operador.
+La procedencia actual cubre 27 archivos del renderer y una referencia reproducible nueva de 314229 bytes. `renderer/reference-worker-58.js` y el vendor histórico se conservan exactos; la identidad 58 queda como historia. La suite del candidato pasó 179 pruebas, cobertura de `src` de 99,68 % líneas, 89,19 % ramas y 94,76 % funciones. La copia portable conserva además dos guardas históricas. El audit oficial del operador informó cero vulnerabilidades y 83 dependencias, sin cambios del lockfile.
 
-El replay histórico del 4 de noviembre cubre 252 páginas: 252 enlaces inválidos retirados, 20 iframes diferidos y tres reservas de proporción nuevas; la española ya existía. Los demás bytes aceptados y CSP permanecieron exactos, con una pasada nativa y cero peticiones externas. No son 252 inspecciones públicas nuevas.
+Cada CSS se guarda una sola vez como gzip/base64 canónico. El anterior conserva SHA-256 `7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61` y 1954605 bytes; el actual, `790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d` y 1955718 bytes. Se mantienen [procedencia histórica](frontend/css-static/assets/provenance.json) y [actual](frontend/css-static/assets/provenance-current.json), sin afirmar propiedad o licencia nueva sobre Google CSS.
 
-Las 12 vistas/seis parejas de preview y ocho GET anteriores corresponden al cf48 con caché y quedan como evidencia histórica. Los seis formularios cargaron al hacer scroll, sin enviar datos. El LCP móvil español de 8178/7936 ms y CLS italiano de 0,136316/0,001681 no miden esta recuperación `off`; se conserva también la pareja con regresión de 324 ms. No se atribuye una mejora global o de CWV de campo a esas muestras históricas. Entrega de formularios, conversiones/atribución Analytics y GSC quedan pendientes.
-
-La recuperación `off` pasó cinco vistas públicas sin consultas, en cuatro idiomas: 97 transferencias de imágenes HTTP 200, cero imágenes rotas y cero reintentos. La revisión española a los 234,604 segundos recibió URL nuevas con los mismos hashes de fotografías, logotipo y overlay. Todas mostraron BYPASS.
-
-La [ejecución PageSpeed 543kcq01on](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on) registró 56 móvil (LCP 14,7 s) y 78 escritorio (LCP 2,4 s), sin 403 de imágenes en las auditorías de consola ampliadas. Es una medición externa aislada, sin comparación causal ni prueba de CWV de campo. El rendimiento móvil sigue abierto; no se declara finalizada la optimización.
-
-Se descartó el experimento de imágenes adaptables: cuatro vistas tempranas sugerían ahorros limitados, pero una prueba separada de giro a los 160,013 segundos eligió nueve URL de 1280 px no solicitadas antes y las nueve fallaron con 403. No se adoptó código experimental. Una posible separación de CSS crítico sigue siendo solo un plan, sin implementar. La versión f62 y la entrega actual de fotografías permanecen sin cambios.
-
-No se observaron etiquetas `hreflang` en el head público ni de preview. Los alternates de los sitemaps protegidos se conservan.
-
-## Compilación portable
-
-Ejecutar `node tooling/prepare-native-css.mjs` antes de build/tests. Reconstruye dos CSS exactos desde una representación gzip/base64 tras verificar límites y hashes; no usa red ni postinstall. El CSS conserva SHA-256 `7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61` y 1954605 bytes, caché immutable y [procedencia](frontend/css-static/assets/provenance.json).
-
-Usar el lockfile y compilar explícitamente con `PLL_HTML_CACHE_MODE=off`. En PowerShell:
-
-```powershell
-$env:PLL_HTML_CACHE_MODE = 'off'
-npm run build
-npm test
-```
-
-El build portable con modo `off` coincidió en los seis artefactos y pasó 163/163 pruebas, sin instalación ni red. Comparar hashes de salida; la fecha del manifiesto cambia. Las configuraciones portables históricas, el helper CSS y sus guardas permanecen exactos. La cobertura anterior de fuente fue 99,68 % líneas, 94,70 % funciones y 89,01 % ramas; se refiere a fuente idéntica, sin una nueva ejecución de cobertura.
+Ejecutar explícitamente `node tooling/prepare-native-css.mjs` antes de build/tests. El helper verifica ambos inputs y cuatro destinos fijos, con límites de expansión, hashes, rechazo de enlaces y protección frente a sobrescrituras. No hay red, postinstall ni preparación automática. Usar el lockfile y compilar con `PLL_HTML_CACHE_MODE=off`; el build rechaza otros modos. La fecha del manifiesto cambia al reconstruir: comparar los siete hashes de salida. Los JSON históricos y las dos pruebas de portabilidad permanecen exactos.
 
 ## Historial y restauración
 
-El [recibo cf48 con caché](frontend/css-static/activation-cf48-cache-all-receipt.json) permanece exacto, igual que [7ff](frontend/css-static/activation-7ff-receipt.json) y [f550](frontend/css-static/activation-f550-receipt.json). Las versiones históricas con HTML cache `all` no son la restauración recomendada tras esta incidencia.
+Se conservan los recibos [f62](frontend/css-static/activation-f62-receipt.json), [cf48](frontend/css-static/activation-cf48-cache-all-receipt.json), [7ff](frontend/css-static/activation-7ff-receipt.json) y [f550](frontend/css-static/activation-f550-receipt.json). f62 fue el respaldo del PR #9 del 5 de noviembre; ese PR no contenía esta recuperación de compatibilidad del día 6. Las versiones antiguas con caché HTML `all` no son restauraciones rutinarias recomendadas después del fallo de tokens envejecidos. f62 también rechaza la forma nativa actual de 519 elementos.
 
-Conservar Worker `pll-renderer-free-20261103`, clase `PllRenderer`, namespace `585ce224e0634c4bb0f61402e313787a`, binding `PLL_RENDERER`, objeto `pll-renderer-v1`, Pages, SQLite, CSS, fotografías y reglas. Confirmar versión y modo compilado efectivos. No se automatizan publicaciones, sitemaps, GitHub ni envíos de formulario.
+Conservar Worker `pll-renderer-free-20261103`, clase `PllRenderer`, namespace `585ce224e0634c4bb0f61402e313787a`, binding `PLL_RENDERER`, objeto `pll-renderer-v1`, Pages y reglas. Cualquier restauración exige verificar la versión, modo compilado y compatibilidad del origen real. Este paquete no despliega ni automatiza GitHub, sitemaps o formularios.
