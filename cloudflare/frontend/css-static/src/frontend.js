@@ -1,4 +1,5 @@
 import { requestBoundary, boundaryResponse, temporaryResponse } from './boundary.js';
+import { normalizedMobileSignal } from './mobile-signal.js';
 
 export const OBJECT_NAME = 'pll-renderer-v1';
 const FORWARDED_HEADERS = Object.freeze(['Origin', 'Referer', 'Sec-Fetch-Site', 'Content-Type',
@@ -12,6 +13,7 @@ export async function handleThinRequest(request, env) {
     for (const name of FORWARDED_HEADERS) {
       if (request.headers.has(name)) headers.set(name, request.headers.get(name));
     }
+    headers.set('X-PLL-Mobile', normalizedMobileSignal(request));
     const forwarded = new Request(request.url, { method: request.method, headers, redirect: 'manual',
       ...(!['GET', 'HEAD'].includes(request.method) ? { body: request.body, duplex: 'half' } : {}) });
     const namespace = env.PLL_RENDERER;

@@ -1,5 +1,5 @@
 export const RENDERER_SHA256 = 'ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07';
-export const RELEASE_ID = 'pll-compatibility-recovery-20261106-v1';
+export const RELEASE_ID = 'pll-hero-width-mobile-20261106-v1';
 const PREVIEW_DOMAIN = 'pll-seo-preview-20261102.pages.dev';
 const PRODUCTION_HOSTS = new Set(['www', 'en', 'fr', 'it'].map(label => `${label}.panamalegallab.com`));
 const encoder = new TextEncoder();

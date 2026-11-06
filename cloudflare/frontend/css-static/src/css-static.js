@@ -4,6 +4,7 @@ import { collectRawTextSpans, elementAttributes, applyTextEdits } from './html-s
 import { impressionPolicyEnabled, impressionDocumentEdit } from './native-impressions.js';
 import { initialRenderPolicyEnabled, fontDocumentEdit, frameDocumentEdit, approvedFrame, INVALID_FONT_URL } from './initial-render.js';
 import { HOME_OVERLAY_PROFILES, HOME_SECTION_ID, createOverlayInspector, overlayDocumentEdit } from './home-overlay.js';
+import { heroWidthPolicyEnabled, createHeroWidthInspector, heroWidthDocumentEdits } from './hero-width.js';
 
 export const CSS_NATIVE_URL='https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA';
 export const CSS_ASSET_PATH='/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css';
@@ -22,15 +23,16 @@ const noncePattern=/^[A-Za-z0-9+/_-]{8,256}={0,2}$/u;
 const encoder=new TextEncoder();
 
 function eligiblePolicies(request, environment) {
-  const mode=environment?.PLL_CSS_STATIC, impressionMode=environment?.PLL_NATIVE_IMPRESSIONS,initialMode=environment?.PLL_INITIAL_RENDER;
-  if(request.method!=='GET'||![mode,impressionMode,initialMode].some(value=>['preview','all'].includes(value)))return null;
+  const mode=environment?.PLL_CSS_STATIC, impressionMode=environment?.PLL_NATIVE_IMPRESSIONS,initialMode=environment?.PLL_INITIAL_RENDER,heroMode=environment?.PLL_HERO_WIDTH;
+  if(request.method!=='GET'||![mode,impressionMode,initialMode,heroMode].some(value=>['preview','all'].includes(value)))return null;
   const plan=planDeliveryRequest(request.url,request.method);
   if(plan.kind!=='page'||plan.searchPage)return null;
   const css=plan.mode==='production'?mode==='all':plan.previewOrigin===PREVIEW
     &&['preview','all'].includes(mode)&&new URL(request.url).searchParams.get('_pll_speed')!=='control';
   const impressions=impressionPolicyEnabled(request,impressionMode,plan);
   const initial=initialRenderPolicyEnabled(request,initialMode,plan);
-  return css||impressions||initial?{site:plan.site,css,impressions,initial,
+  const hero=heroWidthPolicyEnabled(request,heroMode,plan);
+  return css||impressions||initial||hero?{site:plan.site,css,impressions,initial,hero,
     overlayProfile:initial&&plan.canonical===plan.site.productionOrigin+'/'?HOME_OVERLAY_PROFILES[plan.site.language]:null}:null;
 }
 
@@ -47,15 +49,16 @@ function approvedLink(get) {
     &&get('integrity')===null;
 }
 
-export function createCssInspector(site,overlayProfile=null) {
+export function createCssInspector(site,overlayProfile=null,heroEnabled=false) {
   let state={html:0,head:0,body:0,marker:0,charset:0,links:0,selected:0,fonts:0,headFonts:0,frames:0,frameSafe:true,safe:true,cssSafe:true,nonces:[]};
   const overlay=createOverlayInspector(overlayProfile);
+  const hero=heroEnabled?createHeroWidthInspector():null;
   const count=name=>({element(){state={...state,[name]:state[name]+1};}});
   const context=()=>{
     const valid=state.safe&&['html','head','body','marker','charset'].every(name=>state[name]===1);
     return {nonces:valid?state.nonces:null,cssValid:valid&&state.cssSafe&&['links','selected'].every(name=>state[name]===1),
       fontValid:valid&&state.fonts===1&&state.headFonts===1,
-      frameValid:valid&&state.frames===1&&state.frameSafe,overlayValid:valid&&overlay.valid()};
+      frameValid:valid&&state.frames===1&&state.frameSafe,overlayValid:valid&&overlay.valid(),hero:valid?hero?.context():null};
   };
   return {
     ...Object.fromEntries(['html','head','body'].map(name=>[name,count(name)])),
@@ -77,16 +80,18 @@ export function createCssInspector(site,overlayProfile=null) {
     frame:{element(element){if(element.getAttribute('src')?.startsWith('https://script.google.com/'))state={...state,
       frames:state.frames+1,frameSafe:state.frameSafe&&approvedFrame(name=>element.getAttribute(name),site.language)};}},
     overlay,
+    hero,
     context,
     result(){const result=context();return result.cssValid?result.nonces:null;},
   };
 }
 
 function attach(rewriter,inspector,overlayProfile) {
-  const result=rewriter.on('html',inspector.html).on('head',inspector.head).on('body',inspector.body)
+  let result=rewriter.on('html',inspector.html).on('head',inspector.head).on('body',inspector.body)
     .on('base',inspector.base).on('[data-domain][data-sitename]',inspector.marker)
     .on('head meta[charset]',inspector.charset).on('meta[http-equiv]',inspector.meta)
     .on('script',inspector.script).on('link',inspector.link).on('head link',inspector.headLink).on('iframe',inspector.frame);
+  if(inspector.hero)result=result.on('div.IFuOkc',inspector.hero.background).on('template',inspector.hero.template);
   if(!overlayProfile)return result;
   const section=`div.UtePc > section[id="${HOME_SECTION_ID}"]`,widget=`${section} [id="${overlayProfile.widgetId}"]`;
   return result.on('div.UtePc',inspector.overlay.root).on('div.UtePc > section',inspector.overlay.firstSection)
@@ -154,7 +159,7 @@ async function inspect(response,policies,Rewriter,timing) {
       const html=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(bytes);
       const roundtrip=encoder.encode(html);
       if(roundtrip.length!==bytes.length||!roundtrip.every((value,index)=>value===bytes[index]))return null;
-      const inspector=createCssInspector(policies.site,policies.overlayProfile);
+      const inspector=createCssInspector(policies.site,policies.overlayProfile,policies.hero);
       parserReader=attach(new Rewriter(),inspector,policies.overlayProfile).transform(new Response(bytes)).body.getReader();
       while(!(await parserReader.read()).done){if(aborted)return null;}
       if(aborted)return null;
@@ -166,10 +171,11 @@ async function inspect(response,policies,Rewriter,timing) {
       const font=policies.initial?fontDocumentEdit(html,spans,context.fontValid):null;
       const frame=policies.initial?frameDocumentEdit(html,policies.site.language,spans,context.frameValid):null;
       const overlay=policies.overlayProfile?overlayDocumentEdit(html,policies.site.language,spans,context.overlayValid):null;
-      if(!css&&!impressions&&!font&&!frame&&!overlay)return null;
-      const edits=[...(css??[]),...(impressions?[impressions]:[]),...(font?[font]:[]),...(frame?[frame]:[]),...(overlay?[overlay]:[])];
+      const hero=policies.hero?heroWidthDocumentEdits(html,nonce,spans,context.hero):null;
+      if(!css&&!impressions&&!font&&!frame&&!overlay&&!hero?.edits.length)return null;
+      const edits=[...(css??[]),...(impressions?[impressions]:[]),...(font?[font]:[]),...(frame?[frame]:[]),...(overlay?[overlay]:[]),...(hero?.edits??[])];
       const result=applyTextEdits(html,edits);
-      return result?{bytes:encoder.encode(result),css:Boolean(css),impressions:Boolean(impressions),
+      return result?{bytes:encoder.encode(result),css:Boolean(css),impressions:Boolean(impressions),hero:Boolean(hero?.edits.length),
         initial:[font?'font':null,frame?'lazy-frame':null,overlay?'home-ratio':null].filter(Boolean)}:null;
     })();
     return await Promise.race([inspection,deadline]);
@@ -183,14 +189,15 @@ export async function withCssStatic(response,request,environment,options={}) {
       ||!utf8Html.test(response.headers.get('Content-Type')??''))return response;
     const selected=eligiblePolicies(request,environment);if(!selected)return response;
     const stylesAbsent=stylePolicyAbsent(response.headers.get('Content-Security-Policy'));
-    const policies={...selected,css:selected.css&&stylesAbsent,overlayProfile:stylesAbsent?selected.overlayProfile:null};
-    if(!policies.css&&!policies.impressions&&!policies.initial)return response;
+    const policies={...selected,css:selected.css&&stylesAbsent,hero:selected.hero&&stylesAbsent,overlayProfile:stylesAbsent?selected.overlayProfile:null};
+    if(!policies.css&&!policies.impressions&&!policies.initial&&!policies.hero)return response;
     const Rewriter=options.Rewriter??globalThis.HTMLRewriter;if(typeof Rewriter!=='function')return response;
     const result=await inspect(response,policies,Rewriter,options.timing??globalThis);if(!result)return response;
     const headers=new Headers(response.headers);
     for(const name of ['Content-Length','ETag','Content-MD5','Digest','Content-Digest','Repr-Digest'])headers.delete(name);
     if(result.css)headers.set('X-PLL-CSS-Policy',`static-exact-v1-${policies.site.language}`);
     if(result.impressions)headers.set('X-PLL-Impression-Policy',`native-noop-v1-${policies.site.language}`);
+    if(result.hero)headers.set('X-PLL-Hero-Width-Policy',`mobile-header-1280-v1-${policies.site.language}`);
     if(result.initial.length){headers.set('X-PLL-Initial-Render-Policy',`initial-render-v1-${policies.site.language}`);
       headers.set('X-PLL-Initial-Render-Edits',result.initial.join(','));}
     const delivered=new Response(result.bytes,{status:response.status,statusText:response.statusText,headers});
