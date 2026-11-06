@@ -9,9 +9,9 @@ import { CSS_CONTRACTS } from '../src/css-static.js';
 import { IMPRESSION_VIEW_SCRIPTS, CURRENT_IMPRESSION_VIEW_SCRIPTS } from '../src/native-impressions.js';
 import { RENDERER_SHA256, RELEASE_ID } from '../src/boundary.js';
 
-const RELEASE = 'pll-compatibility-recovery-20261106-v1';
+const RELEASE = 'pll-hero-width-mobile-20261106-v1';
 const LEGACY = '58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509';
-const FRONTEND = '3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9';
+const FRONTEND = '72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953';
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const read = name => readFile(new URL('../' + name, import.meta.url));
 const json = async name => JSON.parse(await read(name));
