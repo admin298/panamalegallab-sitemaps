@@ -1,20 +1,26 @@
 {
-  "state": "PUBLIC_6NOV_RECOVERY_PORTABLE_181_PASS_READY_FOR_REVIEW",
-  "release": "pll-compatibility-recovery-20261106-v1",
-  "backendVersion": "0507d52a-a3c9-4d18-b8be-f0a6f6703b80",
+  "state": "PUBLIC_HERO_WIDTH_ACCEPTED_PORTABLE_196_PASS_READY_FOR_REVIEW",
+  "release": "pll-hero-width-mobile-20261106-v1",
+  "acceptedAtUtc": "2026-11-06T15:38:49.360Z",
+  "backendVersion": "87feb3fd-50c1-4865-884e-49074049f706",
+  "pagesDeployment": "f8843680-6120-47cb-93fe-1324addffd64",
   "backend": {
-    "bytes": 426995,
-    "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340"
+    "bytes": 434028,
+    "sha256": "3b4f29b06d61790b56a722c1d15a926da6f8437c2b5d283d85f4a1d5208aff7d"
+  },
+  "frontend": {
+    "bytes": 3750,
+    "sha256": "72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953"
   },
   "rendererSha256": "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07",
   "rendererSourceFiles": 27,
-  "legacyRendererReference58Preserved": true,
+  "rendererAndBothCssUnchanged": true,
   "runtimeReceipt": "activation-receipt.json",
-  "activationReceiptSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+  "activationReceiptSha256": "16d7834a27e03b711933b723fc9db9e0bba8e53ed48465009439f29649763a11",
   "sourceBuildProof": "source-build-proof.json",
-  "sourceBuildProofSha256": "42ff274456b057effd1795b478dac80da55045c19244f4fd1aeaba30ccfe7beb",
+  "sourceBuildProofSha256": "1ffbbd984384679b577269fc89a25ff859f339cf69787fbac435a9362587a4d4",
   "sourceRuntimeDelta": {
-    "modified": 17,
+    "modified": 13,
     "added": 9,
     "removed": 0
   },
@@ -23,147 +29,156 @@
     "PLL_IMAGE_FORMAT": "all",
     "PLL_CSS_STATIC": "all",
     "PLL_NATIVE_IMPRESSIONS": "all",
-    "PLL_INITIAL_RENDER": "all"
+    "PLL_INITIAL_RENDER": "all",
+    "PLL_HERO_WIDTH": "all"
   },
-  "candidateTests": 179,
-  "candidatePassed": 179,
-  "candidateFailed": 0,
-  "portableTestsExpected": 181,
-  "retainedPortabilityGuardTests": 2,
-  "sourceCoverage": {
-    "pass": 179,
-    "fail": 0,
-    "coverageScope": "Node delivery src modules; native renderer guards have separate integration tests",
-    "lines": 99.68,
-    "branches": 89.19,
-    "functions": 94.76,
-    "npmVulnerabilities": 0
-  },
-  "coverageScope": "Root candidate source suite; portable run to be recorded separately.",
   "publicHttp": {
-    "pages": 252,
+    "state": "PUBLIC_HTTP_252_AND_4_DEVICE_PROBES_PASS",
+    "atUtc": "2026-11-06T15:33:36.976Z",
+    "backend": "87feb3fd-50c1-4865-884e-49074049f706",
+    "documentsPlanned": 252,
+    "documentsCompleted": 252,
+    "deviceProbesPlanned": 4,
+    "deviceProbesCompleted": 4,
+    "totalRequests": 256,
+    "maximumRequests": 256,
+    "concurrency": 2,
+    "retries": 0,
+    "redirectsFollowed": 0,
+    "validNoPhotoNoops": 4,
+    "resized": 248,
     "byLanguage": {
       "es": 63,
       "en": 63,
       "fr": 63,
       "it": 63
     },
+    "errors": [],
+    "sourceReceiptSha256": "2b3ae52ea272582d726feeb43f6c7380004ec5a0325603c0f6546a9a5741237c",
     "allStatus200": true,
-    "fallbacks": 0,
-    "canonicalCorrect": 252,
-    "expectedDescriptionsVerified": 148,
+    "allCacheBypass": true,
+    "preferredCanonicalChecks": 252,
+    "signalProbes": [
+      {
+        "id": "desktop-reject-forged-mobile",
+        "language": "es",
+        "mobileHint": "?0",
+        "forgedInternalHint": "1",
+        "expectedWidth": 16383
+      },
+      {
+        "id": "mobile-reject-forged-desktop",
+        "language": "en",
+        "mobileHint": "?1",
+        "forgedInternalHint": "0",
+        "expectedWidth": 1280
+      },
+      {
+        "id": "desktop-hint-overrides-mobile-ua",
+        "language": "fr",
+        "mobileHint": "?0",
+        "forgedInternalHint": "1",
+        "expectedWidth": 16383
+      },
+      {
+        "id": "mobile-hint-overrides-desktop-ua",
+        "language": "it",
+        "mobileHint": "?1",
+        "forgedInternalHint": "0",
+        "expectedWidth": 1280
+      }
+    ],
+    "scope": "252 preferred HTTP documents plus4 explicit device-signal probes; not252 browser/image/performance checks.",
+    "signedImageUrlsAndRawCapturesExcluded": true
+  },
+  "publicBrowser": {
+    "receipt": "receipts/hero-width-public-browser.json",
+    "state": "PASS",
+    "urls": 8,
+    "views": 16,
+    "errors": 0,
     "retries": 0,
-    "concurrency": 2,
-    "receipt": "validation/public-252/SUMMARY.json",
-    "scope": "Finite HTTP document audit only; no252browser, image decoding, performance, form delivery or Google indexing claim."
-  },
-  "postBrowser": {
-    "views": 8,
-    "passed": 8,
-    "primaryAssetHashChecks": 24,
-    "sameRecorded5NovBaselines": true,
-    "brokenInlineImages": 0,
-    "contextsClosed": true,
     "browserClosed": true,
-    "controlsScope": "Menu and search open/close only; no query or form submission."
+    "interception": false,
+    "formsFilled": 0,
+    "formsSubmitted": 0,
+    "maximumObservedCls": 0.02438518666103337,
+    "phoneContract": "Preserve existing correct home phone and commercial absence, verified against historical baselines. Original stricter canary failure is retained."
   },
+  "canary": {
+    "accepted": "receipts/hero-width-canary-acceptance.json",
+    "originalFailed": "receipts/hero-width-canary-original-fail.json",
+    "amended": "receipts/hero-width-canary-phone-contract.json",
+    "original16RemainFail": true,
+    "candidateCodeChangedForAmendment": false
+  },
+  "candidateTests": 194,
+  "portableTests": 196,
+  "portablePassed": 196,
+  "portableFailed": 0,
+  "portableCoverage": {
+    "lines": 99.7,
+    "branches": 89.0,
+    "functions": 95.14
+  },
+  "portableSuiteExecutions": 1,
+  "portableValidation": "portable-validation.json",
+  "helperUnchangedEvidenceReused": "receipts/0507-portable-validation.json",
+  "newHelper80PercentCoverageClaim": false,
+  "labStudy": "receipts/hero-width-lab-study.json",
+  "pageSpeedReceipt": "receipts/hero-width-public-psi.json",
   "pageSpeed": {
-    "url": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj",
-    "reportAtLocal": "2026-11-06 12:21:36 CET",
+    "reportId": "j9yhkxkllr",
     "mobile": {
-      "performance": 61,
+      "performance": 57,
+      "accessibility": 100,
+      "bestPractices": 96,
+      "seo": 100,
+      "agentic": "2/2",
       "fcpSeconds": 2.9,
-      "lcpSeconds": 9.2,
-      "tbtMs": 240,
+      "lcpSeconds": 14.6,
+      "tbtMs": 260,
       "cls": 0.005,
-      "speedIndexSeconds": 5.9
+      "speedIndexSeconds": 8.3
     },
     "desktop": {
       "performance": 82,
-      "fcpSeconds": 0.9,
-      "lcpSeconds": 2.6,
+      "accessibility": 100,
+      "bestPractices": 96,
+      "seo": 100,
+      "agentic": "2/2",
+      "fcpSeconds": 0.7,
+      "lcpSeconds": 2.7,
       "tbtMs": 50,
       "cls": 0.001,
-      "speedIndexSeconds": 1.9
+      "speedIndexSeconds": 1.8
     },
-    "bothDevices": {
-      "accessibility": 100,
-      "seo": 100,
-      "bestPractices": 96,
-      "agentic": "2/2"
-    },
-    "image403InExpandedConsoleAudits": false,
-    "remainingConsoleError": "Google play.google.com/log CORS preflight and ERR_FAILED",
-    "scope": "One external homepage lab report, not a controlled comparison, field CWV,252performance scores or Google indexing proof."
+    "fieldDataAvailable": false,
+    "controlledComparison": false,
+    "priorReportMobile": 61,
+    "priorReportMobileLcpSeconds": 9.2,
+    "interpretation": "Latest mobile57/LCP14.6s is a worse observation than prior61/9.2; not a controlled causal before/after. No global speed gain claim."
   },
   "performanceComplete": false,
-  "newResources": 0,
   "newPaidResources": 0,
   "newResourceBindings": 0,
   "newJobs": 0,
   "newDependencies": 0,
-  "lockfilePreserved": true,
-  "historicalPortableConfigFilesByteExact": true,
-  "historicalReceipts": [
-    "activation-f62-receipt.json",
-    "activation-cf48-cache-all-receipt.json",
-    "activation-7ff-receipt.json",
-    "activation-f550-receipt.json"
-  ],
+  "maxInFlight": 8,
+  "queue": false,
+  "originFetchesPerOrdinaryHtmlVisit": 1,
+  "historicalPortableConfigsAndReceiptsPreserved": true,
   "githubBackup": {
-    "baseCommit": "ea5dcf42b706c6d06953774caf6a4c2fb185414a",
-    "baseTree": "6be7d1029e14ce048dd171d901e4b11770d481f7",
-    "proposedBranch": "codex/compatibility-recovery-free-20261106",
-    "sourceBackupRequested": true,
-    "remoteActionsByPackager": 0,
-    "mergeSpecificApproval": "To be resolved by root for the concrete PR."
+    "baseCommit": "be1574baf7a90814df6dea73dc63746ab65aa85f",
+    "baseTree": "15f68c85845185007f5a6713df4d06919cf64de9",
+    "proposedBranch": "codex/hero-width-mobile-free-20261106",
+    "remoteWritesByPackager": 0
   },
   "limits": [
-    "252 is a finite HTTP document audit, not252 browser/performance/indexing tests.",
-    "Browser photographs are24 primary-asset checks in eight home views.",
-    "PageSpeed is one homepage lab report; mobileLCP9.2seconds remains open.",
-    "Expanded console snapshots show CORS telemetry error and noimage403; not an indefinite guarantee.",
-    "Form delivery, conversions/attribution and GSC remain deferred."
-  ],
-  "portableTests": 181,
-  "portablePassed": 181,
-  "portableFailed": 0,
-  "portableCoverage": {
-    "lines": 99.68,
-    "branches": 89.19,
-    "functions": 94.76
-  },
-  "portableSuiteExecutions": 1,
-  "helperTestCasesPassed": 28,
-  "helperCoverageScope": {
-    "testCases": 28,
-    "passed": 28,
-    "failed": 0,
-    "legacyScenariosRetained": 19,
-    "newScenarios": 9,
-    "targetedRedFailed": 2,
-    "initialSuiteExit": 1,
-    "correctedIncludeSuiteExit": 1,
-    "exitReason": "Both test suites passed28/28; Node coverage threshold fails because filesystem fixture copies are not attributed to the reported package instance.",
-    "reportedPackageInstanceCoverage": {
-      "lines": 36.36,
-      "branches": 91.67,
-      "functions": 37.5
-    },
-    "helper80PercentCoverageClaimed": false,
-    "correctedScopeCommandExecutions": 1,
-    "runtimeSuiteRepeated": false,
-    "rawV8Observation": {
-      "profileFiles": 4,
-      "helperInstances": 22,
-      "namedFunctionDefinitions": 17,
-      "namedFunctionsObservedExecuted": 17,
-      "standardCoveragePercentageClaim": false
-    },
-    "originalLogSha256": "fe26d62ce405563738e159bad9091e73dde71ba7df0f74e989eb47e1532f4c5e",
-    "correctedLogSha256": "770590513dbee04690cb24b785dec6783b527aa41dfff0ad892af2721436dd6f"
-  },
-  "portableValidation": "portable-validation.json",
-  "runtimeArtifactsByteExactToPublishedCandidate": true,
-  "runtimeCodeChangedByPackager": false
+    "256 finite HTTP document/probe requests, not252 browser/performance tests.",
+    "16 browser views cover8 URLs and4 languages; no submitted forms or full search RPC validation.",
+    "Six paired ES-home mobile comparisons (12 views) measure subresources; noTTFB/PSI/field inference.",
+    "The190s resize case is one warm document, not proof of cold late image fetch validity.",
+    "Latest public PSI is one report; mobile performance, form delivery, conversions/attribution and GSC remain open."
+  ]
 }

@@ -1,0 +1,62 @@
+{
+  "state": "LOCAL_LAB_ONLY_NOT_GLOBAL_PAGESPEED_GAIN",
+  "pairedSourceSha256": "6a2f422f0c179f2788536df0054379752517152845264bc65b009e074f9b3731",
+  "pairs": 6,
+  "views": 12,
+  "fixtureGets": 6,
+  "statistics": {
+    "pairs": 6,
+    "lcpGainsMs": [
+      472,
+      412,
+      460,
+      460,
+      368,
+      484
+    ],
+    "medianPairedLcpGainMs": 460,
+    "positiveLcpPairs": 6,
+    "fcpRegressionsMs": [
+      -20,
+      8,
+      8,
+      8,
+      48,
+      -36
+    ],
+    "medianPairedFcpRegressionMs": 8,
+    "maximumPairedFcpRegressionMs": 48
+  },
+  "pilotIncluded": false,
+  "mainTransferThrottlingProven": false,
+  "homeHeaderBodyBytes": {
+    "control": 385413,
+    "candidate": 311561,
+    "savingPercent": 19.161782295874815,
+    "preferredTwentyPercentTargetPassed": false
+  },
+  "scope": "Counterbalanced ES homepage mobile subresource comparison with main-only fixture fulfillment; noTTFB, PSI or field gain claim.",
+  "lateResize": {
+    "sourceReceiptSha256": "34df0763bed25ebbfdb492fb1bdab35d189a8d287d39b4ac00370838b416f9c6",
+    "state": "PASS_LATE_RESIZE_SINGLE_CASE",
+    "fixtureAgeBeforeResizeMs": 190050.50859999997,
+    "views": 1,
+    "viewportChanges": [
+      {
+        "width": 844,
+        "height": 390
+      },
+      {
+        "width": 1280,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "contextClosed": true,
+    "browserClosed": true,
+    "limit": "One warm document only; not a cold late fetch, token expiration proof or performance comparison."
+  }
+}

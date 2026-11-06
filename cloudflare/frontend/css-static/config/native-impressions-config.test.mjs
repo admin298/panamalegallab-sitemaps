@@ -17,7 +17,7 @@ test('native impression deployment modes only add one explicit variable to the e
 
 test('new release explicitly records the exact four script gates and mode-specific cache identities', async () => {
   const manifest = JSON.parse(await read('build-manifest.json'));
-  assert.equal(manifest.release, 'pll-compatibility-recovery-20261106-v1');
+  assert.equal(manifest.release, 'pll-hero-width-mobile-20261106-v1');
   assert.deepEqual(manifest.impressions.viewScriptUrls, IMPRESSION_VIEW_SCRIPTS);
   assert.equal(manifest.impressions.modeVariable, 'PLL_NATIVE_IMPRESSIONS');
   assert.deepEqual(manifest.htmlCache.revisionsByImpressionMode,
@@ -27,5 +27,5 @@ test('new release explicitly records the exact four script gates and mode-specif
   assert.equal(manifest.htmlCache.newPaidResources, 0);
   const frontend = await read('dist/frontend/_worker.js');
   assert.equal(createHash('sha256').update(frontend).digest('hex'),
-    '3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9');
+    '72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953');
 });

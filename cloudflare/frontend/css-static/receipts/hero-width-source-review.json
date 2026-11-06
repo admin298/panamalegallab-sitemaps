@@ -1,0 +1,43 @@
+{
+  "decision": "GO_SOURCE_ONLY",
+  "productionApproved": false,
+  "reviewer": "/root/current_native_policies",
+  "candidate": "audit-2026-11-06/mobile-speed-study/hero-resolution/candidate",
+  "baseline": "audit-2026-11-06/compatibility-recovery/candidate (accepted 0507d52a)",
+  "method": "Read-only static source, test and configuration review; local byte/hash comparison. No tests, builds, browser or network executed. Independent mobile/transport review delegated to review_mobile_signal.",
+  "findings": [],
+  "checks": [
+    {"id": "preferred-scope", "result": "PASS", "evidence": "hero-width.js:14-21 requires GET, exact normalized mobile flag 1, enabled mode, page/non-search, existing CACHE_PATHS membership and canonical production identity. CACHE_PATHS byte-identical to baseline; test/hero-width.test.js enumerates exactly 252 paths in four languages."},
+    {"id": "mode-isolation", "result": "PASS", "evidence": "Absent/off/invalid mode does not enable policy. Production requires all; preview requires the exact reviewed preview origin. Duplicate/unsupported preview controls are rejected; public query parameters do not alter policy configuration."},
+    {"id": "mobile-normalization", "result": "PASS", "evidence": "mobile-signal.js:3-6 gives exact ?1/?0 precedence, otherwise checks at most 512 UA characters and returns only binary strings. frontend.js reconstructs allowlisted headers and overwrites any incoming X-PLL-Mobile."},
+    {"id": "privacy-and-one-dispatch", "result": "PASS", "evidence": "frontend.js:11-22 forwards no raw UA/CH/cookies or credentials and dispatches once to the existing Durable Object. Renderer upstream construction remains unchanged and uses its fixed synthetic UA. Independent reviewer found no actionable transport issue."},
+    {"id": "single-existing-inspection", "result": "PASS", "evidence": "css-static.js attaches background/template handlers to its existing HTMLRewriter instance only when the hero policy is enabled. It reuses bounded UTF-8 source, shared nonce authorization and raw-text spans; no new parser instance, serializer, fetch, storage or timer introduced."},
+    {"id": "native-identity-and-csp", "result": "PASS", "evidence": "Existing renderer validation, shared document/site/charset marker counts, nonce authorization and CSP policy intersection remain intact. Hero changes additionally require no restricting style policy and an exact matching authorized nonce on the native classic preloader."},
+    {"id": "preloader-contract", "result": "PASS", "evidence": "hero-width.js:38-52 requires exactly one const imageUrl declaration in a unique real head script, only nonce/type attributes, absent or text/javascript MIME, and the exact native preloader template apart from whitespace. It does not evaluate source or add code."},
+    {"id": "background-contract", "result": "PASS", "evidence": "hero-width.js:55-74 cross-checks native and source counts/attributes, selects exactly the first IFuOkc with LQX2Vd, accepts role img or absent decorative role, and recognizes only center/top/bottom center plus background-size cover. Every style/crop byte outside the URL is preserved."},
+    {"id": "two-spans-atomic", "result": "PASS", "evidence": "hero-width.js:79-94 requires the same exact signed raw and escaped URL and exactly two opaque-token appearances. Both URL suffix spans change together from w16383 to w1280 using existing overlap-checked byte splices; no static photo mapping or token pinning is stored."},
+    {"id": "fresh-editing-workflow", "result": "PASS", "evidence": "Both replacements are derived solely from the current fresh source document. A Google Sites photo edit supplies a new opaque base automatically; unsupported URL/template shapes are left native. Existing HTML cache remains compiled off."},
+    {"id": "no-photo-and-unknown", "result": "PASS", "evidence": "An absent hero with native const imageUrl = null is an explicit empty-edit result. Unexpected roles, multiple heroes/references, unsupported styles, templates, mismatching escaped URL/script/nonce and unsupported CSP produce no hero edits. Other existing independently validated policies remain eligible."},
+    {"id": "inactive-preservation", "result": "PASS", "evidence": "The new inspector and edits are disabled for desktop/off/HEAD/search/unknown requests. Existing CSS, impression, font, frame and overlay edits are unchanged apart from the additive hero branch. Test/hero-width-native.test.js specifies exact source output, one-parse count, CSP preservation and unsupported-shape noops."},
+    {"id": "response-integrity", "result": "PASS", "evidence": "Existing Content-Length/ETag/digest removal remains in place after any edits. CSP, cache policy and other headers are retained; the hero marker is added only when nonempty hero edits actually apply."},
+    {"id": "baseline-invariants", "result": "PASS", "evidence": "All existing renderer/src, assets and resource configuration files are byte-identical to the accepted baseline, except release-identity expectation tests. backend-core.js, cache-routes.js, image-format.js, home-overlay.js, image-helpers.js, html-spans.js, package.json and package-lock.json are byte-identical. No phone, sitemap, image profile or dependency change."},
+    {"id": "free-plan-and-cache", "result": "PASS", "evidence": "New hero-width configs add only PLL_HERO_WIDTH preview/all to the existing resource configuration. Build still rejects non-off HTML cache mode; backend MAX_IN_FLIGHT remains 8. No resource binding, cron, route, paid resource or runtime request is added."},
+    {"id": "build-identities", "result": "PASS", "evidence": "Renderer identity remains ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07. New frontend is 3750 bytes with SHA256 72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953; candidate backend is 434028 bytes with SHA256 3b4f29b06d61790b56a722c1d15a926da6f8437c2b5d283d85f4a1d5208aff7d. Manifest pins these and both unchanged CSS assets."},
+    {"id": "test-and-performance-claims", "result": "PASS_WITH_LIMITS", "evidence": "Reviewed test source covers 252-route mode gates, four languages, three positions, decorative/no-photo cases, dual byte oracle, malformed contracts, CSP and normalized transport. Author reports 194/194 passing and 99.70% line/89% branch/95.14% function coverage; root reports six-pair median LCP gain 460ms, six positive pairs, FCP median +8ms/max +48ms. These runs were not rerun by this reviewer. Known weight reduction is about 19.2%, not 20%."}
+  ],
+  "sourceHashes": {
+    "src/hero-width.js": "27f4945db081b3526700dc6c90b0255139f76b4d67fe2fd2652a83c5e18448f0",
+    "src/css-static.js": "d260b6fd28d32908ef544e548299c13ac1871b79c870d92e3a1edd43f2a0a06d",
+    "src/mobile-signal.js": "53c276ba71bdada3590fd7a599f4789143b9ea03929c450ce98874c9c124897b",
+    "src/frontend.js": "035de41a6a5c3a31148d100fe57329e8c16120d08cac566ef5cf96b9516c7b39",
+    "src/boundary.js": "71bc48ec3e1506182a906f3fe05fff6ce80f54b0a09b46411399d4934e1f3eb9",
+    "build.mjs": "b9fb7a1c384069bd690eb8863f11d1ea825d341a0d09a7f1a77c6ec79c21558a",
+    "build-manifest.json": "90dba9b68788a8cc0d45b5a49afa4bbcf41a21e9f929531161d2453efe244859"
+  },
+  "remainingProductionGates": [
+    "Root accepts actual late resize/expiry network traces: no duplicate/original-width or expired variants unexpectedly requested.",
+    "Root accepts visual equivalence of the same photos/crop at relevant mobile DPR and positioning variants; source/aspect checks alone do not establish sharpness.",
+    "Root accepts fresh global HTTP, four-language navigation and critical functionality checks, plus the recorded full test/coverage artifacts.",
+    "Publication follows the user's authorized scope and preserves the accepted recovery and explicit off switch."
+  ]
+}

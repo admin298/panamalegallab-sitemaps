@@ -1,70 +1,81 @@
 {
-  "state": "PORTABLE_BUILD_AND_181_SOURCE_TESTS_PASS",
-  "tests": 181,
-  "passed": 181,
+  "state": "PUBLIC_HERO_WIDTH_PORTABLE_196_PASS",
+  "tests": 196,
+  "passed": 196,
   "failed": 0,
   "coverage": {
-    "lines": 99.68,
-    "branches": 89.19,
-    "functions": 94.76
+    "lines": 99.7,
+    "branches": 89.0,
+    "functions": 95.14
   },
   "outputs": [
     {
       "path": "dist/frontend/_worker.js",
-      "bytes": 3349,
-      "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9",
-      "matchesPublishedCandidate": true
+      "bytes": 3750,
+      "sha256": "72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953",
+      "matchesFrozenCandidate": true
     },
     {
       "path": "dist/backend/worker.js",
-      "bytes": 426995,
-      "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340",
-      "matchesPublishedCandidate": true
+      "bytes": 434028,
+      "sha256": "3b4f29b06d61790b56a722c1d15a926da6f8437c2b5d283d85f4a1d5208aff7d",
+      "matchesFrozenCandidate": true
     },
     {
       "path": "dist/frontend/_routes.json",
       "bytes": 223,
       "sha256": "472583393c95d10aa3feaf072b69d4cb8a930a0e1c72b0aae06a181712f84d56",
-      "matchesPublishedCandidate": true
+      "matchesFrozenCandidate": true
     },
     {
       "path": "dist/frontend/_headers",
       "bytes": 362,
       "sha256": "4402c832a101b5a380cf6910fbaa32b05ab5872deadbb13aafebefbbb133dc11",
-      "matchesPublishedCandidate": true
+      "matchesFrozenCandidate": true
     },
     {
       "path": "dist/frontend/deployment.txt",
       "bytes": 34,
       "sha256": "30c445f45cb2876c2289fdd42ac64eed59dd4a01362f2b7a4d19f849d632ed6c",
-      "matchesPublishedCandidate": true
+      "matchesFrozenCandidate": true
     },
     {
       "path": "dist/frontend/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
       "bytes": 1954605,
       "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
-      "matchesPublishedCandidate": true
+      "matchesFrozenCandidate": true
     },
     {
       "path": "dist/frontend/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css",
       "bytes": 1955718,
       "sha256": "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d",
-      "matchesPublishedCandidate": true
+      "matchesFrozenCandidate": true
     }
   ],
-  "manifestMatchesCandidateExceptBuildTimestamp": true,
-  "canonicalManifestRestored": true,
-  "candidateTests": 179,
+  "candidateTests": 194,
   "retainedPortabilityGuardTests": 2,
   "runtimeSuiteExecutions": 1,
+  "manifestMatchesCandidateExceptBuildTimestamp": true,
+  "canonicalManifestRestored": true,
+  "helperChanged": false,
+  "helper28CaseEvidenceReused": "PR10 validation; exact same helper and two compressed inputs",
   "newRuntimeCodeByPackager": false,
   "newDependencies": 0,
   "installs": 0,
   "networkActions": 0,
   "deployments": 0,
-  "generatedRawCssRemoved": 4,
-  "runtimeReceipt": "activation-receipt.json",
   "productionAccepted": true,
+  "activationReceiptUnchanged": true,
+  "generatedRawCssRemoved": [
+    "assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+    "dist/frontend/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+    "assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css",
+    "dist/frontend/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css"
+  ],
+  "dependencyJunctionRemoved": true,
+  "acceptedAtUtc": "2026-11-06T15:38:49.360Z",
+  "runtimeReceipt": "activation-receipt.json",
+  "adoptionReceiptSha256": "16d7834a27e03b711933b723fc9db9e0bba8e53ed48465009439f29649763a11",
   "helperValidation": {
     "testCases": 28,
     "passed": 28,
@@ -93,10 +104,7 @@
     "originalLogSha256": "fe26d62ce405563738e159bad9091e73dde71ba7df0f74e989eb47e1532f4c5e",
     "correctedLogSha256": "770590513dbee04690cb24b785dec6783b527aa41dfff0ad892af2721436dd6f"
   },
-  "existingDependencyJunctionRemoved": true,
-  "existingLockPreserved": true,
-  "sourceRuntimeChangedByPackager": false,
-  "helperOnlyChangedForPortability": true,
-  "adoptionReceiptSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+  "helperEvidenceInheritedFrom": "receipts/0507-portable-validation.json",
+  "helperEvidenceReexecuted": false,
   "newOfficialAuditByPackager": false
 }

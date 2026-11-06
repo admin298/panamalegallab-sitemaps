@@ -18,5 +18,5 @@ test('thin frontend and all twenty-seven reviewed rendering files match provenan
  const provenance=JSON.parse(await readFile(new URL('../renderer-source-provenance.json',import.meta.url),'utf8'));
  assert.equal(Object.keys(provenance.files).length,27);
  for(const [file,hash]of Object.entries(provenance.files))assert.equal(sha(await readFile(new URL('../renderer/'+file,import.meta.url))),hash,file);
- assert.equal(sha(await readFile(new URL('../dist/frontend/_worker.js',import.meta.url))),'3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9');
+ assert.equal(sha(await readFile(new URL('../dist/frontend/_worker.js',import.meta.url))),'72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953');
 });

@@ -1,0 +1,129 @@
+{
+  "state": "PASS",
+  "atUtc": "2026-11-06T15:38:49.360Z",
+  "backend": "87feb3fd-50c1-4865-884e-49074049f706",
+  "plannedUrls": 8,
+  "plannedViews": 16,
+  "completed": 16,
+  "passed": 16,
+  "limits": {
+    "urls": 8,
+    "views": 16,
+    "observeMs": 15000,
+    "caseMs": 40000,
+    "htmlBytes": 1310720,
+    "assetBytes": 5242880,
+    "retries": 0,
+    "concurrency": 1
+  },
+  "cases": [
+    {
+      "id": "es-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "es-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.002272922826880588
+    },
+    {
+      "id": "en-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "en-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0005192819238148908
+    },
+    {
+      "id": "fr-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "fr-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0022817910191279007
+    },
+    {
+      "id": "it-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "it-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0022958336338315738
+    },
+    {
+      "id": "es-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "es-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0023405838492119397
+    },
+    {
+      "id": "en-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "en-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0021799710340661576
+    },
+    {
+      "id": "fr-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "fr-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0022781780519160327
+    },
+    {
+      "id": "it-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "it-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.02438518666103337
+    }
+  ],
+  "browserClosed": true,
+  "error": null,
+  "sourceInventorySha256": "799ef3e0624b5228a838fd891344cd7ddebdbd59f9e144dd5f20aa5c6d74e648",
+  "mode": "public",
+  "phoneBaselineSha256": "5bde492e26a181963601fb55dddb46c00474d8dd08092c41b4516ca1018cab85",
+  "amendment": "phone-contract",
+  "originalCanary16State": "FAIL",
+  "interception": false,
+  "miniflare": false,
+  "formFillActions": 0,
+  "formSubmitActions": 0,
+  "scope": "Sixteen fresh public phone-contract amendment views of eight production URLs, not252 browser inspections, not a PageSpeed or performance-score result."
+}

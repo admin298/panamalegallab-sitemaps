@@ -48,6 +48,14 @@ function boundaryResponse(context, method = "GET", status = context.status) {
 }
 var temporaryResponse = (context, method) => boundaryResponse(context, method, 503);
 
+// src/mobile-signal.js
+function normalizedMobileSignal(request) {
+  const hint = request.headers.get("Sec-CH-UA-Mobile");
+  if (hint === "?1" || hint === "?0") return hint === "?1" ? "1" : "0";
+  const agent = request.headers.get("User-Agent") ?? "";
+  return agent.length <= 512 && /Mobile|iPhone|iPod/iu.test(agent) ? "1" : "0";
+}
+
 // src/frontend.js
 var OBJECT_NAME = "pll-renderer-v1";
 var FORWARDED_HEADERS = Object.freeze([
@@ -67,6 +75,7 @@ async function handleThinRequest(request, env) {
     for (const name of FORWARDED_HEADERS) {
       if (request.headers.has(name)) headers.set(name, request.headers.get(name));
     }
+    headers.set("X-PLL-Mobile", normalizedMobileSignal(request));
     const forwarded = new Request(request.url, {
       method: request.method,
       headers,

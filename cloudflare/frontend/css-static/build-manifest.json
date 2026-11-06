@@ -1,9 +1,51 @@
 {
-  "release": "pll-compatibility-recovery-20261106-v1",
+  "release": "pll-hero-width-mobile-20261106-v1",
   "rendererWorkerSha256": "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07",
   "legacyRendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
   "rendererSourceFiles": 27,
   "rendererReferenceBytes": 314229,
+  "frontend": {
+    "mobileSignal": {
+      "header": "X-PLL-Mobile",
+      "values": [
+        "0",
+        "1"
+      ],
+      "clientHint": "Sec-CH-UA-Mobile ?0/?1 preferred; otherwise bounded User-Agent phone token",
+      "maximumUserAgentCharacters": 512,
+      "forwardsRawUserAgent": false,
+      "forwardsRawClientHint": false,
+      "overwritesIncomingSignal": true
+    }
+  },
+  "heroWidth": {
+    "modeVariable": "PLL_HERO_WIDTH",
+    "defaultMode": "off",
+    "modes": [
+      "off",
+      "preview",
+      "all"
+    ],
+    "width": 1280,
+    "mobileOnly": true,
+    "matchingUrlSpans": 2,
+    "addedClientScripts": 0,
+    "extraFetches": 0,
+    "previewOrigin": "https://recovery-prodlike-20261103.pll-seo-preview-20261102.pages.dev",
+    "previewControlParameter": "_pll_hero_width",
+    "previewControlValue": "control",
+    "previewCandidateValue": "candidate",
+    "publicQueryOverride": false,
+    "eligibleMethods": [
+      "GET"
+    ],
+    "knownPreferredPages": 252,
+    "mutation": "Only matching raw CSS and native escaped const imageUrl widths change from16383 to1280; same signed image base, native script logic, crop and other bytes.",
+    "mobileSignal": "Normalized X-PLL-Mobile=1 required; desktop is unchanged by this policy.",
+    "parser": "Existing native inspector and raw-text spans; no additional HTML parser or serialization.",
+    "unsupportedShape": "Original document unchanged by this policy; no-photo headers are valid noops.",
+    "storage": "None; HTML reuse remains compiled OFF."
+  },
   "htmlCache": {
     "placement": "durable-object",
     "mode": "off",
@@ -130,15 +172,15 @@
       "bytes": 1955718
     }
   ],
-  "builtAt": "2026-11-06T10:58:01.913Z",
+  "builtAt": "2026-11-06T13:57:46.765Z",
   "files": {
     "dist/frontend/_worker.js": {
-      "bytes": 3349,
-      "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
+      "bytes": 3750,
+      "sha256": "72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953"
     },
     "dist/backend/worker.js": {
-      "bytes": 426995,
-      "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340"
+      "bytes": 434028,
+      "sha256": "3b4f29b06d61790b56a722c1d15a926da6f8437c2b5d283d85f4a1d5208aff7d"
     },
     "dist/frontend/_routes.json": {
       "bytes": 223,

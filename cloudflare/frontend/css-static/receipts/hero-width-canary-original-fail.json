@@ -1,0 +1,141 @@
+{
+  "state": "FAIL",
+  "atUtc": "2026-11-06T15:11:55.189Z",
+  "backend": "d782ea9d-a724-4ac6-8a6a-9f89ddba6471",
+  "plannedUrls": 8,
+  "plannedViews": 16,
+  "completed": 16,
+  "passed": 8,
+  "limits": {
+    "urls": 8,
+    "views": 16,
+    "observeMs": 15000,
+    "caseMs": 40000,
+    "htmlBytes": 1310720,
+    "assetBytes": 5242880,
+    "retries": 0,
+    "concurrency": 1
+  },
+  "cases": [
+    {
+      "id": "es-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0005180139709350643
+    },
+    {
+      "id": "es-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0006132190713234669
+    },
+    {
+      "id": "en-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0005180139709350643
+    },
+    {
+      "id": "en-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0005202672785090367
+    },
+    {
+      "id": "fr-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "fr-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0022817910191279007
+    },
+    {
+      "id": "it-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "it-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0022945198275727127
+    },
+    {
+      "id": "es-commercial-mobile",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "es-commercial-desktop",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.0006132190713234669
+    },
+    {
+      "id": "en-commercial-mobile",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "en-commercial-desktop",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.0021786572278072965
+    },
+    {
+      "id": "fr-commercial-mobile",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "fr-commercial-desktop",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.0022817910191279007
+    },
+    {
+      "id": "it-commercial-mobile",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.0005180139709350643
+    },
+    {
+      "id": "it-commercial-desktop",
+      "pass": false,
+      "errors": [
+        "PHONE_TEXT"
+      ],
+      "cls": 0.05200340179513106
+    }
+  ],
+  "browserClosed": true,
+  "error": null,
+  "sourceInventorySha256": "799ef3e0624b5228a838fd891344cd7ddebdbd59f9e144dd5f20aa5c6d74e648",
+  "interception": false,
+  "miniflare": false,
+  "formFillActions": 0,
+  "formSubmitActions": 0,
+  "scope": "Sixteen real canary views of eight URLs, not252 browser inspections, not a PageSpeed or performance-score result."
+}
