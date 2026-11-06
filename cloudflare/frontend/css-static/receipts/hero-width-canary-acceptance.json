@@ -1,0 +1,17 @@
+{
+  "state": "ROOT_ACCEPTED_REAL_CANARY_FOR_CONDITIONAL_PUBLICATION",
+  "date": "2026-11-06",
+  "previewBackend": "d782ea9d-a724-4ac6-8a6a-9f89ddba6471",
+  "previewPages": "0af51680-8bd0-40b6-adb0-c23b7d280d46",
+  "http": { "receipt": "../validation/http-results/SUMMARY.json", "passed": 252, "resized": 248, "noPhoto": 4, "languages": 4, "errors": 0 },
+  "browser": { "receipt": "../validation/browser-phone-contract/results/SUMMARY.json", "passed": 16, "urls": 8, "devices": 2, "errors": 0, "closed": true },
+  "phoneAmendment": "Original16 remain FAIL because the original test required visible phone text on commercial pages that have none, both currently and in exact historical baselines. Separate prospectively reviewed16-view amendment passed with strict home presence/correct number and commercial absence conservation. All other oracles unchanged.",
+  "originalFailuresPreserved": true,
+  "candidateCodeChangedForAmendment": false,
+  "backendSha256": "3b4f29b06d61790b56a722c1d15a926da6f8437c2b5d283d85f4a1d5208aff7d",
+  "frontendSha256": "72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953",
+  "userConditionalPublicationGateMet": true,
+  "publicVersionUploadedInactive": "87feb3fd-50c1-4865-884e-49074049f706",
+  "publicAdoption": false,
+  "next": "Activate the identical all-mode backend and publish the exact reviewed Pages ZIP; then perform separate actual public acceptance."
+}

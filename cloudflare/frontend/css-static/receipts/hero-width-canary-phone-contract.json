@@ -1,0 +1,128 @@
+{
+  "state": "PASS",
+  "atUtc": "2026-11-06T15:28:03.792Z",
+  "backend": "d782ea9d-a724-4ac6-8a6a-9f89ddba6471",
+  "plannedUrls": 8,
+  "plannedViews": 16,
+  "completed": 16,
+  "passed": 16,
+  "limits": {
+    "urls": 8,
+    "views": 16,
+    "observeMs": 15000,
+    "caseMs": 40000,
+    "htmlBytes": 1310720,
+    "assetBytes": 5242880,
+    "retries": 0,
+    "concurrency": 1
+  },
+  "cases": [
+    {
+      "id": "es-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0005180139709350643
+    },
+    {
+      "id": "es-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.002271609020621727
+    },
+    {
+      "id": "en-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "en-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0021776718731131503
+    },
+    {
+      "id": "fr-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "fr-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0022817910191279007
+    },
+    {
+      "id": "it-home-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0005180139709350643
+    },
+    {
+      "id": "it-home-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0006119052650646057
+    },
+    {
+      "id": "es-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "es-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.002271609020621727
+    },
+    {
+      "id": "en-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "en-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.002168475229301122
+    },
+    {
+      "id": "fr-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "fr-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.0023317156569646266
+    },
+    {
+      "id": "it-commercial-mobile",
+      "pass": true,
+      "errors": [],
+      "cls": 0.00032050562137487414
+    },
+    {
+      "id": "it-commercial-desktop",
+      "pass": true,
+      "errors": [],
+      "cls": 0.02438518666103337
+    }
+  ],
+  "browserClosed": true,
+  "error": null,
+  "sourceInventorySha256": "799ef3e0624b5228a838fd891344cd7ddebdbd59f9e144dd5f20aa5c6d74e648",
+  "phoneBaselineSha256": "5bde492e26a181963601fb55dddb46c00474d8dd08092c41b4516ca1018cab85",
+  "amendment": "phone-contract-only",
+  "original16RemainFailed": true,
+  "interception": false,
+  "miniflare": false,
+  "formFillActions": 0,
+  "formSubmitActions": 0,
+  "scope": "Prospective16canary phone-contract amendment. Original16remainFAIL; allnonphoneoracles unchanged. Not252browser inspections or a speedscore."
+}

@@ -1,0 +1,24 @@
+{
+  "state": "ONE_PUBLIC_REPORT_RECORDED_NOT_A_CAUSAL_SPEED_ACCEPTANCE",
+  "reportId": "j9yhkxkllr",
+  "reportTimeEuropeMadrid": "2026-11-06T16:40:14+01:00",
+  "url": "https://www.panamalegallab.com/",
+  "mobileReport": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/j9yhkxkllr?form_factor=mobile",
+  "desktopReport": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/j9yhkxkllr?form_factor=desktop",
+  "mobile": { "performance": 57, "accessibility": 100, "bestPractices": 96, "seo": 100, "agentic": "2/2", "fcpSeconds": 2.9, "lcpSeconds": 14.6, "tbtMs": 260, "cls": 0.005, "speedIndexSeconds": 8.3 },
+  "desktop": { "performance": 82, "accessibility": 100, "bestPractices": 96, "seo": 100, "agentic": "2/2", "fcpSeconds": 0.7, "lcpSeconds": 2.7, "tbtMs": 50, "cls": 0.001, "speedIndexSeconds": 1.8 },
+  "fieldDataAvailable": false,
+  "lighthouseVersion": "13.6.0",
+  "mobileLcpBreakdownRawTraceMs": { "ttfb": 10, "resourceLoadDelay": 870, "resourceLoadDuration": 2940, "elementRenderDelay": 30 },
+  "mobileRenderBlockingEstimatedSavingsMs": 1760,
+  "mobileLcpElement": "First section IFuOkc background photo",
+  "evidence": ["PSI-MOBILE-UI.txt", "PSI-DESKTOP-UI.txt", "PSI-MOBILE-LCP-UI.txt", "PSI-MOBILE.jpg", "PSI-DESKTOP.jpg"],
+  "interpretation": [
+    "The new policy reduced the mobile home header image bytes in controlled paired and live image checks, but this external report does not demonstrate a global PageSpeed improvement.",
+    "The earlier saved report oxuarv97gj measured mobile61/LCP9.2s and desktop82/LCP2.6s. This later single observation is worse on mobile; it is not a controlled before/after comparison.",
+    "Do not add raw-trace LCP subparts to compare directly with Lighthouse simulated slow4G LCP14.6s; they use different timing bases.",
+    "Further work remains on mobile resource delivery and render-blocking resources. No extra deployment or repeated PSI run was triggered by this measurement."
+  ],
+  "analysisRuns": 1,
+  "tabClosed": true
+}

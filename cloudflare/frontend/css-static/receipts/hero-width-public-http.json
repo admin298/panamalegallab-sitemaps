@@ -1,0 +1,59 @@
+{
+  "state": "PUBLIC_HTTP_252_AND_4_DEVICE_PROBES_PASS",
+  "atUtc": "2026-11-06T15:33:36.976Z",
+  "backend": "87feb3fd-50c1-4865-884e-49074049f706",
+  "documentsPlanned": 252,
+  "documentsCompleted": 252,
+  "deviceProbesPlanned": 4,
+  "deviceProbesCompleted": 4,
+  "totalRequests": 256,
+  "maximumRequests": 256,
+  "concurrency": 2,
+  "retries": 0,
+  "redirectsFollowed": 0,
+  "validNoPhotoNoops": 4,
+  "resized": 248,
+  "byLanguage": {
+    "es": 63,
+    "en": 63,
+    "fr": 63,
+    "it": 63
+  },
+  "errors": [],
+  "sourceReceiptSha256": "2b3ae52ea272582d726feeb43f6c7380004ec5a0325603c0f6546a9a5741237c",
+  "allStatus200": true,
+  "allCacheBypass": true,
+  "preferredCanonicalChecks": 252,
+  "signalProbes": [
+    {
+      "id": "desktop-reject-forged-mobile",
+      "language": "es",
+      "mobileHint": "?0",
+      "forgedInternalHint": "1",
+      "expectedWidth": 16383
+    },
+    {
+      "id": "mobile-reject-forged-desktop",
+      "language": "en",
+      "mobileHint": "?1",
+      "forgedInternalHint": "0",
+      "expectedWidth": 1280
+    },
+    {
+      "id": "desktop-hint-overrides-mobile-ua",
+      "language": "fr",
+      "mobileHint": "?0",
+      "forgedInternalHint": "1",
+      "expectedWidth": 16383
+    },
+    {
+      "id": "mobile-hint-overrides-desktop-ua",
+      "language": "it",
+      "mobileHint": "?1",
+      "forgedInternalHint": "0",
+      "expectedWidth": 1280
+    }
+  ],
+  "scope": "252 preferred HTTP documents plus4 explicit device-signal probes; not252 browser/image/performance checks.",
+  "signedImageUrlsAndRawCapturesExcluded": true
+}

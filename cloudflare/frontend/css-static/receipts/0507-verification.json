@@ -1,0 +1,169 @@
+{
+  "state": "PUBLIC_6NOV_RECOVERY_PORTABLE_181_PASS_READY_FOR_REVIEW",
+  "release": "pll-compatibility-recovery-20261106-v1",
+  "backendVersion": "0507d52a-a3c9-4d18-b8be-f0a6f6703b80",
+  "backend": {
+    "bytes": 426995,
+    "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340"
+  },
+  "rendererSha256": "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07",
+  "rendererSourceFiles": 27,
+  "legacyRendererReference58Preserved": true,
+  "runtimeReceipt": "activation-receipt.json",
+  "activationReceiptSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+  "sourceBuildProof": "source-build-proof.json",
+  "sourceBuildProofSha256": "42ff274456b057effd1795b478dac80da55045c19244f4fd1aeaba30ccfe7beb",
+  "sourceRuntimeDelta": {
+    "modified": 17,
+    "added": 9,
+    "removed": 0
+  },
+  "htmlCacheMode": "off",
+  "policyVars": {
+    "PLL_IMAGE_FORMAT": "all",
+    "PLL_CSS_STATIC": "all",
+    "PLL_NATIVE_IMPRESSIONS": "all",
+    "PLL_INITIAL_RENDER": "all"
+  },
+  "candidateTests": 179,
+  "candidatePassed": 179,
+  "candidateFailed": 0,
+  "portableTestsExpected": 181,
+  "retainedPortabilityGuardTests": 2,
+  "sourceCoverage": {
+    "pass": 179,
+    "fail": 0,
+    "coverageScope": "Node delivery src modules; native renderer guards have separate integration tests",
+    "lines": 99.68,
+    "branches": 89.19,
+    "functions": 94.76,
+    "npmVulnerabilities": 0
+  },
+  "coverageScope": "Root candidate source suite; portable run to be recorded separately.",
+  "publicHttp": {
+    "pages": 252,
+    "byLanguage": {
+      "es": 63,
+      "en": 63,
+      "fr": 63,
+      "it": 63
+    },
+    "allStatus200": true,
+    "fallbacks": 0,
+    "canonicalCorrect": 252,
+    "expectedDescriptionsVerified": 148,
+    "retries": 0,
+    "concurrency": 2,
+    "receipt": "validation/public-252/SUMMARY.json",
+    "scope": "Finite HTTP document audit only; no252browser, image decoding, performance, form delivery or Google indexing claim."
+  },
+  "postBrowser": {
+    "views": 8,
+    "passed": 8,
+    "primaryAssetHashChecks": 24,
+    "sameRecorded5NovBaselines": true,
+    "brokenInlineImages": 0,
+    "contextsClosed": true,
+    "browserClosed": true,
+    "controlsScope": "Menu and search open/close only; no query or form submission."
+  },
+  "pageSpeed": {
+    "url": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj",
+    "reportAtLocal": "2026-11-06 12:21:36 CET",
+    "mobile": {
+      "performance": 61,
+      "fcpSeconds": 2.9,
+      "lcpSeconds": 9.2,
+      "tbtMs": 240,
+      "cls": 0.005,
+      "speedIndexSeconds": 5.9
+    },
+    "desktop": {
+      "performance": 82,
+      "fcpSeconds": 0.9,
+      "lcpSeconds": 2.6,
+      "tbtMs": 50,
+      "cls": 0.001,
+      "speedIndexSeconds": 1.9
+    },
+    "bothDevices": {
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "agentic": "2/2"
+    },
+    "image403InExpandedConsoleAudits": false,
+    "remainingConsoleError": "Google play.google.com/log CORS preflight and ERR_FAILED",
+    "scope": "One external homepage lab report, not a controlled comparison, field CWV,252performance scores or Google indexing proof."
+  },
+  "performanceComplete": false,
+  "newResources": 0,
+  "newPaidResources": 0,
+  "newResourceBindings": 0,
+  "newJobs": 0,
+  "newDependencies": 0,
+  "lockfilePreserved": true,
+  "historicalPortableConfigFilesByteExact": true,
+  "historicalReceipts": [
+    "activation-f62-receipt.json",
+    "activation-cf48-cache-all-receipt.json",
+    "activation-7ff-receipt.json",
+    "activation-f550-receipt.json"
+  ],
+  "githubBackup": {
+    "baseCommit": "ea5dcf42b706c6d06953774caf6a4c2fb185414a",
+    "baseTree": "6be7d1029e14ce048dd171d901e4b11770d481f7",
+    "proposedBranch": "codex/compatibility-recovery-free-20261106",
+    "sourceBackupRequested": true,
+    "remoteActionsByPackager": 0,
+    "mergeSpecificApproval": "To be resolved by root for the concrete PR."
+  },
+  "limits": [
+    "252 is a finite HTTP document audit, not252 browser/performance/indexing tests.",
+    "Browser photographs are24 primary-asset checks in eight home views.",
+    "PageSpeed is one homepage lab report; mobileLCP9.2seconds remains open.",
+    "Expanded console snapshots show CORS telemetry error and noimage403; not an indefinite guarantee.",
+    "Form delivery, conversions/attribution and GSC remain deferred."
+  ],
+  "portableTests": 181,
+  "portablePassed": 181,
+  "portableFailed": 0,
+  "portableCoverage": {
+    "lines": 99.68,
+    "branches": 89.19,
+    "functions": 94.76
+  },
+  "portableSuiteExecutions": 1,
+  "helperTestCasesPassed": 28,
+  "helperCoverageScope": {
+    "testCases": 28,
+    "passed": 28,
+    "failed": 0,
+    "legacyScenariosRetained": 19,
+    "newScenarios": 9,
+    "targetedRedFailed": 2,
+    "initialSuiteExit": 1,
+    "correctedIncludeSuiteExit": 1,
+    "exitReason": "Both test suites passed28/28; Node coverage threshold fails because filesystem fixture copies are not attributed to the reported package instance.",
+    "reportedPackageInstanceCoverage": {
+      "lines": 36.36,
+      "branches": 91.67,
+      "functions": 37.5
+    },
+    "helper80PercentCoverageClaimed": false,
+    "correctedScopeCommandExecutions": 1,
+    "runtimeSuiteRepeated": false,
+    "rawV8Observation": {
+      "profileFiles": 4,
+      "helperInstances": 22,
+      "namedFunctionDefinitions": 17,
+      "namedFunctionsObservedExecuted": 17,
+      "standardCoveragePercentageClaim": false
+    },
+    "originalLogSha256": "fe26d62ce405563738e159bad9091e73dde71ba7df0f74e989eb47e1532f4c5e",
+    "correctedLogSha256": "770590513dbee04690cb24b785dec6783b527aa41dfff0ad892af2721436dd6f"
+  },
+  "portableValidation": "portable-validation.json",
+  "runtimeArtifactsByteExactToPublishedCandidate": true,
+  "runtimeCodeChangedByPackager": false
+}
