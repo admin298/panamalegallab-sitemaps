@@ -1,0 +1,42 @@
+{
+  "state": "GO",
+  "reviewedDate": "2026-11-06",
+  "reviewer": "current_native_policies (independent of renderer author)",
+  "scope": [
+    "renderer/src/current-config-contract.js",
+    "renderer/src/config-query.js",
+    "renderer/src/html.js",
+    "test/compatibility-config.test.js",
+    "test/compatibility-native.test.js"
+  ],
+  "checks": [
+    "Current public locale bundle URLs match captured native-language contracts.",
+    "Current shape is exactly519elements with field212zero, redirect316equal expected value and appended518zero.",
+    "Current adapter parses JSON only; captured JavaScript is not executed.",
+    "Source URL base must be fixed Google Sites identity and ordered query pairs must match after guarded decoding.",
+    "Only the redirect316raw token is replaced; unrelated bytes and suffix remain unchanged.",
+    "Current519acceptance requires exactly one matching locale viewer bundle.",
+    "Current config and viewer have matching nonempty syntactically valid nonces and JavaScript types.",
+    "Duplicate configuration or viewer instances fail at transactional validation.",
+    "Validation runs before transformed HTML is committed; unsupported output cannot escape partially modified.",
+    "Historical518path remains delegated to unchanged legacy validator without forcing the new bundle gate.",
+    "Unknown current lengths, appended values, sources, locales and malformed/repeated bootstrap are rejected.",
+    "No new CSP weakening, script execution, source fetch, HTML parser pass, image change or runtime loop.",
+    "Pure tests verify four languages, byte-local patch, legacy acceptance, source identity and query order/decoding.",
+    "Native tests use manual redirects so their fallback oracle cannot accidentally follow Google Sites.",
+    "Native tests cover public and noindex preview delivery, HEAD, malformed current shape, bundle, type, nonce and duplicates."
+  ],
+  "checkCount": 15,
+  "findings": [],
+  "sha256": {
+    "renderer/src/current-config-contract.js": "04e492bf92483e2c95e9b7a624cae0fadfbea31960f300d8487751b13c1c6c3b",
+    "renderer/src/config-query.js": "05c514268ceb79cd941c588c6748a7290e955779201b6275f51ebb96a4b148ae",
+    "renderer/src/html.js": "1a2cc91e3e07dff6ba1b3e0c423daf9fb423e6cd840c5422f99e60d2e7eedd75",
+    "test/compatibility-config.test.js": "d01f2584817bf68431ed90c3999f23bf9a246b7f9ea08a8b0a58284b32104ad5",
+    "test/compatibility-native.test.js": "a7aab2090d4585ddd0267401610a111d0f7dbc9d4975fb3c00146e3cba2f1221"
+  },
+  "limits": "Read-only code/test review; no tests rerun, network, browser or production changes. Legacy permissiveness is preserved rather than retroactively tightened. This does not replace real preview/public acceptance.",
+  "newNetworkRequests": 0,
+  "testsRerun": 0,
+  "sourceEdits": 0
+}
