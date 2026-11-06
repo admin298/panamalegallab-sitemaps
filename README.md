@@ -2,19 +2,21 @@
 
 Este repositorio conserva los cinco sitemaps y el código de entrega en español, inglés, francés e italiano. Google Sites sigue siendo el origen del contenido.
 
-El [recibo de activación](cloudflare/frontend/css-static/activation-receipt.json) registra la recuperación del 6 de noviembre: backend `0507d52a-a3c9-4d18-b8be-f0a6f6703b80` y Pages `06533eae-ba22-4602-8920-631f871dfff1`. La validación anterior rechazaba la configuración nativa de Google de 519 elementos y redirigía a Google Sites. Ahora se admite solo la forma revisada, con controles de URL, idioma, script y nonce; se conservan la compatibilidad histórica de 518 elementos y el fallback ante formas desconocidas.
+El [recibo de activación](cloudflare/frontend/css-static/activation-receipt.json) identifica el backend `87feb3fd-50c1-4865-884e-49074049f706` y Pages `f8843680-6120-47cb-93fe-1324addffd64`, aceptados el 6 de noviembre a las 15:38:49 UTC. La nueva política limita a 1280 px la fotografía nativa de cabecera en móvil, cambiando solo las dos referencias coincidentes de CSS y del literal del preloader nativo. Conserva la misma fotografía y composición; la resolución de escritorio permanece igual. No añade JavaScript al cliente, peticiones, proxy de imágenes, recursos de pago ni trabajos periódicos.
 
-La auditoría pública comprobó 252 documentos HTTP 200, 63 por idioma, sin fallback, con 252 canonical correctos y 148 descripciones esperadas verificadas. Ocho vistas de portada —cuatro idiomas y dos dispositivos— pasaron los controles, con 24 hashes de fotografía, overlay y logotipo iguales a los baselines del 5 de noviembre. El menú móvil y la apertura/cierre del buscador funcionaron; no se enviaron búsquedas ni formularios.
+La comprobación pública cubrió 252 URL preferidas —248 con referencias de cabecera ajustadas y cuatro legales sin fotografía— y cuatro sondas adicionales de dispositivo, sin errores ni reintentos. Dieciséis vistas de navegador sobre ocho URL de portada y páginas comerciales, cuatro idiomas y dos dispositivos, pasaron con el contrato de teléfono revisado. No se rellenaron ni enviaron formularios ni se enviaron consultas de búsqueda; el navegador quedó cerrado. Son 256 comprobaciones HTTP y 16 vistas de navegador, no 252 auditorías de navegador o velocidad.
 
-La [medición PageSpeed de la portada](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj) registró 61 móvil y 82 escritorio, SEO y accesibilidad 100, prácticas 96 y navegación agéntica 2/2 en ambos. El LCP móvil sigue en 9,2 s: la velocidad no se considera terminada. Es una ejecución de laboratorio aislada, sin prueba causal ni CWV de campo. Se mantiene un error CORS de telemetría de Google; las auditorías de consola guardadas no mostraron 403 de imágenes.
+Se conservó el resultado original del canary: ocho de 16 vistas pasaron; los ocho fallos exigían teléfono visible en páginas comerciales que tampoco lo tenían en los baselines. Una enmienda prospectiva verificó el número correcto en portada y la ausencia comercial conservada. La tanda separada de 16 vistas pasó sin cambiar el candidato; el fallo original sigue en el historial.
 
-La caché de HTML permanece compilada en `off`. Cada visita HTML solicita de nuevo el origen Google mediante Pages y el DO; máximo ocho peticiones en vuelo, sin cola ni trabajos periódicos. Se conserva el plan gratuito, con cuotas finitas, fotografías, teléfono y recursos existentes. Entrega de formularios, conversiones/atribución Analytics y GSC siguen pendientes. Consulta [DEPLOYMENT.md](cloudflare/DEPLOYMENT.md) y el [respaldo anterior f62](cloudflare/frontend/css-static/activation-f62-receipt.json).
+En seis parejas contrabalanceadas de laboratorio sobre la portada española móvil, el LCP mejoró en las seis, con ganancia mediana de 460 ms. El FCP empeoró una mediana de 8 ms, máximo 48 ms. El cuerpo descargado de la fotografía se redujo aproximadamente un 19,16 %, por debajo del objetivo del 20 %. Un caso de documento ya caliente conservó la imagen tras 190 segundos y tres cambios de viewport; no prueba una nueva descarga tardía ni otros casos.
+
+La [última medición PageSpeed de portada](https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/j9yhkxkllr) registró 57 móvil —LCP 14,6 s— y 82 escritorio —LCP 2,7 s—; SEO y accesibilidad 100, prácticas 96 y navegación agéntica 2/2 en ambos. La medición anterior a esta versión fue 61/82, con LCP móvil 9,2 s. Esta observación posterior es peor en móvil; ambas son ejecuciones externas sin comparación controlada ni atribución causal. No se afirma mejora global de PageSpeed, CWV de campo ni optimización terminada.
+
+La caché HTML permanece compilada en `off`: cada visita HTML ejecuta Pages y el DO y vuelve a solicitar el origen Google. Máximo ocho peticiones en vuelo, sin cola; las cuotas gratuitas siguen siendo finitas. Las cuatro políticas anteriores y `PLL_HERO_WIDTH` están en `all`. La compatibilidad revisada de 519 elementos, el contrato histórico de 518 y el fallback ante formas desconocidas permanecen. Consulta [DEPLOYMENT.md](cloudflare/DEPLOYMENT.md) y el [recibo anterior 0507](cloudflare/frontend/css-static/activation-0507-receipt.json). Entrega de formularios, conversiones/atribución Analytics y GSC siguen pendientes.
 
 Sitemaps conservados: [índice](sitemap-index.xml), [español](sitemap-es.xml), [inglés](sitemap-en.xml), [francés](sitemap-fr.xml) e [italiano](sitemap-it.xml), con sus alternates. No se añade automatización de GitHub ni de sitemaps.
 
-## Preparar el código
-
-Desde `cloudflare/frontend/css-static`, ejecutar `node tooling/prepare-native-css.mjs`. Reconstruye cuatro destinos exactos para los dos CSS desde sus representaciones gzip/base64, sin red ni postinstall. Usar el lockfile existente. En PowerShell:
+Desde `cloudflare/frontend/css-static`, ejecutar explícitamente `node tooling/prepare-native-css.mjs`: reconstruye cuatro destinos CSS exactos desde dos inputs gzip/base64, sin red ni postinstall. Usar el lockfile existente y compilar con caché desactivada:
 
 ```powershell
 $env:PLL_HTML_CACHE_MODE = 'off'
@@ -23,4 +25,4 @@ npm test
 node --test tooling/*.test.mjs
 ```
 
-El build rechaza modos de caché distintos de `off`. Los comandos no despliegan ni envían formularios. Los recibos históricos y los archivos raíz y sitemaps se conservan.
+La copia portable pasó 196/196 pruebas en una ejecución; los siete artefactos coinciden con el candidato congelado. La evidencia anterior del helper sigue en 28/28, sin afirmar 80 % de cobertura del helper. Estos comandos no despliegan ni envían formularios.
