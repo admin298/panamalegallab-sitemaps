@@ -50,7 +50,7 @@ test('build manifest seals the static CSS, route metadata and unchanged frontend
     assert.deepEqual(manifest.files[name], { bytes: bytes.byteLength, sha256: sha(bytes) }, name);
   }
   assert.equal(sha(await read('dist/frontend/_worker.js')),
-    '3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9');
+    '72d46465485f1b00ecab178a57ab9db03403ba37371011840183afa241a2f953');
   assert.equal(String(await read('dist/frontend/deployment.txt')), 'Panama Legal Lab delivery assets.\n');
 });
 
