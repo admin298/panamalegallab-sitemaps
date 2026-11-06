@@ -1,56 +1,55 @@
-Panama Legal Lab - cache-off image recovery verified; mobile speed open
+Panama Legal Lab - reviewed Google 519 recovery, 6 November 2026
 
-Active version: f62aeb5b-7e37-4bf1-9633-0985f1f4060e.
-Backend 422116 bytes, SHA256
-620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521.
-activation-receipt.json records public recovery: 5 views in 4 languages,
-97 image HTTP200 transfers, zero broken images and zero retries. Late ES at
-234.604 seconds received new image URLs with preserved photo/logo/overlay
-hashes. Mobile speed remains open; the optimization is not finished.
-The previous cf48 receipt is preserved byte-identically under
-activation-cf48-cache-all-receipt.json, with the 7ff/f550 receipts also exact.
+Accepted backend: 0507d52a-a3c9-4d18-b8be-f0a6f6703b80, 426995 bytes.
+SHA256: c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340.
+Current renderer: ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07.
+Pages: 06533eae-ba22-4602-8920-631f871dfff1. activation-receipt.json is the exact
+operator ADOPTION receipt; source-build-proof.json records the frozen build.
 
-HTML cache reuse was withdrawn after valid image tokens at about 2 seconds and
-broken tokens at about 159 seconds. Build explicitly with PLL_HTML_CACHE_MODE=off.
-The supported off branch renders fresh on every HTML visit, with one Pages
-execution, one DO call and one Google-origin fetch. It does not read/write or
-certify/capture HTML templates, initialize cache SQLite or enqueue refresh work.
-Maximum 8 in-flight, no queue, and existing Free resources remain, with finite shared
-account quotas. No jobs, new dependencies, resources or latency guarantee.
-The previous 300s/32-entry/8MiB/32-SQLite budgets are dormant history, not active reuse.
+The adapter adds only the reviewed 519-element shape, with appended zero,
+expected source/query and fields, exact locale viewer bundle and matching valid
+nonce. Historical 518 compatibility and unknown-shape fallback remain. Both CSS
+versions and the four current script URL/hash contracts are recorded. Google
+viewer script bodies are excluded. Historical reference58/vendor remain exact;
+current provenance covers 27 renderer files and a reproducible current reference.
+The thin frontend remains 3349 bytes, SHA256
+3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9.
 
-All four policy variables remain all: PLL_IMAGE_FORMAT, PLL_CSS_STATIC,
-PLL_NATIVE_IMPRESSIONS and PLL_INITIAL_RENDER. backend.cache-off.wrangler.json
-has the same vars body as initial-render-all; cache mode is compiled in the
-artifact. Source is exact; only the emitted backend cache literal changes.
-All five frontend artifacts, photos, source URLs, CSS and renderer stay exact.
+All four policies remain all. HTML cache is OFF: each ordinary HTML visit invokes
+Pages and the DO and requests the Google origin again. Maximum eight in flight,
+no queue or jobs; Free quotas remain finite. No new resources, resource bindings,
+migrations or dependencies. Photos, phone and form behavior are preserved.
 
-The three initial-render edits remain: exact invalid-font link removal, native
-lazy loading on the recognized Apps Script iframe, and missing homepage logo
-ratio reservation with intrinsic fallback. Unknown shapes remain unchanged.
-Historical 252-page replay: 252 fonts, 20 lazy frames, 3 new ratios and 1 Spanish
-ratio preserved.
-Earlier 12 preview views/six pairs and 8 GETs belong to cf48 cache-all, not final off
-recovery proof. PageSpeed 543kcq01on scored 56 mobile/78 desktop without image
-403s. This single external run does not establish causal gains or field CWV;
-mobile speed remains open.
-The responsive-image experiment was rejected: four corrected early views showed
-short-window savings, but one separate rotation at 160.013 seconds selected nine
-previously unfetched 1280 URLs and all nine returned 403/broken images. No trial
-code is adopted; f62/photo delivery remains unchanged. Critical CSS is plan only,
-not implemented. Mobile speed stays open.
-Form delivery, Analytics conversions/attribution and GSC remain deferred.
-No head hreflang observed; protected sitemap alternates remain unchanged.
+Public evidence: 252 HTTP200 documents, 63 per language, no fallback, 252 correct
+canonicals and 148 expected descriptions. Eight public home views passed; 24
+primary-asset hashes match recorded 5 November baselines, inline images decoded,
+and contexts/browser closed. Menu and search opening/closing were checked;
+query/RPC completeness and form delivery were not tested. PageSpeed oxuarv97gj
+reported 61 mobile/82 desktop, SEO and accessibility 100, best practices 96,
+agentic 2/2. Mobile LCP 9.2 s remains open. One homepage lab report does not establish
+causal gains, field CWV or 252 performance results. Google play.log CORS remains;
+no image HTTP403 appeared in the saved console audits. Conversions/attribution and
+GSC remain deferred.
 
-Explicit preparation: node tooling/prepare-native-css.mjs, then build with
-PLL_HTML_CACHE_MODE=off and run npm test using the locked existing dependencies.
-The helper restores two exact CSS paths from one canonical gzip/base64 source,
-with bounds/hash checks and no network/postinstall. The portable off build
-matched all six artifacts and passed 163/163 tests. npm run coverage is available.
-Previous source coverage is 99.68% lines / 94.70% functions / 89.01% branches with identical
-source, not a new recovery coverage run. The unchanged CSS helper previously
-passed 19/19 tests. No raw CSS, node_modules, archives or captures are packaged.
+Explicit preparation: node tooling/prepare-native-css.mjs reconstructs four fixed
+paths from the two exact gzip/base64 inputs after bounds/hash checks, with no
+network, postinstall or runtime preparation. Use package.json/package-lock.json.
+Set PLL_HTML_CACHE_MODE=off before npm run build; other cache modes are refused.
+Run npm test and node --test tooling/*.test.mjs. No command deploys or submits.
 
-Keep the active cache-off artifact for recovery; do not routinely restore a
-historical cache-all version. Preserve Worker/DO/SQLite, Pages, CSS, photos and
-rules. CACHE-OFF-RECEIPT.json is local source/build proof. See ../../DEPLOYMENT.md.
+Portable suite: 181/181, comprising the unchanged candidate 179 plus two retained
+portability guards. Source coverage: 99.68% lines, 89.19% branches, 94.76% functions.
+All seven build artifacts match the published candidate. Helper cases: 28/28,
+retaining 19 scenarios and adding nine. Node's isolated helper coverage report
+excludes its temporary fixture copies; no 80% helper coverage claim is made.
+Both original and corrected-scope logs are retained locally; see the precise
+scope in portable-validation.json. Runtime coverage was executed only once.
+No raw CSS, captures, viewer bodies, photos, signed image URLs, dependencies or
+caches are packaged. Existing lockfile/configs and historical receipts stay exact.
+The operator's official audit reported zero vulnerabilities / 83 dependencies;
+this packager did not repeat that network audit.
+
+f62/cf48/7ff/f550 receipts remain exact. PR9 backed up f62 on 5 November and did
+not contain this 6 November recovery. Current restoration must check source
+compatibility; f62 rejects the current 519 shape and cache-all also risks aged
+image tokens. See ../../DEPLOYMENT.md. No GitHub or sitemap automation is added.

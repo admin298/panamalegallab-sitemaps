@@ -1,9 +1,13 @@
 {
-  "release": "pll-initial-render-20261105-v1",
-  "rendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "release": "pll-compatibility-recovery-20261106-v1",
+  "rendererWorkerSha256": "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07",
+  "legacyRendererWorkerSha256": "58a76f2dd366fb20b03ebb9db9f0dd401df51ef10186959a96d844285c38e509",
+  "rendererSourceFiles": 27,
+  "rendererReferenceBytes": 314229,
   "htmlCache": {
     "placement": "durable-object",
     "mode": "off",
+    "activeReuse": false,
     "certificateVersion": 2,
     "revision": "pll-html-memory-v1-impressions-v1-off",
     "revisionsByImpressionMode": {
@@ -35,6 +39,7 @@
     "maximumConcurrentFills": 1,
     "perVisitPagesExecutions": 1,
     "perVisitDurableObjectCalls": 1,
+    "perVisitOriginCalls": 1,
     "perHitOriginCalls": 0,
     "recurringJobs": 0,
     "addedBindings": 0,
@@ -51,11 +56,11 @@
     "previewControlParameter": "_pll_initial_render",
     "previewControlValue": "control",
     "previewCandidateValue": "candidate",
-    "shape": "Exact invalid-font link removal; recognized Apps Script iframe loading lazy; recognized four-home overlay auto-ratio hint. Unsupported shapes preserved.",
+    "shape": "Exact invalid-font removal; recognized Apps Script iframe native lazy loading; recognized homepage overlay ratio reservation.",
     "frame": "Same URL, sandbox, permissions and dimensions; native loading lazy only.",
-    "overlay": "Only recognized four homepage widgets and localized alt; aspect-ratio auto 1168 / 854 when no inline style; intrinsic ratio retained.",
-    "parser": "Reuses the existing native inspector and raw-text spans; no extra parse or upstream fetch.",
-    "styling": "Font-family, fallback stacks and all valid font stylesheets remain byte-identical."
+    "overlay": "Recognized homepage widgets retain intrinsic fallback with aspect-ratio auto 1168 / 854.",
+    "parser": "Existing native inspector and raw-text spans; no extra parse or upstream fetch.",
+    "styling": "Font-family, fallback stacks and valid font stylesheets remain unchanged."
   },
   "impressions": {
     "modeVariable": "PLL_NATIVE_IMPRESSIONS",
@@ -80,13 +85,26 @@
       "fr": "57edbc582ec37ca406f7643d85412d3d6564f99364c3be54e3708e2ffbf7bdfe",
       "it": "374b063be81e604403ce3ed8628b4c6aeebd6325ac5505a9c4e317b33ecd0a8f"
     },
+    "currentViewScriptUrls": {
+      "es": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.es.evEG0HtR8Ps.O/am=AAAAYAAI/d=1/rs=AGEqA5nxAfWapthEHOE4K2A-y6LqYKA8AA/m=view",
+      "en": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.en_US.7K42jXwKoL8.O/am=AAAAYAAI/d=1/rs=AGEqA5l1O939Wm7Yi7tplrOF29wrpok45A/m=view",
+      "fr": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.fr.5qz8a--RjDU.O/am=AAAAYAAI/d=1/rs=AGEqA5llG6Cne3QLlFoEVcnf1RCjwmSVdg/m=view",
+      "it": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.it.2UqSqMAe3kM.O/am=AAAAYAAI/d=1/rs=AGEqA5nhH4ZaXhd3lLBzlKY1Ku-eZ2svUA/m=view"
+    },
+    "currentViewScriptSha256": {
+      "es": "f5d4c560ad14201d6b2e09c97a1430d41c9011552cd25da9a400036124dc7e7e",
+      "en": "4a93ea8e983a635da9746946a4a7f51d53f68836a20618010733b4646cf1538e",
+      "fr": "920c2dc788273b2eaedd1e4b07fba73428d16f3e086491d9122534537c44056e",
+      "it": "bd7301963332f6bb8cf85fb709b306c1061f4662b51c3a587ea6154d0cb651d2"
+    },
     "nativeField": 357,
     "arrayIndex": 356,
     "recognizedArrayLength": 518,
+    "currentRecognizedArrayLength": 519,
     "changedValue": true,
-    "mutation": "Exact recognized native configuration token only; docs-liap, GA4 and all unrelated bytes preserved.",
+    "mutation": "Exact recognized native configuration token only; docs-liap, GA4 and unrelated bytes preserved.",
     "unsupportedShape": "Original document unchanged by this policy; no endpoint acknowledgement or relay.",
-    "parser": "Reuses the CSS native inspector and raw-text spans; one native parse, no extra upstream fetch."
+    "parser": "Shared native inspector and raw-text spans; one native parse and no extra upstream fetch."
   },
   "css": {
     "originalUri": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA",
@@ -94,25 +112,41 @@
     "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
     "bytes": 1954605,
     "transformations": "none",
-    "provenance": "Exact decoded public Google gstatic version-pinned stylesheet, captured 2026-11-04T14:13:06Z. Original copyright and any applicable Google terms remain with their respective holders; no ownership or separate open-source license is asserted."
+    "provenance": "Exact public version-pinned Google CSS. Original copyright and applicable terms remain with their holders; no separate license asserted."
   },
-  "builtAt": "2026-11-05T17:32:48.931Z",
+  "cssVersions": [
+    {
+      "id": "native-20261104",
+      "nativeUrl": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.VWOdPCMSEos.L.X.O/am=AAAAGAAE/d=1/rs=AGEqA5kDZG7hRoGssZU386DkZtLorCpeeA",
+      "assetPath": "/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css",
+      "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61",
+      "bytes": 1954605
+    },
+    {
+      "id": "native-20261106",
+      "nativeUrl": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.FdCCmLj_-18.L.X.O/am=AAAAYAAI/d=1/rs=AGEqA5n0xDEdNb8kZN9KvVeGKVosSfnN8Q",
+      "assetPath": "/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css",
+      "sha256": "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d",
+      "bytes": 1955718
+    }
+  ],
+  "builtAt": "2026-11-06T10:58:01.913Z",
   "files": {
     "dist/frontend/_worker.js": {
       "bytes": 3349,
       "sha256": "3d7351a56f2729327f85ecf350e0c4729689b882c11c8b294d4aa771d87f08e9"
     },
     "dist/backend/worker.js": {
-      "bytes": 422116,
-      "sha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521"
+      "bytes": 426995,
+      "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340"
     },
     "dist/frontend/_routes.json": {
-      "bytes": 133,
-      "sha256": "c589b22cd100b77043e1ccdc94eb1a36be6cd76f59112a04b78229cafd7fb694"
+      "bytes": 223,
+      "sha256": "472583393c95d10aa3feaf072b69d4cb8a930a0e1c72b0aae06a181712f84d56"
     },
     "dist/frontend/_headers": {
-      "bytes": 181,
-      "sha256": "5277e7f7d51173b09a153d64f355b1723992ec622152519c5dc51780e33cfc10"
+      "bytes": 362,
+      "sha256": "4402c832a101b5a380cf6910fbaa32b05ab5872deadbb13aafebefbbb133dc11"
     },
     "dist/frontend/deployment.txt": {
       "bytes": 34,
@@ -121,6 +155,10 @@
     "dist/frontend/_pll-assets/sites-7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61.css": {
       "bytes": 1954605,
       "sha256": "7b109cc5f097872edf3be1cfb1a39cba4a086286963af0eb2cddaf2082e68d61"
+    },
+    "dist/frontend/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css": {
+      "bytes": 1955718,
+      "sha256": "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d"
     }
   }
 }

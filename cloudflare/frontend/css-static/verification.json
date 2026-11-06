@@ -1,9 +1,22 @@
 {
-  "state": "CURRENT_F62_PACKET_READY_FOR_USER_APPROVAL_MOBILE_SPEED_OPEN",
-  "backendVersionReportedByOperator": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
+  "state": "PUBLIC_6NOV_RECOVERY_PORTABLE_181_PASS_READY_FOR_REVIEW",
+  "release": "pll-compatibility-recovery-20261106-v1",
+  "backendVersion": "0507d52a-a3c9-4d18-b8be-f0a6f6703b80",
   "backend": {
-    "bytes": 422116,
-    "sha256": "620e28f7e53d63f3f818a91cbd09e898a59e31f3d509664cca1e8c081a7bc521"
+    "bytes": 426995,
+    "sha256": "c809b29d397633fd05a9d595f6b9d3032ed013b39ef05a4f06a38dd8109bf340"
+  },
+  "rendererSha256": "ab2390e634808742a87beddd19bce908eef3d7ac5ea5375dc709d99a7e546a07",
+  "rendererSourceFiles": 27,
+  "legacyRendererReference58Preserved": true,
+  "runtimeReceipt": "activation-receipt.json",
+  "activationReceiptSha256": "fbe3de9411714fc4b22afb568a68ed5355567fe5131110a09e628104bcfab9ff",
+  "sourceBuildProof": "source-build-proof.json",
+  "sourceBuildProofSha256": "42ff274456b057effd1795b478dac80da55045c19244f4fd1aeaba30ccfe7beb",
+  "sourceRuntimeDelta": {
+    "modified": 17,
+    "added": 9,
+    "removed": 0
   },
   "htmlCacheMode": "off",
   "policyVars": {
@@ -12,127 +25,145 @@
     "PLL_NATIVE_IMPRESSIONS": "all",
     "PLL_INITIAL_RENDER": "all"
   },
-  "tests": 163,
-  "passed": 163,
-  "failed": 0,
-  "newTests": 0,
+  "candidateTests": 179,
+  "candidatePassed": 179,
+  "candidateFailed": 0,
+  "portableTestsExpected": 181,
+  "retainedPortabilityGuardTests": 2,
   "sourceCoverage": {
+    "pass": 179,
+    "fail": 0,
+    "coverageScope": "Node delivery src modules; native renderer guards have separate integration tests",
     "lines": 99.68,
-    "functions": 94.7,
-    "branches": 89.01
+    "branches": 89.19,
+    "functions": 94.76,
+    "npmVulnerabilities": 0
   },
-  "coverageBasis": "Previous coverage run; source/test files remain byte-identical. No repeat coverage run.",
-  "helperTestsBasis": "Previous helper suite passed 19/19; helper source unchanged; not rerun.",
-  "sourceProof": "CACHE-OFF-RECEIPT.json",
-  "sourceProofSha256": "30bc112afbbb1f590f49e8632075566129f44174660b917cd4b737610deb0e37",
-  "sourceFilesComparedByRecoveryProof": 99,
-  "newRuntimeCode": false,
-  "soleBackendChange": "Compiled existing HTML cache mode from all to off; source unchanged.",
-  "fiveFrontendArtifactsUnchanged": true,
-  "perHtmlVisit": {
-    "pagesExecutions": 1,
-    "durableObjectCalls": 1,
-    "googleOriginFetches": 1,
-    "freshHtml": true
+  "coverageScope": "Root candidate source suite; portable run to be recorded separately.",
+  "publicHttp": {
+    "pages": 252,
+    "byLanguage": {
+      "es": 63,
+      "en": 63,
+      "fr": 63,
+      "it": 63
+    },
+    "allStatus200": true,
+    "fallbacks": 0,
+    "canonicalCorrect": 252,
+    "expectedDescriptionsVerified": 148,
+    "retries": 0,
+    "concurrency": 2,
+    "receipt": "validation/public-252/SUMMARY.json",
+    "scope": "Finite HTTP document audit only; no252browser, image decoding, performance, form delivery or Google indexing claim."
   },
-  "runtimeBounds": {
-    "maximumInFlight": 8,
-    "queue": false,
-    "recurringJobs": 0
+  "postBrowser": {
+    "views": 8,
+    "passed": 8,
+    "primaryAssetHashChecks": 24,
+    "sameRecorded5NovBaselines": true,
+    "brokenInlineImages": 0,
+    "contextsClosed": true,
+    "browserClosed": true,
+    "controlsScope": "Menu and search open/close only; no query or form submission."
   },
-  "historicalCacheBudgetsDormant": {
-    "maximumAgeSeconds": 300,
-    "maximumEntries": 32,
-    "maximumMemoryBytes": 8388608,
-    "persistentSlots": 32
+  "pageSpeed": {
+    "url": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/oxuarv97gj",
+    "reportAtLocal": "2026-11-06 12:21:36 CET",
+    "mobile": {
+      "performance": 61,
+      "fcpSeconds": 2.9,
+      "lcpSeconds": 9.2,
+      "tbtMs": 240,
+      "cls": 0.005,
+      "speedIndexSeconds": 5.9
+    },
+    "desktop": {
+      "performance": 82,
+      "fcpSeconds": 0.9,
+      "lcpSeconds": 2.6,
+      "tbtMs": 50,
+      "cls": 0.001,
+      "speedIndexSeconds": 1.9
+    },
+    "bothDevices": {
+      "accessibility": 100,
+      "seo": 100,
+      "bestPractices": 96,
+      "agentic": "2/2"
+    },
+    "image403InExpandedConsoleAudits": false,
+    "remainingConsoleError": "Google play.google.com/log CORS preflight and ERR_FAILED",
+    "scope": "One external homepage lab report, not a controlled comparison, field CWV,252performance scores or Google indexing proof."
   },
-  "newDependencies": 0,
-  "newResourceBindings": 0,
+  "performanceComplete": false,
+  "newResources": 0,
   "newPaidResources": 0,
-  "networkActionsByPackager": 0,
-  "runtimeReceipt": "activation-receipt.json",
+  "newResourceBindings": 0,
+  "newJobs": 0,
+  "newDependencies": 0,
+  "lockfilePreserved": true,
+  "historicalPortableConfigFilesByteExact": true,
   "historicalReceipts": [
+    "activation-f62-receipt.json",
     "activation-cf48-cache-all-receipt.json",
     "activation-7ff-receipt.json",
     "activation-f550-receipt.json"
   ],
-  "productionAccepted": true,
-  "publicationReady": true,
-  "finalHealthVerification": {
-    "state": "PASS",
-    "scope": "Five public views in four languages; 97 image transfers returned HTTP 200, zero broken images; late Spanish check at 234.604 seconds had fresh URLs and preserved hashes.",
-    "mobileSpeed": "OPEN",
-    "proof": "activation-receipt.json"
+  "githubBackup": {
+    "baseCommit": "ea5dcf42b706c6d06953774caf6a4c2fb185414a",
+    "baseTree": "6be7d1029e14ce048dd171d901e4b11770d481f7",
+    "proposedBranch": "codex/compatibility-recovery-free-20261106",
+    "sourceBackupRequested": true,
+    "remoteActionsByPackager": 0,
+    "mergeSpecificApproval": "To be resolved by root for the concrete PR."
   },
   "limits": [
-    "Do not routinely restore HTML cache all after aged image tokens failed.",
-    "PageSpeed report 543kcq01on records a single external run (56 mobile / 78 desktop); no causal, global speed or field CWV improvement claimed. Mobile speed remains open.",
-    "Form delivery, Analytics conversions/attribution and GSC remain deferred."
+    "252 is a finite HTTP document audit, not252 browser/performance/indexing tests.",
+    "Browser photographs are24 primary-asset checks in eight home views.",
+    "PageSpeed is one homepage lab report; mobileLCP9.2seconds remains open.",
+    "Expanded console snapshots show CORS telemetry error and noimage403; not an indefinite guarantee.",
+    "Form delivery, conversions/attribution and GSC remain deferred."
   ],
-  "backendVersion": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
-  "activationReceiptSha256": "e7ec7683262924c0c2916245aebb483e580e2c8145f6b68396a3df6fe3e0b7a5",
-  "performanceComplete": false,
-  "publicImageHealth": {
-    "state": "PASS",
-    "views": 5,
-    "languages": 4,
-    "queryFree": true,
-    "version": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
-    "allCacheBypass": true,
-    "imageTransfers200": 97,
-    "brokenImages": 0,
-    "laterEsSeconds": 234.604,
-    "laterEsImageUrlsNew": true,
-    "photoLogoOverlayHashesPreserved": true,
-    "retries": 0,
-    "allBrowsersClosed": true,
-    "verdict": "diagnostic/image-403/cache-off-validation/results/FINAL-VERDICT.json",
-    "verdictSha256": "152d543d85a5d11b6632df17b31d8d6beb0a4c1cb0d9d7a0c722a88a202573a6"
+  "portableTests": 181,
+  "portablePassed": 181,
+  "portableFailed": 0,
+  "portableCoverage": {
+    "lines": 99.68,
+    "branches": 89.19,
+    "functions": 94.76
   },
-  "pageSpeed": {
-    "report": "https://pagespeed.web.dev/analysis/https-www-panamalegallab-com/543kcq01on",
-    "atLocal": "2026-11-05 18:42:26 CET",
-    "mobile": {
-      "performance": 56,
-      "fcpSeconds": 2.9,
-      "lcpSeconds": 14.7,
-      "tbtMs": 370,
-      "cls": 0.005
+  "portableSuiteExecutions": 1,
+  "helperTestCasesPassed": 28,
+  "helperCoverageScope": {
+    "testCases": 28,
+    "passed": 28,
+    "failed": 0,
+    "legacyScenariosRetained": 19,
+    "newScenarios": 9,
+    "targetedRedFailed": 2,
+    "initialSuiteExit": 1,
+    "correctedIncludeSuiteExit": 1,
+    "exitReason": "Both test suites passed28/28; Node coverage threshold fails because filesystem fixture copies are not attributed to the reported package instance.",
+    "reportedPackageInstanceCoverage": {
+      "lines": 36.36,
+      "branches": 91.67,
+      "functions": 37.5
     },
-    "desktop": {
-      "performance": 78,
-      "fcpSeconds": 0.7,
-      "lcpSeconds": 2.4,
-      "tbtMs": 210,
-      "cls": 0.001
+    "helper80PercentCoverageClaimed": false,
+    "correctedScopeCommandExecutions": 1,
+    "runtimeSuiteRepeated": false,
+    "rawV8Observation": {
+      "profileFiles": 4,
+      "helperInstances": 22,
+      "namedFunctionDefinitions": 17,
+      "namedFunctionsObservedExecuted": 17,
+      "standardCoveragePercentageClaim": false
     },
-    "accessibility": 100,
-    "seo": 100,
-    "bestPractices": 96,
-    "agenticBrowsing": "2/2",
-    "image403ObservedInExpandedConsoleAudits": false,
-    "remainingConsoleError": "Google play.log cross-origin telemetry error",
-    "limits": "Single external run, not causal comparison or field-CWV. Mobile performance remains open."
+    "originalLogSha256": "fe26d62ce405563738e159bad9091e73dde71ba7df0f74e989eb47e1532f4c5e",
+    "correctedLogSha256": "770590513dbee04690cb24b785dec6783b527aa41dfff0ad892af2721436dd6f"
   },
-  "sourceCodeAndBuildArtifactsUnchangedSince163OffModeTestPass": true,
-  "readyForUserApproval": true,
-  "githubApprovalStatus": "PENDING_EXPLICIT_USER_APPROVAL",
-  "remoteActionsAuthorized": false,
-  "proposedBranch": "codex/initial-render-free-20261105",
-  "rejectedResponsiveStudy": {
-    "state": "RESPONSIVE_IMAGE_SRCSET_REJECTED_NOT_PUBLISHED",
-    "correctedEarlyViews": 4,
-    "earlySavings": "Short observation windows only; not adopted.",
-    "lateSafetyCase": {
-      "views": 1,
-      "rotationSecondsAfterFreshResponse": 160.013,
-      "previouslyUnfetchedSelectedWidth": 1280,
-      "imageResponses403": 9,
-      "brokenImages": 9
-    },
-    "activeExperimentalCode": false,
-    "activeBackendUnchanged": "f62aeb5b-7e37-4bf1-9633-0985f1f4060e",
-    "decision": "Keep current photo delivery; no responsive experiment code adopted.",
-    "criticalCssNextDirection": "Plan only; not implemented."
-  }
+  "portableValidation": "portable-validation.json",
+  "runtimeArtifactsByteExactToPublishedCandidate": true,
+  "runtimeCodeChangedByPackager": false
 }

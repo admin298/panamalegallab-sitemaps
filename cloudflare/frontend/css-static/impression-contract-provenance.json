@@ -1,5 +1,5 @@
 {
-  "state": "REVIEWED_FOUR_LOCALE_NATIVE_NOOP_CONTRACT",
+  "state": "REVIEWED_LEGACY518_AND_CURRENT519_NATIVE_NOOP_CONTRACT",
   "sourceObservedDate": "2026-11-05",
   "viewScriptUrls": {
     "es": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.es.qy5mfCdpnEs.O/am=AAAAGAAE/d=1/rs=AGEqA5myW6a9fBZOxA6oOP-YGbdeAZqtvw/m=view",
@@ -19,5 +19,22 @@
   "gate": "truthy field357 selects native no-op impression service; no other consumers in reviewed bundles",
   "fullThirdPartyScriptBodiesIncluded": false,
   "rawNetworkBodiesIncluded": false,
-  "reference": "Local audit contract/FOUR-LOCALE-GATE.json; contract and runtime acceptance are reviewed separately."
+  "reference": "Local audit contract/FOUR-LOCALE-GATE.json; contract and runtime acceptance are reviewed separately.",
+  "currentSourceObservedDate": "2026-11-06",
+  "currentCaptureReceiptSha256": "d36e5b96d7592b463e7898da284d1306cf3052d4d26e704d3dad7edeac28c59f",
+  "currentViewScriptUrls": {
+    "es": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.es.evEG0HtR8Ps.O/am=AAAAYAAI/d=1/rs=AGEqA5nxAfWapthEHOE4K2A-y6LqYKA8AA/m=view",
+    "en": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.en_US.7K42jXwKoL8.O/am=AAAAYAAI/d=1/rs=AGEqA5l1O939Wm7Yi7tplrOF29wrpok45A/m=view",
+    "fr": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.fr.5qz8a--RjDU.O/am=AAAAYAAI/d=1/rs=AGEqA5llG6Cne3QLlFoEVcnf1RCjwmSVdg/m=view",
+    "it": "https://www.gstatic.com/_/atari/_/js/k=atari.vw.it.2UqSqMAe3kM.O/am=AAAAYAAI/d=1/rs=AGEqA5nhH4ZaXhd3lLBzlKY1Ku-eZ2svUA/m=view"
+  },
+  "currentViewScriptSha256": {
+    "es": "f5d4c560ad14201d6b2e09c97a1430d41c9011552cd25da9a400036124dc7e7e",
+    "en": "4a93ea8e983a635da9746946a4a7f51d53f68836a20618010733b4646cf1538e",
+    "fr": "920c2dc788273b2eaedd1e4b07fba73428d16f3e086491d9122534537c44056e",
+    "it": "bd7301963332f6bb8cf85fb709b306c1061f4662b51c3a587ea6154d0cb651d2"
+  },
+  "currentRecognizedArrayLength": 519,
+  "currentContractSource": "renderer/src/current-config-contract.js",
+  "currentShape": "Locale-specific reviewed native bundle; array519 with field212=0, field316=null after adaptation, appended field519=0."
 }
