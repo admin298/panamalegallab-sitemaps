@@ -3,6 +3,7 @@ import { makeImageStyleHandler, makeScriptHandler } from '../vendor/worker.js';
 import { rewriteProductionUrl } from './plan.js';
 import { rewriteSiteUrl } from '../vendor/logic.js';
 import { clearEquivalentQueryConfig } from './config-query.js';
+import { CURRENT_VIEW_SCRIPTS } from './current-config-contract.js';
 import { descriptionTag } from './readiness.js';
 import { createDocumentInspector, attachDocumentInspection, createLanguageRewrite, FOOTER_GROUP } from './language-controls.js';
 import { createHeaderLanguageRewrite, HEADER_ANCHOR } from './header-language-controls.js';
@@ -62,12 +63,27 @@ export function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
   let compatibilityFailure = false;
   let scriptBuffer = '';
   let deferredError = null;
+  let nativeContract = { extended: false, views: 0, matchingView: false, viewNonce: null,
+    configNonce: null, inlineNonce: null, inlineTypeValid: false, configTypeValid: false };
+  const validScriptType = element => element.getAttribute('type') === null
+    || element.getAttribute('type')?.toLowerCase() === 'text/javascript';
+  const validNonce = value => typeof value === 'string' && /^[A-Za-z0-9+/_-]{8,256}={0,2}$/u.test(value);
+  const nativeView = { element(element) {
+    const src = element.getAttribute('src') ?? '';
+    if (!src.startsWith('https://www.gstatic.com/_/atari/_/js/') || !src.includes('/m=view')) return;
+    nativeContract = { ...nativeContract, views: nativeContract.views + 1,
+      matchingView: src === CURRENT_VIEW_SCRIPTS[plan.site.language] && validScriptType(element),
+      viewNonce: element.getAttribute('nonce') };
+  } };
   const protect = handler => options.deferErrors ? Object.fromEntries(Object.entries(handler).map(([name, callback]) => [name, (...args) => {
     if (deferredError) return;
     try { callback(...args); } catch (error) { deferredError = error; }
   }])) : handler;
   const scripts = makeScriptHandler(plan, { bootstrapMode: 'clear-google-redirect', onConfigValidated() { configurations += 1; } });
-  const guardedScripts = { text(chunk) {
+  const guardedScripts = { element(element) {
+    nativeContract = { ...nativeContract, inlineNonce: element.getAttribute('nonce'),
+      inlineTypeValid: validScriptType(element) };
+  }, text(chunk) {
     const original = scriptBuffer + chunk.text;
     if (original.length > 512_000) throw new Error('Inline source exceeds delivery limit');
     scriptBuffer = chunk.lastInTextNode ? '' : original;
@@ -75,7 +91,10 @@ export function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
     catch (error) {
       if (!(error instanceof PreviewCompatibilityError)) throw error;
       try {
-        chunk.replace(clearEquivalentQueryConfig(original, plan), { html: true });
+        chunk.replace(clearEquivalentQueryConfig(original, plan, { onExtendedValidated() {
+          nativeContract = { ...nativeContract, extended: true, configNonce: nativeContract.inlineNonce,
+            configTypeValid: nativeContract.inlineTypeValid };
+        } }), { html: true });
         configurations += 1;
       } catch (retryError) {
         if (!(retryError instanceof PreviewCompatibilityError)) throw retryError;
@@ -94,6 +113,7 @@ export function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
     .on('link[rel~="canonical"]', { element(element) { element.remove(); } })
     .on('meta[property="og:url"], meta[itemprop="url"]', { element(element) { element.setAttribute('content', plan.canonical); } })
     .on('script:not([src])', protect(guardedScripts))
+    .on('script[src]', protect(nativeView))
     .on('style', protect(makeImageStyleHandler()))
     .on('meta[property="og:image"], meta[itemprop="image"], meta[itemprop="imageUrl"], meta[itemprop="thumbnailUrl"]', makeDeliveryAttributeHandler('content', plan, rewriteValue));
   if (metadata) rewriter.on('head meta[name]', options.descriptionHandler ?? { element(element) {
@@ -108,7 +128,10 @@ export function createCoreDocumentRewriter(plan, Rewriter, options = {}) {
   rewriter.onDocument({ end() { if (configurations !== 1) compatibilityFailure = true; } });
   return { rewriter, validate() {
     if (deferredError) throw deferredError;
-    if (compatibilityFailure) throw new PreviewCompatibilityError();
+    const unsupportedExtended = nativeContract.extended && (nativeContract.views !== 1 || !nativeContract.matchingView
+      || !nativeContract.configTypeValid || !validNonce(nativeContract.configNonce)
+      || nativeContract.configNonce !== nativeContract.viewNonce);
+    if (compatibilityFailure || unsupportedExtended) throw new PreviewCompatibilityError();
   } };
 }
 
