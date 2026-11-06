@@ -1,0 +1,23 @@
+{
+  "originalUri": "https://www.gstatic.com/_/atari/_/ss/k=atari.vw.FdCCmLj_-18.L.X.O/am=AAAAYAAI/d=1/rs=AGEqA5n0xDEdNb8kZN9KvVeGKVosSfnN8Q",
+  "path": "/_pll-assets/sites-790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d.css",
+  "sha256": "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d",
+  "bytes": 1955718,
+  "transformations": "none",
+  "capturedAtUtc": "2026-11-06T10:42:47.060Z",
+  "originalResponseContentType": "text/css; charset=UTF-8",
+  "publicSnapshot": true,
+  "transport": {
+    "id": "native-20261106",
+    "file": "assets/native-styles-20261106-gzip-base64.txt",
+    "cssSha256": "790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d",
+    "cssBytes": 1955718,
+    "gzipSha256": "6fb9bf35955b2c902b49f13fab453f1898e7db90f0084fa0df46d3069c1e4057",
+    "gzipBytes": 221930,
+    "base64Sha256": "ab5a65605332c46484806f6de1e1338cd4a1bc1de1833ea121c8ae063534c4bd",
+    "base64Bytes": 295908,
+    "gzipMtime": 0,
+    "transformations": "none; lossless gzip/base64 transport only"
+  },
+  "provenance": "Exact public version-pinned Google gstatic stylesheet. Original copyright and applicable terms remain with their holders; no separate ownership or open-source license is asserted."
+}
