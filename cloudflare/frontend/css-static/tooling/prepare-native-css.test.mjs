@@ -11,8 +11,13 @@ import { decodeStoredCss, decodeNativeCss, CSS_BYTES, CSS_SHA, GZIP_BYTES, GZIP_
 
 const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const cssName = `sites-${CSS_SHA}.css`;
-const outputs = [`assets/${cssName}`, `dist/frontend/_pll-assets/${cssName}`];
+const currentSha = '790a81d59f7bd31d12167ffe5405befff4738f024acd6ed39ab40a25b020291d';
+const currentName = `sites-${currentSha}.css`;
+const outputs = [`assets/${cssName}`, `dist/frontend/_pll-assets/${cssName}`,
+  `assets/${currentName}`, `dist/frontend/_pll-assets/${currentName}`];
+const outputSha = name => name.includes(currentSha) ? currentSha : CSS_SHA;
 const encoded = await fs.readFile(path.join(packageRoot, 'assets/native-styles-gzip-base64.txt'));
+const currentEncoded = await fs.readFile(path.join(packageRoot, 'assets/native-styles-20261106-gzip-base64.txt'));
 const gzip = Buffer.from(encoded.toString('ascii'), 'base64');
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 
@@ -26,6 +31,7 @@ async function fixture(t) {
   await fs.mkdir(path.join(root, 'dist/frontend'), { recursive: true });
   await fs.copyFile(path.join(packageRoot, 'tooling/prepare-native-css.mjs'), path.join(root, 'tooling/prepare-native-css.mjs'));
   await fs.writeFile(path.join(root, 'assets/native-styles-gzip-base64.txt'), encoded);
+  await fs.writeFile(path.join(root, 'assets/native-styles-20261106-gzip-base64.txt'), currentEncoded);
   const helper = await import(pathToFileURL(path.join(root, 'tooling/prepare-native-css.mjs')).href);
   return { root, helper };
 }
@@ -105,12 +111,12 @@ test('decompression receives its output limit and propagates an expansion failur
   assert.throws(() => decodeNativeCss(gzip), /Bounded expansion refused/);
 });
 
-test('preparation writes only the two fixed paths and reruns without replacing them', async t => {
+test('preparation writes only the four fixed paths and reruns without replacing them', async t => {
   const { root, helper } = await fixture(t);
   const first = await helper.prepareNativeCss();
   assert.deepEqual(first.written, outputs);
   const identities = await Promise.all(outputs.map(name => fs.stat(path.join(root, name))));
-  for (const name of outputs) assert.equal(digest(await fs.readFile(path.join(root, name))), CSS_SHA);
+  for (const name of outputs) assert.equal(digest(await fs.readFile(path.join(root, name))), outputSha(name));
   const second = await helper.prepareNativeCss();
   assert.deepEqual(second.written, []);
   assert.deepEqual(second.unchanged, outputs);
@@ -169,7 +175,7 @@ test('first-publication failure leaves no output and cleans exclusive staging fi
   const { root, helper } = await fixture(t);
   const stub = mock.method(fs, 'link', async () => { throw Object.assign(new Error('Injected link failure'), { code: 'EIO' }); });
   t.after(() => stub.mock.restore());
-  await assert.rejects(helper.prepareNativeCss(), /0 of 2|publication/i);
+  await assert.rejects(helper.prepareNativeCss(), /0 of 4|publication/i);
   for (const name of outputs) assert.equal(await exists(path.join(root, name)), false);
   await assertNoTemps(root);
 });
@@ -183,7 +189,7 @@ test('staging write failure closes and removes only its exclusive temporary file
       writeFile: async () => { throw new Error('Injected staging write failure'); } };
   });
   t.after(() => stub.mock.restore());
-  await assert.rejects(helper.prepareNativeCss(), /0 of 2/i);
+  await assert.rejects(helper.prepareNativeCss(), /0 of 4/i);
   for (const name of outputs) assert.equal(await exists(path.join(root, name)), false);
   await assertNoTemps(root);
 });
@@ -211,13 +217,13 @@ test('second-publication failure reports partial success; rerun completes safely
     if (to === path.join(root, outputs[1])) throw Object.assign(new Error('Injected second link failure'), { code: 'EIO' });
     return realLink(from, to);
   });
-  await assert.rejects(helper.prepareNativeCss(), /1 of 2/i);
+  await assert.rejects(helper.prepareNativeCss(), /1 of 4/i);
   stub.mock.restore();
   assert.equal(digest(await fs.readFile(path.join(root, outputs[0]))), CSS_SHA);
   assert.equal(await exists(path.join(root, outputs[1])), false);
   await assertNoTemps(root);
   const rerun = await helper.prepareNativeCss();
-  assert.deepEqual(rerun.written, [outputs[1]]);
+  assert.deepEqual(rerun.written, outputs.slice(1));
   assert.deepEqual(rerun.unchanged, [outputs[0]]);
 });
 
@@ -242,5 +248,5 @@ test('actual local CLI succeeds and rejects destination arguments', async t => {
   const good = spawnSync(process.execPath, [command], { encoding: 'utf8' });
   assert.equal(good.status, 0, good.stderr);
   assert.match(good.stdout, /verified/i);
-  for (const name of outputs) assert.equal(digest(await fs.readFile(path.join(root, name))), CSS_SHA);
+  for (const name of outputs) assert.equal(digest(await fs.readFile(path.join(root, name))), outputSha(name));
 });
